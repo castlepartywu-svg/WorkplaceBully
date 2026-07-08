@@ -874,9 +874,43 @@
       <div id="admin-msg"></div>
     </div>
 
-    <div class="admin-box" id="admin-panel">
-      <p class="status-line">已登入管理者帳號：<strong id="admin-username-display"></strong></p>
-      <button class="btn btn-outline" onclick="adminLogout()">登出</button>
+    <div id="admin-panel" style="display:none;">
+      <div class="admin-box" style="margin-bottom:0;">
+        <p class="status-line">已登入管理者帳號：<strong id="admin-username-display"></strong></p>
+        <button class="btn btn-outline" onclick="adminLogout()">登出</button>
+      </div>
+
+      <div class="card-grid" style="margin-top:36px;">
+        <div class="info-card" style="border-top-color:var(--navy);">
+          <h3>管理員帳號一覽</h3>
+          <p style="margin-bottom:14px;">目前系統中的所有管理員帳號如下（密碼預設隱藏，可點擊顯示）。</p>
+          <table id="admin-list-table" style="width:100%;border-collapse:collapse;font-size:13.5px;">
+            <thead>
+              <tr>
+                <th style="text-align:left;border-bottom:1px solid var(--line);padding:6px 4px;color:var(--navy-deep);">帳號</th>
+                <th style="text-align:left;border-bottom:1px solid var(--line);padding:6px 4px;color:var(--navy-deep);">密碼</th>
+                <th style="border-bottom:1px solid var(--line);padding:6px 4px;"></th>
+              </tr>
+            </thead>
+            <tbody id="admin-list-body"></tbody>
+          </table>
+        </div>
+
+        <div class="info-card" style="border-top-color:var(--gold);">
+          <h3>新增管理員</h3>
+          <p style="margin-bottom:14px;">新增的帳號僅存於目前瀏覽器分頁的記憶體中，重新整理頁面後會消失（本頁沒有後端資料庫）。</p>
+          <div class="field" style="margin-bottom:12px;">
+            <label style="display:block;font-size:13px;margin-bottom:5px;color:var(--navy-deep);font-weight:600;" for="new-admin-user">新帳號</label>
+            <input type="text" id="new-admin-user" style="width:100%;padding:9px;border:1px solid var(--line);border-radius:2px;font-family:inherit;">
+          </div>
+          <div class="field" style="margin-bottom:12px;">
+            <label style="display:block;font-size:13px;margin-bottom:5px;color:var(--navy-deep);font-weight:600;" for="new-admin-pass">新密碼</label>
+            <input type="text" id="new-admin-pass" style="width:100%;padding:9px;border:1px solid var(--line);border-radius:2px;font-family:inherit;">
+          </div>
+          <button class="btn btn-primary" onclick="addAdminAccount()">新增管理員</button>
+          <div id="new-admin-msg" style="min-height:18px;font-size:13px;margin-top:10px;"></div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -934,6 +968,7 @@
       document.getElementById('admin-panel').style.display = 'block';
       document.getElementById('admin-username-display').textContent = currentAdmin;
       msg.textContent = '';
+      renderAdminList();
     } else {
       msg.textContent = '帳號或密碼錯誤，請重新輸入。';
     }
@@ -946,6 +981,73 @@
     document.getElementById('admin-panel').style.display = 'none';
     document.getElementById('admin-user').value = '';
     document.getElementById('admin-pass').value = '';
+  }
+
+  /* ---------- 管理員帳號一覽 / 新增管理員 ---------- */
+  function renderAdminList(){
+    const body = document.getElementById('admin-list-body');
+    body.innerHTML = '';
+    ADMIN_ACCOUNTS.forEach((acc, idx) => {
+      const tr = document.createElement('tr');
+
+      const tdUser = document.createElement('td');
+      tdUser.style.padding = '6px 4px';
+      tdUser.style.borderBottom = '1px solid var(--line)';
+      tdUser.textContent = acc.username;
+
+      const tdPass = document.createElement('td');
+      tdPass.style.padding = '6px 4px';
+      tdPass.style.borderBottom = '1px solid var(--line)';
+      tdPass.textContent = '••••••••';
+      tdPass.dataset.revealed = 'false';
+      tdPass.dataset.value = acc.password;
+
+      const tdAction = document.createElement('td');
+      tdAction.style.padding = '6px 4px';
+      tdAction.style.borderBottom = '1px solid var(--line)';
+      tdAction.style.textAlign = 'right';
+      const toggleBtn = document.createElement('button');
+      toggleBtn.textContent = '顯示';
+      toggleBtn.style.cssText = 'background:transparent;border:1px solid var(--line);border-radius:2px;font-size:11.5px;padding:3px 8px;cursor:pointer;color:var(--navy-deep);';
+      toggleBtn.onclick = () => {
+        const revealed = tdPass.dataset.revealed === 'true';
+        tdPass.textContent = revealed ? '••••••••' : tdPass.dataset.value;
+        tdPass.dataset.revealed = revealed ? 'false' : 'true';
+        toggleBtn.textContent = revealed ? '顯示' : '隱藏';
+      };
+      tdAction.appendChild(toggleBtn);
+
+      tr.appendChild(tdUser);
+      tr.appendChild(tdPass);
+      tr.appendChild(tdAction);
+      body.appendChild(tr);
+    });
+  }
+
+  function addAdminAccount(){
+    const userInput = document.getElementById('new-admin-user');
+    const passInput = document.getElementById('new-admin-pass');
+    const msg = document.getElementById('new-admin-msg');
+    const u = userInput.value.trim();
+    const p = passInput.value;
+
+    if (!u || !p) {
+      msg.style.color = 'var(--danger)';
+      msg.textContent = '請輸入帳號與密碼。';
+      return;
+    }
+    if (ADMIN_ACCOUNTS.some(a => a.username === u)) {
+      msg.style.color = 'var(--danger)';
+      msg.textContent = '此帳號已存在，請使用其他帳號名稱。';
+      return;
+    }
+
+    ADMIN_ACCOUNTS.push({ username: u, password: p });
+    renderAdminList();
+    userInput.value = '';
+    passInput.value = '';
+    msg.style.color = 'var(--teal)';
+    msg.textContent = '已新增管理員帳號（僅暫存於本頁，重新整理後會消失）。';
   }
 </script>
 </body>
