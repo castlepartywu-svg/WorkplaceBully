@@ -1,16 +1,107 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-  <!-- same head -->
-  <title>管理者後台</title>
-  <link rel="stylesheet" href="assets/style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>管理者專區｜大立昇吉的堡職場霸凌申訴專區</title>
+<link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
-<header class="site-header"> ... </header>
+<header class="site-header">
+  <div class="header-inner">
+    <div class="brand">
+      <svg width="30" height="30" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M6 44V16L12 10V16H16V8L24 4L32 8V16H36V10L42 16V44H6Z" stroke="#C9A253" stroke-width="2" stroke-linejoin="round"/>
+        <path d="M18 44V32H30V44" stroke="#C9A253" stroke-width="2" stroke-linejoin="round"/>
+      </svg>
+      <div class="brand-text">
+        <span class="org">大立昇．吉的堡</span>
+        <span class="sub">職場霸凌申訴專區 - 管理者專區</span>
+      </div>
+    </div>
+    <nav class="main-nav">
+      <a href="index.html">返回首頁</a>
+      <a href="report.html">申訴表單</a>
+      <a href="admin.html" class="admin-link">管理者登入</a>
+    </nav>
+  </div>
+</header>
 
-<section class="admin-section">
-  <!-- Full original admin login + panel -->
+<section class="admin-section" id="admin" style="padding-top:120px; padding-bottom:100px;">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="kicker">內部使用</span>
+      <h2>管理者登入</h2>
+      <p>本區僅供受理單位／安全及衛生防護委員會人員使用。登入後可查看並填寫申訴案件處理情形。</p>
+    </div>
+
+    <div class="admin-note" style="max-width:560px;">
+      注意：這是純前端示意登入機制（非真正安全的後端驗證）。正式上線時建議使用後端系統搭配資料庫。
+    </div>
+
+    <!-- 登入表單 -->
+    <div class="admin-box" id="admin-login-box">
+      <div class="field">
+        <label for="admin-user">帳號</label>
+        <input type="text" id="admin-user" autocomplete="username">
+      </div>
+      <div class="field">
+        <label for="admin-pass">密碼</label>
+        <input type="password" id="admin-pass" autocomplete="current-password">
+      </div>
+      <button class="btn btn-primary" onclick="adminLogin()">登入</button>
+      <div id="admin-msg"></div>
+    </div>
+
+    <!-- 登入後面板 -->
+    <div id="admin-panel" style="display:none;">
+      <div class="admin-box">
+        <p class="status-line">已登入管理者帳號：<strong id="admin-username-display"></strong></p>
+        <button class="btn btn-outline" onclick="adminLogout()">登出</button>
+      </div>
+
+      <div class="card-grid" style="margin-top:36px;">
+        <!-- 管理員列表 -->
+        <div class="info-card" style="border-top-color:var(--navy);">
+          <h3>管理員帳號一覽</h3>
+          <table id="admin-list-table" style="width:100%;border-collapse:collapse;font-size:13.5px;">
+            <thead>
+              <tr>
+                <th style="text-align:left;border-bottom:1px solid var(--line);padding:6px 4px;color:var(--navy-deep);">帳號</th>
+                <th style="text-align:left;border-bottom:1px solid var(--line);padding:6px 4px;color:var(--navy-deep);">密碼</th>
+                <th style="border-bottom:1px solid var(--line);padding:6px 4px;"></th>
+              </tr>
+            </thead>
+            <tbody id="admin-list-body"></tbody>
+          </table>
+        </div>
+
+        <!-- 新增管理員 -->
+        <div class="info-card" style="border-top-color:var(--gold);">
+          <h3>新增管理員</h3>
+          <div class="field">
+            <label for="new-admin-user">新帳號</label>
+            <input type="text" id="new-admin-user">
+          </div>
+          <div class="field">
+            <label for="new-admin-pass">新密碼</label>
+            <input type="text" id="new-admin-pass">
+          </div>
+          <button class="btn btn-primary" onclick="addAdminAccount()">新增管理員</button>
+          <div id="new-admin-msg" style="min-height:18px;font-size:13px;margin-top:10px;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
+
+<footer>
+  <div class="wrap foot-inner">
+    <div>
+      <div class="foot-brand">大立昇．吉的堡</div>
+    </div>
+  </div>
+</footer>
 
 <script src="js/main.js"></script>
 </body>
