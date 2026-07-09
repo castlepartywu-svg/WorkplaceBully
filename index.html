@@ -1158,17 +1158,11 @@
     msg.style.color = 'var(--teal)';
     msg.textContent = '已新增管理員帳號（僅暫存於本頁，重新整理後會消失）。';
   }
-
   /* =========================================================
      資料送出 → 預覽 → 確認送出至 Google Drive（透過 Google Apps Script）
      ========================================================= */
-
-  // ⚠️ 請將下方網址換成您部署完成的 Google Apps Script 網頁應用程式網址
-  // （部署步驟請參考對話中提供的「Google Apps Script 設定教學」）
-  const APPS_SCRIPT_URL = '請貼上您部署的 Google Apps Script 網頁應用程式網址';
-
+  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz8SbiUGN59q0SjfJzL61EalPLrydfzyLN1tZx9WWokluj7rnhPVifJgHrrrUz1DOsM/exec';
   let pendingSubmission = null; // { panelId, formTitle, pairs }
-
   // 將任一儲存格 / 容器內的內容（含 input、textarea、checkbox、純文字）轉換為可讀文字
   function nodeToPreviewText(node){
     if (node.nodeType === Node.TEXT_NODE) return node.textContent;
@@ -1191,7 +1185,6 @@
     cell.childNodes.forEach(n => out += nodeToPreviewText(n));
     return out.replace(/[ \t]+/g, ' ').replace(/\n\s*\n+/g, '\n').trim();
   }
-
   // 一般表格：以 td.label 對應下一個儲存格作為 key/value
   function extractLabelledTablePairs(container){
     const result = [];
@@ -1210,7 +1203,6 @@
     });
     return result;
   }
-
   // 委任書表格（以 th 標題列 + section-title 列標籤 組成，非 td.label 格式）
   function extractHeaderTablePairs(container){
     const result = [];
@@ -1229,7 +1221,6 @@
     });
     return result;
   }
-
   // 表格外、以 data-field 標記的欄位（如聲明句、簽名欄）
   function extractDataFieldPairs(container){
     const result = [];
@@ -1253,7 +1244,6 @@
     });
     return result;
   }
-
   function collectPreviewPairs(panelId){
     const panel = document.getElementById(panelId);
     let pairs = [];
@@ -1265,11 +1255,9 @@
     pairs = pairs.concat(extractDataFieldPairs(panel));
     return pairs;
   }
-
   function openPreview(panelId, formTitle){
     const pairs = collectPreviewPairs(panelId);
     pendingSubmission = { panelId, formTitle, pairs };
-
     document.getElementById('preview-title').textContent = formTitle + '－內容預覽';
     const tbody = document.getElementById('preview-table');
     tbody.innerHTML = '';
@@ -1285,43 +1273,35 @@
       tr.appendChild(td);
       tbody.appendChild(tr);
     });
-
     const statusEl = document.getElementById('preview-status');
     statusEl.textContent = '';
     const confirmBtn = document.getElementById('preview-confirm-btn');
     confirmBtn.disabled = false;
     confirmBtn.textContent = '確認送出';
-
     document.getElementById('preview-overlay').classList.add('open');
   }
-
   function closePreview(){
     document.getElementById('preview-overlay').classList.remove('open');
     pendingSubmission = null;
   }
-
   async function confirmSubmit(){
     if (!pendingSubmission) return;
     const statusEl = document.getElementById('preview-status');
     const confirmBtn = document.getElementById('preview-confirm-btn');
-
     if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL.includes('請貼上')) {
       statusEl.style.color = 'var(--danger)';
       statusEl.textContent = '尚未設定 Google Apps Script 網址，請聯絡系統管理者完成設定後再試。';
       return;
     }
-
     confirmBtn.disabled = true;
     confirmBtn.textContent = '送出中…';
     statusEl.style.color = '#6B6459';
     statusEl.textContent = '資料傳送中，請稍候…';
-
     const payload = {
       formType: pendingSubmission.formTitle,
       submittedAt: new Date().toISOString(),
       fields: pendingSubmission.pairs
     };
-
     try {
       const res = await fetch(APPS_SCRIPT_URL, {
         method: 'POST',
