@@ -374,6 +374,108 @@
     .tab-panel.print-active{display:block !important;}
     body{background:#fff;}
   }
+  /* ---------- 資料送出按鈕 ---------- */
+  .submit-btn{
+    background:var(--navy);
+    color:#fff;
+    border:none;
+    font-size:13px;
+    font-weight:600;
+    padding:9px 16px;
+    border-radius:var(--radius);
+    cursor:pointer;
+  }
+  .submit-btn:hover{background:var(--navy-deep);}
+  /* ---------- 預覽視窗 ---------- */
+  .preview-overlay{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(18,39,51,.72);
+    z-index:200;
+    padding:40px 16px;
+    overflow-y:auto;
+  }
+  .preview-overlay.open{display:block;}
+  .preview-modal{
+    background:#fff;
+    max-width:760px;
+    margin:0 auto;
+    border-radius:var(--radius);
+    border-top:4px solid var(--gold);
+    overflow:hidden;
+  }
+  .preview-head{
+    padding:26px 32px 18px;
+    border-bottom:1px solid var(--line);
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:16px;
+  }
+  .preview-head h3{margin:0 0 6px;font-size:19px;}
+  .preview-head p{margin:0;font-size:13px;color:#6B6459;}
+  .preview-close{
+    background:transparent;
+    border:1px solid var(--line);
+    border-radius:50%;
+    width:30px;height:30px;
+    font-size:15px;
+    line-height:1;
+    cursor:pointer;
+    color:var(--navy-deep);
+    flex:none;
+  }
+  .preview-body{padding:26px 32px;max-height:52vh;overflow-y:auto;}
+  .preview-table{width:100%;border-collapse:collapse;font-size:13.5px;}
+  .preview-table tr{border-bottom:1px solid var(--line);}
+  .preview-table tr:last-child{border-bottom:none;}
+  .preview-table th{
+    text-align:left;
+    vertical-align:top;
+    width:180px;
+    padding:10px 14px 10px 0;
+    color:var(--teal);
+    font-weight:700;
+    white-space:pre-wrap;
+  }
+  .preview-table td{
+    padding:10px 0;
+    color:var(--ink);
+    white-space:pre-wrap;
+    word-break:break-word;
+  }
+  .preview-table td.empty{color:#B0A99A;font-style:italic;}
+  .preview-foot{
+    padding:20px 32px 28px;
+    border-top:1px solid var(--line);
+    background:#F9F7F0;
+  }
+  .preview-status{min-height:18px;font-size:13px;margin-bottom:12px;}
+  .preview-actions{display:flex;gap:12px;flex-wrap:wrap;justify-content:flex-end;}
+  .btn-ghost{
+    background:transparent;
+    border:1px solid var(--line);
+    color:var(--navy-deep);
+    padding:11px 22px;
+    font-size:14px;
+    font-weight:600;
+    border-radius:var(--radius);
+    cursor:pointer;
+  }
+  .btn-ghost:hover{border-color:var(--navy);}
+  .btn-confirm{
+    background:var(--teal);
+    color:#fff;
+    border:none;
+    padding:11px 26px;
+    font-size:14px;
+    font-weight:600;
+    border-radius:var(--radius);
+    cursor:pointer;
+  }
+  .btn-confirm:hover{background:#3d675a;}
+  .btn-confirm:disabled{opacity:.6;cursor:not-allowed;}
 </style>
 </head>
 <body>
@@ -529,6 +631,7 @@
         <h3>職場霸凌申訴書</h3>
         <div style="display:flex;align-items:center;gap:14px;">
           <span class="hint">填寫完成後請列印並簽章送交受理單位</span>
+          <button class="submit-btn" onclick="openPreview('tab-suit', '職場霸凌申訴書')">資料送出</button>
           <button class="print-btn" onclick="printTab('tab-suit')">列印本表</button>
         </div>
       </div>
@@ -658,7 +761,6 @@
           </tr>
         </table>
         <p class="footer-note">*委任代理人應檢附委任書</p>
-
         <!-- ===== 以下為受理單位／委員會使用之欄位，預設隱藏，管理者登入後始顯示 ===== -->
         <div class="admin-only" id="staff-block-suit">
           <div class="admin-note">此區塊僅供受理單位與安全及衛生防護委員會人員填寫，一般申訴人無法檢視或編輯。</div>
@@ -719,12 +821,13 @@
         <h3>職場霸凌事件申訴委任書</h3>
         <div style="display:flex;align-items:center;gap:14px;">
           <span class="hint">若申訴人委任他人代為申訴，請填寫本表並與申訴書一併送交</span>
+          <button class="submit-btn" onclick="openPreview('tab-proxy', '職場霸凌事件申訴委任書')">資料送出</button>
           <button class="print-btn" onclick="printTab('tab-proxy')">列印本表</button>
         </div>
       </div>
       <div class="form-doc">
         <h1 class="doc-title">職場霸凌事件申訴委任書</h1>
-        <div class="checkbox-group" style="text-align:right;margin-bottom:10px;">
+        <div class="checkbox-group" style="text-align:right;margin-bottom:10px;" data-field="是否具有法定代理人">
           <label><input type="checkbox"> 並有</label>
           <label><input type="checkbox"> 但無</label>
         </div>
@@ -758,13 +861,13 @@
           </tr>
         </table>
         <div class="statement">
-          茲委任 <input type="text" style="display:inline-block;width:160px;"> 為代理人，受委任人就本人與
-          <input type="text" style="display:inline-block;width:160px;"> 間職場霸凌案件，有為一切申訴行為之代理權限，
-          <label><input type="checkbox"> 撤回申訴</label> 之特別權限，爰依法提出本件委任書。
+          茲委任 <input type="text" style="display:inline-block;width:160px;" data-field="受委任代理人姓名"> 為代理人，受委任人就本人與
+          <input type="text" style="display:inline-block;width:160px;" data-field="相對人（被申訴人）姓名"> 間職場霸凌案件，有為一切申訴行為之代理權限，
+          <label><input type="checkbox" data-field="是否授予撤回申訴之特別權限"> 撤回申訴</label> 之特別權限，爰依法提出本件委任書。
         </div>
         <div class="to-line">
           此致<br>
-          <input type="text" style="width:300px;display:inline-block;">（機關名稱）
+          <input type="text" style="width:300px;display:inline-block;" data-field="受文機關名稱">（機關名稱）
         </div>
         <div class="signature-line">
           <div>申訴人： (簽章)</div>
@@ -779,6 +882,7 @@
         <h3>職場霸凌申訴撤回書</h3>
         <div style="display:flex;align-items:center;gap:14px;">
           <span class="hint">申訴人得於調查程序終結前，以本表撤回申訴</span>
+          <button class="submit-btn" onclick="openPreview('tab-withdraw', '職場霸凌申訴撤回書')">資料送出</button>
           <button class="print-btn" onclick="printTab('tab-withdraw')">列印本表</button>
         </div>
       </div>
@@ -830,17 +934,17 @@
           <li>本撤回書所載當事人相關資料，除有調查之必要或基於公共安全之考量者外，應予保密。</li>
         </ol>
         <div class="statement">
-          本人（申訴人）已瞭解上開說明內容，撤回於 <input type="text" class="short"> 年
-          <input type="text" class="short"> 月 <input type="text" class="short"> 日申訴
-          <input type="text" style="width:150px;display:inline-block;">（被申訴人姓名）之職場霸凌申訴事件，特此聲明。
+          本人（申訴人）已瞭解上開說明內容，撤回於 <input type="text" class="short" data-field="撤回聲明－年">年
+          <input type="text" class="short" data-field="撤回聲明－月">月 <input type="text" class="short" data-field="撤回聲明－日">日申訴
+          <input type="text" style="width:150px;display:inline-block;" data-field="被撤回申訴之被申訴人姓名">（被申訴人姓名）之職場霸凌申訴事件，特此聲明。
         </div>
         <div class="to-line">
           此致<br>
-          <input type="text" style="width:300px;display:inline-block;">（申訴處理機關）
+          <input type="text" style="width:300px;display:inline-block;" data-field="申訴處理機關">（申訴處理機關）
         </div>
         <div class="signature-line">
-          <div>本人（申訴人）簽名： <input type="text" style="width:100%;"></div>
-          <div>代理人簽名（無則免填）： <input type="text" style="width:100%;"></div>
+          <div>本人（申訴人）簽名： <input type="text" style="width:100%;" data-field="申訴人簽名"></div>
+          <div>代理人簽名（無則免填）： <input type="text" style="width:100%;" data-field="代理人簽名"></div>
         </div>
         <div class="date-line">中華民國 <input type="text" class="short"> 年 <input type="text" class="short"> 月 <input type="text" class="short"> 日</div>
         <p class="small" style="text-align:right;">附件 3 申訴撤回書範本</p>
@@ -856,11 +960,9 @@
       <h2>管理者登入</h2>
       <p>本區僅供受理單位／安全及衛生防護委員會人員使用。登入後，各申訴表單中「處理情形摘要」欄位將顯示並可供填寫。</p>
     </div>
-
     <div class="admin-note" style="max-width:560px;">
       注意：這是純前端頁面，帳號密碼與登入判斷都寫在網頁原始碼中，任何人打開「檢視原始碼」或開發者工具都看得到，並不是真正安全的登入機制。若這個頁面之後會用來存放真實的申訴人個資或委員會決議紀錄，建議改用有後端資料庫與伺服器端驗證的系統，而不是僅靠這層前端門檻。
     </div>
-
     <div class="admin-box" id="admin-login-box">
       <div class="field">
         <label for="admin-user">帳號</label>
@@ -873,13 +975,11 @@
       <button class="btn btn-primary" onclick="adminLogin()">登入</button>
       <div id="admin-msg"></div>
     </div>
-
     <div id="admin-panel" style="display:none;">
       <div class="admin-box" style="margin-bottom:0;">
         <p class="status-line">已登入管理者帳號：<strong id="admin-username-display"></strong></p>
         <button class="btn btn-outline" onclick="adminLogout()">登出</button>
       </div>
-
       <div class="card-grid" style="margin-top:36px;">
         <div class="info-card" style="border-top-color:var(--navy);">
           <h3>管理員帳號一覽</h3>
@@ -895,7 +995,6 @@
             <tbody id="admin-list-body"></tbody>
           </table>
         </div>
-
         <div class="info-card" style="border-top-color:var(--gold);">
           <h3>新增管理員</h3>
           <p style="margin-bottom:14px;">新增的帳號僅存於目前瀏覽器分頁的記憶體中，重新整理頁面後會消失（本頁沒有後端資料庫）。</p>
@@ -932,6 +1031,27 @@
     本頁面所載表單依機關申訴作業規範製作，僅供內部同仁申訴使用；表單填寫內容將依保密原則處理。
   </div>
 </footer>
+<div class="preview-overlay" id="preview-overlay">
+  <div class="preview-modal">
+    <div class="preview-head">
+      <div>
+        <h3 id="preview-title">表單內容預覽</h3>
+        <p>請確認以下內容無誤後再送出；送出後如需更正，請聯絡受理單位。</p>
+      </div>
+      <button class="preview-close" onclick="closePreview()" aria-label="關閉預覽">✕</button>
+    </div>
+    <div class="preview-body">
+      <table class="preview-table" id="preview-table"></table>
+    </div>
+    <div class="preview-foot">
+      <div class="preview-status" id="preview-status"></div>
+      <div class="preview-actions">
+        <button class="btn-ghost" onclick="closePreview()">返回修改</button>
+        <button class="btn-confirm" id="preview-confirm-btn" onclick="confirmSubmit()">確認送出</button>
+      </div>
+    </div>
+  </div>
+</div>
 <script>
   const tabButtons = document.querySelectorAll('.tab-btn');
   const tabPanels = document.querySelectorAll('.tab-panel');
@@ -948,14 +1068,12 @@
     document.getElementById(id).classList.add('print-active');
     window.print();
   }
-
   /* ---------- 管理者登入（僅前端示意，非真正安全機制） ---------- */
   // 可在此陣列新增更多管理者帳號
   const ADMIN_ACCOUNTS = [
     { username: 'wufatw', password: 'wufatw55050' }
   ];
   let currentAdmin = null; // 僅存於記憶體中，重新整理頁面即登出
-
   function adminLogin(){
     const u = document.getElementById('admin-user').value.trim();
     const p = document.getElementById('admin-pass').value;
@@ -973,7 +1091,6 @@
       msg.textContent = '帳號或密碼錯誤，請重新輸入。';
     }
   }
-
   function adminLogout(){
     currentAdmin = null;
     document.body.classList.remove('admin-mode');
@@ -982,26 +1099,22 @@
     document.getElementById('admin-user').value = '';
     document.getElementById('admin-pass').value = '';
   }
-
   /* ---------- 管理員帳號一覽 / 新增管理員 ---------- */
   function renderAdminList(){
     const body = document.getElementById('admin-list-body');
     body.innerHTML = '';
     ADMIN_ACCOUNTS.forEach((acc, idx) => {
       const tr = document.createElement('tr');
-
       const tdUser = document.createElement('td');
       tdUser.style.padding = '6px 4px';
       tdUser.style.borderBottom = '1px solid var(--line)';
       tdUser.textContent = acc.username;
-
       const tdPass = document.createElement('td');
       tdPass.style.padding = '6px 4px';
       tdPass.style.borderBottom = '1px solid var(--line)';
       tdPass.textContent = '••••••••';
       tdPass.dataset.revealed = 'false';
       tdPass.dataset.value = acc.password;
-
       const tdAction = document.createElement('td');
       tdAction.style.padding = '6px 4px';
       tdAction.style.borderBottom = '1px solid var(--line)';
@@ -1016,21 +1129,18 @@
         toggleBtn.textContent = revealed ? '顯示' : '隱藏';
       };
       tdAction.appendChild(toggleBtn);
-
       tr.appendChild(tdUser);
       tr.appendChild(tdPass);
       tr.appendChild(tdAction);
       body.appendChild(tr);
     });
   }
-
   function addAdminAccount(){
     const userInput = document.getElementById('new-admin-user');
     const passInput = document.getElementById('new-admin-pass');
     const msg = document.getElementById('new-admin-msg');
     const u = userInput.value.trim();
     const p = passInput.value;
-
     if (!u || !p) {
       msg.style.color = 'var(--danger)';
       msg.textContent = '請輸入帳號與密碼。';
@@ -1041,13 +1151,198 @@
       msg.textContent = '此帳號已存在，請使用其他帳號名稱。';
       return;
     }
-
     ADMIN_ACCOUNTS.push({ username: u, password: p });
     renderAdminList();
     userInput.value = '';
     passInput.value = '';
     msg.style.color = 'var(--teal)';
     msg.textContent = '已新增管理員帳號（僅暫存於本頁，重新整理後會消失）。';
+  }
+
+  /* =========================================================
+     資料送出 → 預覽 → 確認送出至 Google Drive（透過 Google Apps Script）
+     ========================================================= */
+
+  // ⚠️ 請將下方網址換成您部署完成的 Google Apps Script 網頁應用程式網址
+  // （部署步驟請參考對話中提供的「Google Apps Script 設定教學」）
+  const APPS_SCRIPT_URL = '請貼上您部署的 Google Apps Script 網頁應用程式網址';
+
+  let pendingSubmission = null; // { panelId, formTitle, pairs }
+
+  // 將任一儲存格 / 容器內的內容（含 input、textarea、checkbox、純文字）轉換為可讀文字
+  function nodeToPreviewText(node){
+    if (node.nodeType === Node.TEXT_NODE) return node.textContent;
+    if (node.nodeType !== Node.ELEMENT_NODE) return '';
+    const tag = node.tagName;
+    if (tag === 'INPUT') {
+      if (node.type === 'checkbox') return node.checked ? '☑' : '☐';
+      return node.value.trim() ? node.value.trim() : '＿＿＿';
+    }
+    if (tag === 'TEXTAREA') {
+      return node.value.trim() ? node.value.trim() : '（未填寫）';
+    }
+    if (tag === 'BR') return '\n';
+    let out = '';
+    node.childNodes.forEach(child => out += nodeToPreviewText(child));
+    return out;
+  }
+  function cellPreviewValue(cell){
+    let out = '';
+    cell.childNodes.forEach(n => out += nodeToPreviewText(n));
+    return out.replace(/[ \t]+/g, ' ').replace(/\n\s*\n+/g, '\n').trim();
+  }
+
+  // 一般表格：以 td.label 對應下一個儲存格作為 key/value
+  function extractLabelledTablePairs(container){
+    const result = [];
+    container.querySelectorAll('table').forEach(table => {
+      if (table.closest('.admin-only')) return;
+      table.querySelectorAll('tr').forEach(tr => {
+        const cells = Array.from(tr.children);
+        cells.forEach((cell, i) => {
+          if (cell.tagName === 'TD' && cell.classList.contains('label')) {
+            const key = cell.textContent.replace(/\s+/g, '').trim();
+            const valueCell = cells[i + 1];
+            if (valueCell) result.push({ key, value: cellPreviewValue(valueCell) });
+          }
+        });
+      });
+    });
+    return result;
+  }
+
+  // 委任書表格（以 th 標題列 + section-title 列標籤 組成，非 td.label 格式）
+  function extractHeaderTablePairs(container){
+    const result = [];
+    const table = container.querySelector('table');
+    if (!table) return result;
+    const rows = Array.from(table.querySelectorAll('tr'));
+    if (!rows.length) return result;
+    const headers = Array.from(rows[0].children).slice(1).map(th => th.textContent.trim());
+    rows.slice(1).forEach(tr => {
+      const cells = Array.from(tr.children);
+      const rowLabel = cells[0] ? cells[0].textContent.trim() : '';
+      for (let i = 1; i < cells.length; i++) {
+        const header = headers[i - 1] || ('欄位' + i);
+        result.push({ key: rowLabel + '－' + header, value: cellPreviewValue(cells[i]) });
+      }
+    });
+    return result;
+  }
+
+  // 表格外、以 data-field 標記的欄位（如聲明句、簽名欄）
+  function extractDataFieldPairs(container){
+    const result = [];
+    container.querySelectorAll('[data-field]').forEach(el => {
+      if (el.closest('.admin-only')) return;
+      if (el.closest('table')) return; // 表格內欄位已由表格解析函式處理
+      const key = el.getAttribute('data-field');
+      let value;
+      if (el.tagName === 'INPUT' && el.type === 'checkbox') {
+        value = el.checked ? '是' : '否';
+      } else if (el.tagName === 'DIV') {
+        const checked = Array.from(el.querySelectorAll('input[type="checkbox"]:checked')).map(cb => {
+          const label = cb.closest('label');
+          return label ? label.textContent.trim() : '';
+        });
+        value = checked.length ? checked.join('、') : '（未勾選）';
+      } else {
+        value = el.value && el.value.trim() ? el.value.trim() : '（未填寫）';
+      }
+      result.push({ key, value });
+    });
+    return result;
+  }
+
+  function collectPreviewPairs(panelId){
+    const panel = document.getElementById(panelId);
+    let pairs = [];
+    if (panelId === 'tab-proxy') {
+      pairs = pairs.concat(extractHeaderTablePairs(panel));
+    } else {
+      pairs = pairs.concat(extractLabelledTablePairs(panel));
+    }
+    pairs = pairs.concat(extractDataFieldPairs(panel));
+    return pairs;
+  }
+
+  function openPreview(panelId, formTitle){
+    const pairs = collectPreviewPairs(panelId);
+    pendingSubmission = { panelId, formTitle, pairs };
+
+    document.getElementById('preview-title').textContent = formTitle + '－內容預覽';
+    const tbody = document.getElementById('preview-table');
+    tbody.innerHTML = '';
+    pairs.forEach(p => {
+      const tr = document.createElement('tr');
+      const th = document.createElement('th');
+      th.textContent = p.key;
+      const td = document.createElement('td');
+      const isEmpty = !p.value || p.value === '（未填寫）' || p.value === '（未勾選）';
+      td.textContent = p.value || '（未填寫）';
+      if (isEmpty) td.classList.add('empty');
+      tr.appendChild(th);
+      tr.appendChild(td);
+      tbody.appendChild(tr);
+    });
+
+    const statusEl = document.getElementById('preview-status');
+    statusEl.textContent = '';
+    const confirmBtn = document.getElementById('preview-confirm-btn');
+    confirmBtn.disabled = false;
+    confirmBtn.textContent = '確認送出';
+
+    document.getElementById('preview-overlay').classList.add('open');
+  }
+
+  function closePreview(){
+    document.getElementById('preview-overlay').classList.remove('open');
+    pendingSubmission = null;
+  }
+
+  async function confirmSubmit(){
+    if (!pendingSubmission) return;
+    const statusEl = document.getElementById('preview-status');
+    const confirmBtn = document.getElementById('preview-confirm-btn');
+
+    if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL.includes('請貼上')) {
+      statusEl.style.color = 'var(--danger)';
+      statusEl.textContent = '尚未設定 Google Apps Script 網址，請聯絡系統管理者完成設定後再試。';
+      return;
+    }
+
+    confirmBtn.disabled = true;
+    confirmBtn.textContent = '送出中…';
+    statusEl.style.color = '#6B6459';
+    statusEl.textContent = '資料傳送中，請稍候…';
+
+    const payload = {
+      formType: pendingSubmission.formTitle,
+      submittedAt: new Date().toISOString(),
+      fields: pendingSubmission.pairs
+    };
+
+    try {
+      const res = await fetch(APPS_SCRIPT_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' }, // 避免觸發CORS預檢請求
+        body: JSON.stringify(payload)
+      });
+      let data = null;
+      try { data = await res.json(); } catch (e) { /* 忽略非JSON回應 */ }
+      if (data && data.result === 'error') {
+        throw new Error(data.message || '伺服器回傳錯誤');
+      }
+      statusEl.style.color = 'var(--teal)';
+      statusEl.textContent = '已成功送出，感謝您的申訴／通報。此視窗將自動關閉。';
+      confirmBtn.textContent = '已送出';
+      setTimeout(closePreview, 2000);
+    } catch (err) {
+      statusEl.style.color = 'var(--danger)';
+      statusEl.textContent = '送出時發生錯誤，請確認網路連線後再試一次。（' + err.message + '）';
+      confirmBtn.disabled = false;
+      confirmBtn.textContent = '確認送出';
+    }
   }
 </script>
 </body>
