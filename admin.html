@@ -102,6 +102,18 @@
             <button class="btn btn-primary" onclick="addAdminAccount()">新增帳號</button>
             <div id="new-admin-msg" style="min-height:18px;font-size:13px;margin-top:10px;"></div>
           </div>
+
+          <!-- 新案件通知設定 -->
+          <div class="info-card" style="border-top-color:var(--danger);">
+            <h3>新案件通知設定</h3>
+            <p style="font-size:13px;color:#4d555a;margin-bottom:14px;">有新的申請案件送出時，系統會自動寄信通知以下信箱（可填多組，以逗號分隔）。留空則不寄送通知信。</p>
+            <div class="field">
+              <label for="notify-email">通知信箱</label>
+              <input type="text" id="notify-email" placeholder="例如：a@example.com, b@example.com">
+            </div>
+            <button class="btn btn-primary" onclick="saveNotifySettings()">儲存設定</button>
+            <div id="notify-settings-msg" style="min-height:18px;font-size:13px;margin-top:10px;"></div>
+          </div>
         </div>
       </div>
 
