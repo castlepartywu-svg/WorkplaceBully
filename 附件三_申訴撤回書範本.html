@@ -79,13 +79,32 @@
     color: #666;
     text-align: right;
   }
+  /* 申訴人需填寫的部分反白（黃底標示） */
+  .fillable td:not(.label) {
+    background-color: #ffee58;
+  }
+  .fillable input[type="text"],
+  .fillable textarea {
+    background: transparent;
+  }
+  .fillable label {
+    background-color: #ffee58;
+    padding: 2px 6px;
+    border-radius: 2px;
+  }
+  .statement input[type="text"],
+  .to-line input[type="text"],
+  .signature-line input[type="text"],
+  .date-line input[type="text"] {
+    background-color: #ffee58;
+  }
 </style>
 </head>
 <body>
 
 <h1>職場霸凌申訴撤回書</h1>
 
-<table>
+<table class="fillable">
   <tr>
     <td class="label">申訴人姓名</td>
     <td><input type="text"></td>

@@ -81,6 +81,29 @@
     color: #666;
     text-align: right;
   }
+  /* 申訴人（委任人）需填寫的部分反白（黃底標示） */
+  .fillable td:not(.section-title) {
+    background-color: #ffee58;
+  }
+  .fillable input[type="text"] {
+    background: transparent;
+  }
+  .checkbox-line label,
+  .statement label {
+    background-color: #ffee58;
+    padding: 2px 6px;
+    border-radius: 2px;
+  }
+  .statement input[type="text"],
+  .to-line input[type="text"] {
+    background-color: #ffee58;
+  }
+  .fillable-inline {
+    background-color: #ffee58;
+    display: inline-block;
+    min-width: 160px;
+    padding: 0 4px;
+  }
 </style>
 </head>
 <body>
@@ -92,7 +115,7 @@
   <label><input type="checkbox"> 但無</label>
 </div>
 
-<table>
+<table class="fillable">
   <tr>
     <th></th>
     <th>稱謂</th>
@@ -133,8 +156,8 @@
 </div>
 
 <div class="signature-line">
-  <div>申訴人： (簽章)</div>
-  <div>代理人(如無則免填)： (簽章)</div>
+  <div>申訴人：<span class="fillable-inline">&nbsp;</span> (簽章)</div>
+  <div>代理人(如無則免填)：<span class="fillable-inline">&nbsp;</span> (簽章)</div>
 </div>
 
 <p class="small">附件 2 委任書範本</p>
