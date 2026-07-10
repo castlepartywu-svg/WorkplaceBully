@@ -48,7 +48,7 @@ function resetForm(panelId, formTitle) {
 // ====================== Google 表單後端（Apps Script） ======================
 // 部署 apps-script/Code.gs 後，把產生的網址貼在這裡（結尾是 /exec）。
 // 部署完成前，此網址為佔位字串，所有雲端功能會自動退回「僅本機暫存」模式。
-const APPS_SCRIPT_URL = 'PASTE_YOUR_DEPLOYED_WEB_APP_URL_HERE';
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz8SbiUGN59q0SjfJzL61EalPLrydfzyLN1tZx9WWokluj7rnhPVifJgHrrrUz1DOsM/exec';
 
 function isBackendConfigured() {
   return /^https:\/\/script\.google\.com\/macros\//.test(APPS_SCRIPT_URL);
