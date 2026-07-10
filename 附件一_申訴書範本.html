@@ -46,6 +46,24 @@
     writing-mode: vertical-rl;
     width: 40px;
   }
+  /* 申訴人需填寫的部分反白（黃底標示），處理情形摘要等機關內部欄位不套用 */
+  .fillable td:not(.label):not(.section-title) {
+    background-color: #ffee58;
+  }
+  .fillable input[type="text"],
+  .fillable textarea {
+    background: transparent;
+  }
+  .fillable-inline {
+    background-color: #ffee58;
+    display: inline-block;
+    min-width: 160px;
+    padding: 0 4px;
+  }
+  .date-line .fillable-inline {
+    min-width: 22px;
+    text-align: center;
+  }
   input[type="text"], textarea {
     width: 100%;
     border: none;
@@ -105,7 +123,7 @@
 <h1>職場霸凌申訴書</h1>
 <div class="note">(有代理人者，請另填代理人資料表)</div>
 
-<table>
+<table class="fillable">
   <tr>
     <td class="section-title" rowspan="6">申訴人資料</td>
     <td class="label">姓名</td>
@@ -157,7 +175,7 @@
   </tr>
 </table>
 
-<table>
+<table class="fillable">
   <tr>
     <td class="section-title" rowspan="6">申訴事實內容</td>
     <td class="label">被申訴人姓名</td>
@@ -195,14 +213,14 @@
 <p class="small" style="text-align:right;">（上述紀錄業經申訴人確認其內容無誤）</p>
 
 <div class="signature-line">
-  <div>申訴人： (簽章)</div>
-  <div>代理人(如無則免填)： (簽章)</div>
+  <div>申訴人：<span class="fillable-inline">&nbsp;</span> (簽章)</div>
+  <div>代理人(如無則免填)：<span class="fillable-inline">&nbsp;</span> (簽章)</div>
 </div>
 
-<div class="date-line">中華民國 <input type="text" style="width:60px;display:inline-block;"> 年 <input type="text" style="width:40px;display:inline-block;"> 月 <input type="text" style="width:40px;display:inline-block;"> 日</div>
+<div class="date-line">中華民國 <span class="fillable-inline"><input type="text" style="width:100%;border:none;background:transparent;"></span> 年 <span class="fillable-inline"><input type="text" style="width:100%;border:none;background:transparent;"></span> 月 <span class="fillable-inline"><input type="text" style="width:100%;border:none;background:transparent;"></span> 日</div>
 
 <h2>代理人資料表(無者免填)</h2>
-<table>
+<table class="fillable">
   <tr>
     <td class="section-title" rowspan="4">代理人資料</td>
     <td class="label">姓名</td>
