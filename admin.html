@@ -35,8 +35,9 @@
       <p>本區僅供受理單位／安全及衛生防護委員會人員使用。登入後可查看並填寫申訴案件處理情形。</p>
     </div>
 
-    <div class="admin-note" style="max-width:560px;">
-      注意：這是純前端示意登入機制（非真正安全的後端驗證）。正式上線時建議使用後端系統搭配資料庫。
+    <div class="admin-note" style="max-width:640px;">
+      注意：這是純前端示意登入機制（非真正安全的後端驗證）。正式上線時建議使用後端系統搭配資料庫。<br>
+      帳號分兩種角色：「管理員」可管理帳號並查閱案件；「主管」僅能查閱申訴案件，無法查看或新增管理員帳號密碼。
     </div>
 
     <!-- 登入表單 -->
@@ -56,40 +57,51 @@
     <!-- 登入後面板 -->
     <div id="admin-panel" style="display:none;">
       <div class="admin-box">
-        <p class="status-line">已登入管理者帳號：<strong id="admin-username-display"></strong></p>
+        <p class="status-line">已登入管理者帳號：<strong id="admin-username-display"></strong>　（<span id="admin-role-display"></span>）</p>
         <button class="btn btn-outline" onclick="adminLogout()">登出</button>
       </div>
 
-      <div class="card-grid" style="margin-top:36px;">
-        <!-- 管理員列表 -->
-        <div class="info-card" style="border-top-color:var(--navy);">
-          <h3>管理員帳號一覽</h3>
-          <table id="admin-list-table" style="width:100%;border-collapse:collapse;font-size:13.5px;">
-            <thead>
-              <tr>
-                <th style="text-align:left;border-bottom:1px solid var(--line);padding:6px 4px;color:var(--navy-deep);">帳號</th>
-                <th style="text-align:left;border-bottom:1px solid var(--line);padding:6px 4px;color:var(--navy-deep);">密碼</th>
-                <th style="border-bottom:1px solid var(--line);padding:6px 4px;"></th>
-              </tr>
-            </thead>
-            <tbody id="admin-list-body"></tbody>
-          </table>
-          <p id="admin-list-note" style="font-size:12px;color:#75808a;margin:10px 0 0;"></p>
-        </div>
+      <!-- 帳號管理區（僅「管理員」角色可見；主管角色登入時整段隱藏，且不會呼叫讀取帳號名單的 API） -->
+      <div id="account-mgmt-panel" style="display:none;">
+        <div class="card-grid" style="margin-top:36px;">
+          <!-- 管理員列表 -->
+          <div class="info-card" style="border-top-color:var(--navy);">
+            <h3>管理員帳號一覽</h3>
+            <table id="admin-list-table" style="width:100%;border-collapse:collapse;font-size:13.5px;">
+              <thead>
+                <tr>
+                  <th style="text-align:left;border-bottom:1px solid var(--line);padding:6px 4px;color:var(--navy-deep);">帳號</th>
+                  <th style="text-align:left;border-bottom:1px solid var(--line);padding:6px 4px;color:var(--navy-deep);">密碼</th>
+                  <th style="text-align:left;border-bottom:1px solid var(--line);padding:6px 4px;color:var(--navy-deep);">身分</th>
+                  <th style="border-bottom:1px solid var(--line);padding:6px 4px;"></th>
+                </tr>
+              </thead>
+              <tbody id="admin-list-body"></tbody>
+            </table>
+            <p id="admin-list-note" style="font-size:12px;color:#75808a;margin:10px 0 0;"></p>
+          </div>
 
-        <!-- 新增管理員 -->
-        <div class="info-card" style="border-top-color:var(--gold);">
-          <h3>新增管理員</h3>
-          <div class="field">
-            <label for="new-admin-user">新帳號</label>
-            <input type="text" id="new-admin-user">
+          <!-- 新增管理員 -->
+          <div class="info-card" style="border-top-color:var(--gold);">
+            <h3>新增管理員／主管</h3>
+            <div class="field">
+              <label for="new-admin-user">新帳號</label>
+              <input type="text" id="new-admin-user">
+            </div>
+            <div class="field">
+              <label for="new-admin-pass">新密碼</label>
+              <input type="text" id="new-admin-pass">
+            </div>
+            <div class="field">
+              <label for="new-admin-role">角色</label>
+              <select id="new-admin-role">
+                <option value="admin">管理員（可管理帳號＋查閱案件）</option>
+                <option value="supervisor">主管（僅可查閱申訴案件）</option>
+              </select>
+            </div>
+            <button class="btn btn-primary" onclick="addAdminAccount()">新增帳號</button>
+            <div id="new-admin-msg" style="min-height:18px;font-size:13px;margin-top:10px;"></div>
           </div>
-          <div class="field">
-            <label for="new-admin-pass">新密碼</label>
-            <input type="text" id="new-admin-pass">
-          </div>
-          <button class="btn btn-primary" onclick="addAdminAccount()">新增管理員</button>
-          <div id="new-admin-msg" style="min-height:18px;font-size:13px;margin-top:10px;"></div>
         </div>
       </div>
 
