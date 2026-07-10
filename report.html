@@ -57,25 +57,214 @@
       <div class="form-doc">
         <h1 class="doc-title">職場霸凌申訴書</h1>
         <div class="doc-note">(有代理人者，請另填代理人資料表)</div>
-        <!-- 表單表格內容（與原檔完全相同） -->
+
         <table>
           <tr>
             <td class="section-title" rowspan="6">申訴人資料</td>
             <td class="label">姓名</td>
-            <td><input type="text"></td>
+            <td><input type="text" data-field="申訴人姓名"></td>
             <td class="label">聯絡電話及<br>電子郵件</td>
             <td>
-              (公) <input type="text"><br>
-              (宅) <input type="text"><br>
-              (手機) <input type="text"><br>
-              (E-Mail) <input type="text">
+              (公) <input type="text" data-field="申訴人電話(公)"><br>
+              (宅) <input type="text" data-field="申訴人電話(宅)"><br>
+              (手機) <input type="text" data-field="申訴人電話(手機)"><br>
+              (E-Mail) <input type="text" data-field="申訴人Email">
             </td>
           </tr>
-          <!-- 其他表格行...（完整保留） -->
-          <!-- 為避免過長，我已確認所有原始表單欄位都已包含 -->
+          <tr>
+            <td class="label">國民身分證統一編號</td>
+            <td><input type="text" data-field="申訴人身分證字號"></td>
+            <td class="label">出生年月日</td>
+            <td>
+              <input type="text" class="short" data-field="申訴人出生年"> 年
+              <input type="text" class="short" data-field="申訴人出生月"> 月
+              <input type="text" class="short" data-field="申訴人出生日"> 日
+              ( <input type="text" class="short" data-field="申訴人年齡"> 歲)
+            </td>
+          </tr>
+          <tr>
+            <td class="label">服務機關（單位）</td>
+            <td><input type="text" data-field="申訴人服務機關"></td>
+            <td class="label">職稱</td>
+            <td><input type="text" data-field="申訴人職稱"></td>
+          </tr>
+          <tr>
+            <td class="label">身分別</td>
+            <td colspan="3" class="checkbox-group">
+              <label><input type="checkbox" data-field="申訴人身分別" data-value="公務人員"> 公務人員</label>
+              <label><input type="checkbox" data-field="申訴人身分別" data-value="聘任人員"> 聘任人員</label>
+              <label><input type="checkbox" data-field="申訴人身分別" data-value="聘用人員"> 聘用人員</label>
+              <label><input type="checkbox" data-field="申訴人身分別" data-value="約僱人員"> 約僱人員</label>
+              <label><input type="checkbox" data-field="申訴人身分別" data-value="駐衛警"> 駐衛警</label><br>
+              <label><input type="checkbox" data-field="申訴人身分別" data-value="工友（含技工、駕駛）"> 工友（含技工、駕駛）</label>
+              <label><input type="checkbox" data-field="申訴人身分別" data-value="約用人員"> 約用人員</label>
+              <label><input type="checkbox" data-field="申訴人身分別" data-value="其他"> 其他：<input type="text" class="mid" data-field="申訴人身分別其他"></label>
+            </td>
+          </tr>
+          <tr>
+            <td class="label">住(居)所地址</td>
+            <td colspan="3"><input type="text" data-field="申訴人住居所地址"></td>
+          </tr>
+          <tr>
+            <td class="label">公文送達(寄送)地址</td>
+            <td colspan="3">
+              <label><input type="checkbox" data-field="送達地址方式" data-value="同住居所地址"> 同住居所地址</label><br>
+              <label><input type="checkbox" data-field="送達地址方式" data-value="另列如下"> 另列如下(請勿填寫郵政信箱)</label>
+              <input type="text" data-field="送達地址(另列)">
+            </td>
+          </tr>
         </table>
-        <!-- 簽名、日期、代理人資料、行政欄位等全部保留 -->
-        <div class="admin-only" id="staff-block-suit"> ...（管理者專用區塊）... </div>
+
+        <table>
+          <tr>
+            <td class="section-title" rowspan="6">申訴事實內容</td>
+            <td class="label">被申訴人姓名</td>
+            <td><input type="text" data-field="被申訴人姓名"></td>
+            <td class="label">被申訴人服務機關（單位）</td>
+            <td><input type="text" data-field="被申訴人服務機關"></td>
+          </tr>
+          <tr>
+            <td class="label">被申訴人職稱</td>
+            <td><input type="text" data-field="被申訴人職稱"></td>
+            <td class="label">被申訴人身分別</td>
+            <td class="checkbox-group">
+              <label><input type="checkbox" data-field="被申訴人身分別" data-value="一般同仁"> 一般同仁</label>
+              <label><input type="checkbox" data-field="被申訴人身分別" data-value="機關首長"> 機關首長</label>
+            </td>
+          </tr>
+          <tr>
+            <td class="label">事件發生時間（起訖時點）</td>
+            <td colspan="3"><input type="text" data-field="事件發生時間"></td>
+          </tr>
+          <tr>
+            <td class="label">事件發生機關</td>
+            <td colspan="3"><input type="text" data-field="事件發生機關"></td>
+          </tr>
+          <tr>
+            <td class="label">事件發生過程<br><span class="small">(請載明發生事件時之行為、內容、相關事證或人證)</span></td>
+            <td colspan="3"><textarea rows="6" data-field="事件發生過程"></textarea></td>
+          </tr>
+          <tr>
+            <td class="label">相關證明文件</td>
+            <td colspan="3"><textarea rows="4" data-field="相關證明文件"></textarea></td>
+          </tr>
+        </table>
+
+        <p class="small" style="text-align:right;">（上述紀錄業經申訴人確認其內容無誤）</p>
+
+        <div class="signature-line">
+          <div>申訴人： (簽章)</div>
+          <div>代理人(如無則免填)： (簽章)</div>
+        </div>
+
+        <div class="date-line">
+          中華民國 <input type="text" class="short" data-field="申訴日期-年"> 年
+          <input type="text" class="short" data-field="申訴日期-月"> 月
+          <input type="text" class="short" data-field="申訴日期-日"> 日
+        </div>
+
+        <h2>代理人資料表(無者免填)</h2>
+        <table>
+          <tr>
+            <td class="section-title" rowspan="4">代理人資料</td>
+            <td class="label">姓名</td>
+            <td><input type="text" data-field="代理人姓名"></td>
+            <td class="label">出生年月日</td>
+            <td>
+              <input type="text" class="short" data-field="代理人出生年"> 年
+              <input type="text" class="short" data-field="代理人出生月"> 月
+              <input type="text" class="short" data-field="代理人出生日"> 日
+              ( <input type="text" class="short" data-field="代理人年齡"> 歲)
+            </td>
+          </tr>
+          <tr>
+            <td class="label">國民身分證統一編號</td>
+            <td><input type="text" data-field="代理人身分證字號"></td>
+            <td class="label">聯絡電話及電子郵件</td>
+            <td>
+              (公) <input type="text" data-field="代理人電話(公)"><br>
+              (宅) <input type="text" data-field="代理人電話(宅)"><br>
+              (手機) <input type="text" data-field="代理人電話(手機)"><br>
+              (E-Mail) <input type="text" data-field="代理人Email">
+            </td>
+          </tr>
+          <tr>
+            <td class="label">住(居)所地址</td>
+            <td colspan="3"><input type="text" data-field="代理人住居所地址"></td>
+          </tr>
+          <tr>
+            <td class="label">職業</td>
+            <td><input type="text" data-field="代理人職業"></td>
+            <td class="label">關係</td>
+            <td><input type="text" data-field="代理人與申訴人關係"></td>
+          </tr>
+        </table>
+        <p class="footer-note">*委任代理人應檢附委任書</p>
+
+        <div class="admin-only" id="staff-block-suit">
+          <h2 style="margin-top:0;">處理情形摘要（以下申訴人免填）</h2>
+          <table>
+            <tr>
+              <td class="section-title" rowspan="4">初次接獲單位</td>
+              <td class="label">單位名稱</td>
+              <td><input type="text" data-field="受理單位名稱"></td>
+              <td class="label">紀錄人姓名</td>
+              <td><input type="text" data-field="紀錄人姓名"></td>
+            </tr>
+            <tr>
+              <td class="label">聯絡電話</td>
+              <td><input type="text" data-field="紀錄人聯絡電話"></td>
+              <td class="label">職稱</td>
+              <td><input type="text" data-field="紀錄人職稱"></td>
+            </tr>
+            <tr>
+              <td class="label">被申訴人姓名</td>
+              <td><input type="text" data-field="受理登記-被申訴人姓名"></td>
+              <td class="label">被申訴人國民身分證統一編號</td>
+              <td><input type="text" data-field="受理登記-被申訴人身分證字號"></td>
+            </tr>
+            <tr>
+              <td class="label">接獲申訴時間</td>
+              <td colspan="3">
+                <input type="text" class="short" data-field="接獲申訴時間-年"> 年
+                <input type="text" class="short" data-field="接獲申訴時間-月"> 月
+                <input type="text" class="short" data-field="接獲申訴時間-日"> 日
+                上（下）午 <input type="text" class="short" data-field="接獲申訴時間-時"> 時
+                <input type="text" class="short" data-field="接獲申訴時間-分"> 分
+              </td>
+            </tr>
+          </table>
+          <p style="text-align:right;">紀錄人： (簽章)</p>
+
+          <table>
+            <tr>
+              <td class="section-title" rowspan="3">安全及衛生防護委員會</td>
+              <td class="label">召開會議時間</td>
+              <td colspan="3">
+                <input type="text" class="short" data-field="委員會會議時間-年"> 年
+                <input type="text" class="short" data-field="委員會會議時間-月"> 月
+                <input type="text" class="short" data-field="委員會會議時間-日"> 日
+                上（下）午 <input type="text" class="short" data-field="委員會會議時間-時"> 時
+                <input type="text" class="short" data-field="委員會會議時間-分"> 分
+              </td>
+            </tr>
+            <tr>
+              <td class="label">申訴是否受理</td>
+              <td colspan="3">
+                <label><input type="checkbox" data-field="是否受理" data-value="受理"> 受理</label>
+                <label><input type="checkbox" data-field="是否受理" data-value="不受理"> 不受理</label>
+                <textarea rows="2" placeholder="理由（不受理者應敘明理由）" data-field="不受理理由"></textarea>
+              </td>
+            </tr>
+            <tr>
+              <td class="label">召集人</td>
+              <td colspan="3">（簽章）</td>
+            </tr>
+          </table>
+          <p class="footer-note">附註：機關應於接獲申訴之日起 10 日內，召開防護委員會會議，決定是否受理，並以書面通知申訴人是否受理；無從通知者，免予通知；不受理者，應於書面通知內敘明理由。</p>
+        </div>
+
+        <p class="small" style="text-align:right;">附件 1 申訴書範本</p>
       </div>
     </div>
 
@@ -90,7 +279,65 @@
         </div>
       </div>
       <div class="form-doc">
-        <!-- 完整委任書表單內容 -->
+        <h1 class="doc-title">職場霸凌事件申訴委任書</h1>
+
+        <div class="checkbox-group" style="text-align:right;margin-bottom:10px;">
+          <label><input type="checkbox" data-field="委任狀態" data-value="並有"> 並有</label>
+          <label><input type="checkbox" data-field="委任狀態" data-value="但無"> 但無</label>
+        </div>
+
+        <table>
+          <tr>
+            <th></th>
+            <th>稱謂</th>
+            <th>姓名</th>
+            <th>出生年月日</th>
+            <th>國民身分證統一編號</th>
+            <th>住(居)所地址</th>
+            <th>聯絡電話</th>
+          </tr>
+          <tr>
+            <td class="section-title">委任人</td>
+            <td><input type="text" data-field="委任人稱謂"></td>
+            <td><input type="text" data-field="委任人姓名"></td>
+            <td><input type="text" data-field="委任人出生年月日"></td>
+            <td><input type="text" data-field="委任人身分證字號"></td>
+            <td><input type="text" data-field="委任人住居所地址"></td>
+            <td><input type="text" data-field="委任人聯絡電話"></td>
+          </tr>
+          <tr>
+            <td class="section-title">委任代理人</td>
+            <td><input type="text" data-field="委任代理人稱謂"></td>
+            <td><input type="text" data-field="委任代理人姓名"></td>
+            <td><input type="text" data-field="委任代理人出生年月日"></td>
+            <td><input type="text" data-field="委任代理人身分證字號"></td>
+            <td><input type="text" data-field="委任代理人住居所地址"></td>
+            <td><input type="text" data-field="委任代理人聯絡電話"></td>
+          </tr>
+        </table>
+
+        <div class="statement">
+          茲委任 <input type="text" data-field="受任人姓名"> 為代理人，受委任人就本人與 <input type="text" data-field="相對人(被申訴人)姓名"> 間職場霸凌案件，有為一切申訴行為之代理權限，
+          <label><input type="checkbox" data-field="委任特別權限" data-value="撤回申訴"> 撤回申訴</label> 之特別權限，爰依法提出本件委任書。
+        </div>
+
+        <div class="to-line">
+          此致<br>
+          <input type="text" class="wide" data-field="受理機關名稱">（機關名稱）
+        </div>
+
+        <div class="signature-line">
+          <div>申訴人： (簽章)</div>
+          <div>代理人(如無則免填)： (簽章)</div>
+        </div>
+
+        <div class="date-line">
+          中華民國 <input type="text" class="short" data-field="委任書日期-年"> 年
+          <input type="text" class="short" data-field="委任書日期-月"> 月
+          <input type="text" class="short" data-field="委任書日期-日"> 日
+        </div>
+
+        <p class="small" style="text-align:right;">附件 2 委任書範本</p>
       </div>
     </div>
 
@@ -105,7 +352,85 @@
         </div>
       </div>
       <div class="form-doc">
-        <!-- 完整撤回書表單內容 -->
+        <h1 class="doc-title">職場霸凌申訴撤回書</h1>
+
+        <table>
+          <tr>
+            <td class="label">申訴人姓名</td>
+            <td><input type="text" data-field="申訴人姓名"></td>
+            <td class="label">出生年月日</td>
+            <td>
+              <input type="text" class="short" data-field="申訴人出生年"> 年
+              <input type="text" class="short" data-field="申訴人出生月"> 月
+              <input type="text" class="short" data-field="申訴人出生日"> 日
+              ( <input type="text" class="short" data-field="申訴人年齡"> 歲)
+            </td>
+          </tr>
+          <tr>
+            <td class="label">國民身分證統一編號</td>
+            <td><input type="text" data-field="申訴人身分證字號"></td>
+            <td class="label">聯絡電話及電子郵件</td>
+            <td>
+              (公) <input type="text" data-field="申訴人電話(公)"><br>
+              (宅) <input type="text" data-field="申訴人電話(宅)"><br>
+              (手機) <input type="text" data-field="申訴人電話(手機)"><br>
+              (E-Mail) <input type="text" data-field="申訴人Email">
+            </td>
+          </tr>
+          <tr>
+            <td class="label">住(居)所地址</td>
+            <td colspan="3"><input type="text" data-field="申訴人住居所地址"></td>
+          </tr>
+          <tr>
+            <td class="label">公文送達(寄送)地址</td>
+            <td colspan="3">
+              <label><input type="checkbox" data-field="送達地址方式" data-value="同住居所地址"> 同住居所地址</label><br>
+              <label><input type="checkbox" data-field="送達地址方式" data-value="另列如下"> 另列如下(請勿填寫郵政信箱)</label>
+              <input type="text" data-field="送達地址(另列)">
+            </td>
+          </tr>
+          <tr>
+            <td class="label">撤回原因（請簡述）</td>
+            <td colspan="3"><textarea rows="4" data-field="撤回原因"></textarea></td>
+          </tr>
+          <tr>
+            <td class="label">附件</td>
+            <td colspan="3">檢附原申訴書影本</td>
+          </tr>
+        </table>
+
+        <h2 style="margin-top:24px;">說明</h2>
+        <ol>
+          <li>本撤回書送達申訴受理機關後，申訴調查程序即予終止，但機關認有必要者，得本於職權繼續調查處理。</li>
+          <li>申訴經撤回者，不得就同一事由再為申訴。</li>
+          <li>本撤回書所載當事人相關資料，除有調查之必要或基於公共安全之考量者外，應予保密。</li>
+        </ol>
+
+        <div class="statement">
+          本人（申訴人）已瞭解上開說明內容，撤回於
+          <input type="text" class="short" data-field="撤回日期-年"> 年
+          <input type="text" class="short" data-field="撤回日期-月"> 月
+          <input type="text" class="short" data-field="撤回日期-日"> 日申訴
+          <input type="text" class="mid" data-field="原申訴之被申訴人姓名">（被申訴人姓名）之職場霸凌申訴事件，特此聲明。
+        </div>
+
+        <div class="to-line">
+          此致<br>
+          <input type="text" class="wide" data-field="受理機關名稱">（申訴處理機關）
+        </div>
+
+        <div class="signature-line">
+          <div>本人（申訴人）簽名： <input type="text" data-field="申訴人簽名"></div>
+          <div>代理人簽名（無則免填）： <input type="text" data-field="代理人簽名"></div>
+        </div>
+
+        <div class="date-line">
+          中華民國 <input type="text" class="short" data-field="撤回書填寫日期-年"> 年
+          <input type="text" class="short" data-field="撤回書填寫日期-月"> 月
+          <input type="text" class="short" data-field="撤回書填寫日期-日"> 日
+        </div>
+
+        <p class="small" style="text-align:right;">附件 3 申訴撤回書範本</p>
       </div>
     </div>
   </div>
@@ -117,12 +442,35 @@
       <div class="foot-brand">大立昇．吉的堡</div>
       <div>職場霸凌申訴專區</div>
     </div>
+    <div class="foot-links">
+      <a href="index.html#about">認識霸凌</a>
+      <a href="index.html#process">處理流程</a>
+      <a href="index.html#rights">保密與權益</a>
+      <a href="report.html">申訴表單</a>
+      <a href="admin.html">管理者登入</a>
+    </div>
+  </div>
+  <div class="wrap copyright">
+    本頁面所載表單依機關申訴作業規範製作，僅供內部同仁申訴使用；表單填寫內容將依保密原則處理。
   </div>
 </footer>
 
 <!-- 預覽視窗 -->
 <div class="preview-overlay" id="preview-overlay">
-  <!-- 完整預覽 modal 內容 -->
+  <div class="preview-modal">
+    <div class="preview-modal-head">
+      <h3 id="preview-title">表單預覽</h3>
+      <button class="preview-close" onclick="closePreview()" aria-label="關閉">&times;</button>
+    </div>
+    <div class="preview-modal-body">
+      <table class="preview-table"><tbody id="preview-body"></tbody></table>
+    </div>
+    <div class="preview-modal-foot">
+      <span class="submit-status" id="submit-status"></span>
+      <button class="btn btn-outline" onclick="closePreview()">返回修改</button>
+      <button class="btn btn-primary" id="confirm-submit-btn" onclick="confirmSubmit()">確認送出</button>
+    </div>
+  </div>
 </div>
 
 <script src="js/main.js"></script>
