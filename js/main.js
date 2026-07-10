@@ -142,10 +142,11 @@ function applyAdminMode(username, role) {
   if (display) display.textContent = username;
   if (roleDisplay) roleDisplay.textContent = currentAdminRole === ROLE_SUPERVISOR ? '主管' : '管理員';
 
-  // 主管角色：完全隱藏帳號管理區塊，且從不呼叫 listAdmins（不下載密碼名單）
+  // 主管角色：完全隱藏帳號管理區塊，且從不呼叫 listAdmins（不下載密碼名單）／通知設定
   if (accountPanel) accountPanel.style.display = currentAdminRole === ROLE_ADMIN ? 'block' : 'none';
-  if (currentAdminRole === ROLE_ADMIN && document.getElementById('admin-list-body')) {
-    refreshAdminAccounts();
+  if (currentAdminRole === ROLE_ADMIN) {
+    if (document.getElementById('admin-list-body')) refreshAdminAccounts();
+    if (document.getElementById('notify-email')) loadNotifySettings();
   }
 
   if (document.getElementById('cases-body')) loadCases();
@@ -318,6 +319,61 @@ async function deleteAdminAccount(username) {
     cacheAdminAccounts(ADMIN_ACCOUNTS);
     renderAdminList();
   }
+}
+
+// ====================== 新案件通知設定（僅管理員角色可見／可用） ======================
+async function loadNotifySettings() {
+  const input = document.getElementById('notify-email');
+  const msg = document.getElementById('notify-settings-msg');
+  if (!input) return;
+
+  if (!isBackendConfigured()) {
+    if (msg) msg.textContent = '尚未連接 Google 表單後端，暫時無法讀取通知設定。';
+    return;
+  }
+
+  const result = await backendGet('getSettings');
+  if (result && result.ok && typeof result.notifyEmail === 'string') {
+    input.value = result.notifyEmail;
+  }
+}
+
+async function saveNotifySettings() {
+  const input = document.getElementById('notify-email');
+  const msg = document.getElementById('notify-settings-msg');
+  if (!input || !msg) return;
+
+  const email = input.value.trim();
+  if (email) {
+    const parts = email.split(',').map(s => s.trim()).filter(Boolean);
+    const invalid = parts.find(p => !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(p));
+    if (invalid) {
+      msg.style.color = 'var(--danger)';
+      msg.textContent = `「${invalid}」不是有效的電子郵件格式。`;
+      return;
+    }
+  }
+
+  if (!isBackendConfigured()) {
+    msg.style.color = 'var(--danger)';
+    msg.textContent = '尚未連接 Google 表單後端，無法儲存通知設定。';
+    return;
+  }
+
+  msg.style.color = '#75808a';
+  msg.textContent = '儲存中…';
+
+  const result = await backendPost('updateSettings', { notifyEmail: email });
+  if (!result || !result.ok) {
+    msg.style.color = 'var(--danger)';
+    msg.textContent = (result && result.error) || '儲存失敗，請稍後再試。';
+    return;
+  }
+
+  msg.style.color = 'var(--teal)';
+  msg.textContent = email
+    ? '已儲存，新申請案件送出時會自動寄信通知此信箱。'
+    : '已清空，新申請案件送出時將不會寄送通知信。';
 }
 
 // ====================== 申訴案件瀏覽 ======================
@@ -663,3 +719,4 @@ window.deleteAdminAccount = deleteAdminAccount;
 window.loadCases = loadCases;
 window.openCaseDetail = openCaseDetail;
 window.closeCaseDetail = closeCaseDetail;
+window.saveNotifySettings = saveNotifySettings;
