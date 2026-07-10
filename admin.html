@@ -74,6 +74,7 @@
             </thead>
             <tbody id="admin-list-body"></tbody>
           </table>
+          <p id="admin-list-note" style="font-size:12px;color:#75808a;margin:10px 0 0;"></p>
         </div>
 
         <!-- 新增管理員 -->
@@ -91,9 +92,45 @@
           <div id="new-admin-msg" style="min-height:18px;font-size:13px;margin-top:10px;"></div>
         </div>
       </div>
+
+      <!-- 申訴案件瀏覽 -->
+      <div class="info-card" style="margin-top:24px;border-top-color:var(--teal);">
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+          <h3 style="margin:0;">申訴案件瀏覽</h3>
+          <button class="print-btn" onclick="loadCases()">重新整理</button>
+        </div>
+        <table id="cases-table" style="width:100%;border-collapse:collapse;font-size:13.5px;margin-top:14px;">
+          <thead>
+            <tr>
+              <th style="text-align:left;border-bottom:1px solid var(--line);padding:6px 4px;color:var(--navy-deep);">時間</th>
+              <th style="text-align:left;border-bottom:1px solid var(--line);padding:6px 4px;color:var(--navy-deep);">類別</th>
+              <th style="text-align:left;border-bottom:1px solid var(--line);padding:6px 4px;color:var(--navy-deep);">申請人</th>
+              <th style="border-bottom:1px solid var(--line);padding:6px 4px;"></th>
+            </tr>
+          </thead>
+          <tbody id="cases-body"></tbody>
+        </table>
+        <p id="cases-note" style="font-size:12px;color:#75808a;margin:10px 0 0;"></p>
+      </div>
     </div>
   </div>
 </section>
+
+<!-- 案件完整內容 -->
+<div class="preview-overlay" id="case-detail-overlay">
+  <div class="preview-modal">
+    <div class="preview-modal-head">
+      <h3 id="case-detail-title">案件內容</h3>
+      <button class="preview-close" onclick="closeCaseDetail()" aria-label="關閉">&times;</button>
+    </div>
+    <div class="preview-modal-body">
+      <table class="preview-table"><tbody id="case-detail-body"></tbody></table>
+    </div>
+    <div class="preview-modal-foot">
+      <button class="btn btn-outline" onclick="closeCaseDetail()">關閉</button>
+    </div>
+  </div>
+</div>
 
 <footer>
   <div class="wrap foot-inner">
