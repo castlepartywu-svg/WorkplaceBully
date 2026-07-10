@@ -258,7 +258,7 @@ footer{background:var(--navy-deep);color:#C9CFD1;padding:40px 0 20px;margin-top:
 }
 .field{margin-bottom:16px;}
 .field label{display:block;font-size:13px;font-weight:700;color:var(--navy-deep);margin-bottom:6px;}
-.field input{
+.field input,.field select{
   width:100%;
   padding:10px 12px;
   border:1px solid var(--line);
@@ -266,12 +266,13 @@ footer{background:var(--navy-deep);color:#C9CFD1;padding:40px 0 20px;margin-top:
   font-size:14px;
   font-family:inherit;
   background:#fff;
+  color:var(--ink);
 }
-.field input:focus{outline:2px solid var(--teal);outline-offset:1px;}
+.field input:focus,.field select:focus{outline:2px solid var(--teal);outline-offset:1px;}
 #admin-msg{min-height:20px;font-size:13px;color:var(--danger);margin-top:10px;}
 .status-line{font-size:14.5px;margin-bottom:14px;}
-#admin-list-table td{padding:7px 4px;border-bottom:1px solid var(--line);vertical-align:middle;}
-#admin-list-table .mini-btn{
+#admin-list-table td,#cases-table td{padding:7px 4px;border-bottom:1px solid var(--line);vertical-align:middle;}
+.mini-btn{
   border:1px solid var(--danger);
   color:var(--danger);
   background:transparent;
@@ -280,7 +281,9 @@ footer{background:var(--navy-deep);color:#C9CFD1;padding:40px 0 20px;margin-top:
   border-radius:var(--radius);
   cursor:pointer;
 }
-#admin-list-table .mini-btn:hover{background:var(--danger);color:#fff;}
+.mini-btn:hover{background:var(--danger);color:#fff;}
+.mini-btn.view{border-color:var(--teal);color:var(--teal);}
+.mini-btn.view:hover{background:var(--teal);color:#fff;}
 
 /* ---------- report / forms ---------- */
 .forms-section{background:#fff;}
@@ -334,7 +337,7 @@ footer{background:var(--navy-deep);color:#C9CFD1;padding:40px 0 20px;margin-top:
 }
 .panel-toolbar h3{font-size:19px;margin:0;}
 .panel-toolbar .hint{font-size:12.5px;color:#75808a;}
-.submit-btn,.print-btn{
+.submit-btn,.print-btn,.reset-btn{
   border-radius:var(--radius);
   font-size:13.5px;
   font-weight:700;
@@ -347,6 +350,8 @@ footer{background:var(--navy-deep);color:#C9CFD1;padding:40px 0 20px;margin-top:
 .submit-btn:hover{background:var(--navy);}
 .print-btn{background:transparent;color:var(--navy-deep);}
 .print-btn:hover{background:var(--navy-deep);color:#fff;}
+.reset-btn{background:transparent;color:var(--danger);border-color:var(--danger);}
+.reset-btn:hover{background:var(--danger);color:#fff;}
 
 .form-doc{
   background:#fff;
