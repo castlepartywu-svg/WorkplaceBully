@@ -20,16 +20,78 @@ function printTab(id) {
   window.print();
 }
 
+// 新增申請：清空指定表單面板中所有已填寫的欄位，開始下一份新申請
+function resetForm(panelId, formTitle) {
+  const panel = document.getElementById(panelId);
+  if (!panel) return;
+
+  const fields = panel.querySelectorAll('[data-field]');
+  const hasContent = Array.from(fields).some(el =>
+    el.type === 'checkbox' ? el.checked : el.value.trim()
+  );
+
+  if (hasContent && !confirm(`確定要清除「${formTitle || '本表單'}」目前已填寫的所有內容，開始新的申請嗎？此動作無法復原。`)) {
+    return;
+  }
+
+  fields.forEach(el => {
+    if (el.type === 'checkbox') {
+      el.checked = false;
+    } else {
+      el.value = '';
+    }
+  });
+
+  panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// ====================== Google 表單後端（Apps Script） ======================
+// 部署 apps-script/Code.gs 後，把產生的網址貼在這裡（結尾是 /exec）。
+// 部署完成前，此網址為佔位字串，所有雲端功能會自動退回「僅本機暫存」模式。
+const APPS_SCRIPT_URL = 'PASTE_YOUR_DEPLOYED_WEB_APP_URL_HERE';
+
+function isBackendConfigured() {
+  return /^https:\/\/script\.google\.com\/macros\//.test(APPS_SCRIPT_URL);
+}
+
+// GET 請求（例如讀取管理員名單）
+async function backendGet(action, params) {
+  if (!isBackendConfigured()) return { ok: false, offline: true };
+  const qs = new URLSearchParams(Object.assign({ action: action }, params || {}));
+  try {
+    const res = await fetch(`${APPS_SCRIPT_URL}?${qs.toString()}`, { method: 'GET' });
+    return await res.json();
+  } catch (err) {
+    return { ok: false, error: String(err) };
+  }
+}
+
+// POST 請求（送出表單 / 新增管理員 / 刪除管理員 / 登入驗證）
+// 用 text/plain 送出可避免瀏覽器發出 CORS 預檢請求，Apps Script 端再自行 JSON.parse。
+async function backendPost(action, data) {
+  if (!isBackendConfigured()) return { ok: false, offline: true };
+  try {
+    const res = await fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(Object.assign({ action: action }, data || {}))
+    });
+    return await res.json();
+  } catch (err) {
+    return { ok: false, error: String(err) };
+  }
+}
+
 // ====================== 管理者登入 ======================
 const ADMIN_SESSION_KEY = 'bw_admin_session';
-const ADMIN_ACCOUNTS_KEY = 'bw_admin_accounts';
+const ADMIN_CACHE_KEY = 'bw_admin_accounts_cache';
 const DEFAULT_ADMIN_ACCOUNTS = [
   { username: 'wufatw', password: 'wufatw55050' }
 ];
 
-function loadAdminAccounts() {
+function loadCachedAdminAccounts() {
   try {
-    const raw = sessionStorage.getItem(ADMIN_ACCOUNTS_KEY);
+    const raw = sessionStorage.getItem(ADMIN_CACHE_KEY);
     if (raw) {
       const parsed = JSON.parse(raw);
       if (Array.isArray(parsed) && parsed.length) return parsed;
@@ -38,14 +100,23 @@ function loadAdminAccounts() {
   return DEFAULT_ADMIN_ACCOUNTS.slice();
 }
 
-function saveAdminAccounts(list) {
-  try {
-    sessionStorage.setItem(ADMIN_ACCOUNTS_KEY, JSON.stringify(list));
-  } catch (e) { /* storage unavailable, continue with in-memory only */ }
+function cacheAdminAccounts(list) {
+  try { sessionStorage.setItem(ADMIN_CACHE_KEY, JSON.stringify(list)); } catch (e) { /* ignore */ }
 }
 
-let ADMIN_ACCOUNTS = loadAdminAccounts();
+let ADMIN_ACCOUNTS = loadCachedAdminAccounts();
 let currentAdmin = null;
+
+// 向 Google 表單重新抓取最新的管理員名單，抓不到時就沿用本機快取（離線／尚未部署時的備援）
+async function refreshAdminAccounts() {
+  const result = await backendGet('listAdmins');
+  if (result && result.ok && Array.isArray(result.accounts) && result.accounts.length) {
+    ADMIN_ACCOUNTS = result.accounts;
+    cacheAdminAccounts(ADMIN_ACCOUNTS);
+  }
+  if (document.getElementById('admin-list-body')) renderAdminList();
+  return ADMIN_ACCOUNTS;
+}
 
 function applyAdminMode(username) {
   currentAdmin = username;
@@ -58,6 +129,7 @@ function applyAdminMode(username) {
   if (panel) panel.style.display = 'block';
   if (display) display.textContent = username;
   if (document.getElementById('admin-list-body')) renderAdminList();
+  if (document.getElementById('cases-body')) loadCases();
 }
 
 function clearAdminMode() {
@@ -70,18 +142,28 @@ function clearAdminMode() {
   if (panel) panel.style.display = 'none';
 }
 
-function adminLogin() {
+async function adminLogin() {
   const uInput = document.getElementById('admin-user');
   const pInput = document.getElementById('admin-pass');
   const msg = document.getElementById('admin-msg');
   const u = uInput ? uInput.value.trim() : '';
   const p = pInput ? pInput.value : '';
 
-  const found = ADMIN_ACCOUNTS.find(a => a.username === u && a.password === p);
+  if (msg) msg.textContent = isBackendConfigured() ? '登入驗證中…' : '';
 
-  if (found) {
-    try { sessionStorage.setItem(ADMIN_SESSION_KEY, found.username); } catch (e) { /* ignore */ }
-    applyAdminMode(found.username);
+  let ok = false;
+  if (isBackendConfigured()) {
+    const result = await backendPost('login', { username: u, password: p });
+    ok = !!(result && result.ok);
+    if (ok) await refreshAdminAccounts();
+  } else {
+    // 尚未部署雲端後端時，退回比對本機快取帳號，讓網站在設定期間仍可操作
+    ok = ADMIN_ACCOUNTS.some(a => a.username === u && a.password === p);
+  }
+
+  if (ok) {
+    try { sessionStorage.setItem(ADMIN_SESSION_KEY, u); } catch (e) { /* ignore */ }
+    applyAdminMode(u);
     if (msg) msg.textContent = '';
   } else if (msg) {
     msg.textContent = '帳號或密碼錯誤，請重新輸入。';
@@ -125,9 +207,16 @@ function renderAdminList() {
     tr.appendChild(tdAction);
     body.appendChild(tr);
   });
+
+  const note = document.getElementById('admin-list-note');
+  if (note) {
+    note.textContent = isBackendConfigured()
+      ? '（此名單已同步儲存於 Google 表單）'
+      : '（尚未連接 Google 表單後端，目前僅暫存於本機瀏覽器）';
+  }
 }
 
-function addAdminAccount() {
+async function addAdminAccount() {
   const uInput = document.getElementById('new-admin-user');
   const pInput = document.getElementById('new-admin-pass');
   const msg = document.getElementById('new-admin-msg');
@@ -147,9 +236,22 @@ function addAdminAccount() {
     return;
   }
 
-  ADMIN_ACCOUNTS.push({ username: u, password: p });
-  saveAdminAccounts(ADMIN_ACCOUNTS);
-  renderAdminList();
+  msg.style.color = '#75808a';
+  msg.textContent = '新增中…';
+
+  if (isBackendConfigured()) {
+    const result = await backendPost('addAdmin', { username: u, password: p });
+    if (!result || !result.ok) {
+      msg.style.color = 'var(--danger)';
+      msg.textContent = (result && result.error) || '新增失敗，請稍後再試。';
+      return;
+    }
+    await refreshAdminAccounts();
+  } else {
+    ADMIN_ACCOUNTS.push({ username: u, password: p });
+    cacheAdminAccounts(ADMIN_ACCOUNTS);
+    renderAdminList();
+  }
 
   msg.style.color = 'var(--teal)';
   msg.textContent = `已新增管理員「${u}」。`;
@@ -157,25 +259,190 @@ function addAdminAccount() {
   if (pInput) pInput.value = '';
 }
 
-function deleteAdminAccount(username) {
+async function deleteAdminAccount(username) {
   if (ADMIN_ACCOUNTS.length <= 1) return;
-  ADMIN_ACCOUNTS = ADMIN_ACCOUNTS.filter(a => a.username !== username);
-  saveAdminAccounts(ADMIN_ACCOUNTS);
-  renderAdminList();
+
+  if (isBackendConfigured()) {
+    const result = await backendPost('deleteAdmin', { username: username });
+    if (!result || !result.ok) {
+      alert((result && result.error) || '刪除失敗，請稍後再試。');
+      return;
+    }
+    await refreshAdminAccounts();
+  } else {
+    ADMIN_ACCOUNTS = ADMIN_ACCOUNTS.filter(a => a.username !== username);
+    cacheAdminAccounts(ADMIN_ACCOUNTS);
+    renderAdminList();
+  }
 }
 
-// 頁面載入時，若同一瀏覽器工作階段已登入過，恢復管理者狀態
-document.addEventListener('DOMContentLoaded', () => {
-  let savedUser = null;
-  try { savedUser = sessionStorage.getItem(ADMIN_SESSION_KEY); } catch (e) { /* ignore */ }
-  if (savedUser && ADMIN_ACCOUNTS.some(a => a.username === savedUser)) {
-    applyAdminMode(savedUser);
+// ====================== 申訴案件瀏覽 ======================
+let CASES_CACHE = [];
+
+// 依表單類別猜出「申請人」欄位（每種表單的姓名欄位命名不同）
+function guessApplicantName(data) {
+  const priority = ['申訴人姓名', '委任人姓名', '受任人姓名', '委任代理人姓名'];
+  for (const key of priority) {
+    if (data[key]) return data[key];
   }
+  const fallbackKey = Object.keys(data).find(k => k.indexOf('姓名') !== -1 && k.indexOf('被') === -1);
+  return fallbackKey && data[fallbackKey] ? data[fallbackKey] : '（未填寫姓名）';
+}
+
+// 把表單完整標題濃縮成簡短類別標籤
+function shortFormTag(formTitle) {
+  if (!formTitle) return '未分類';
+  if (formTitle.indexOf('委任') !== -1) return '委任書';
+  if (formTitle.indexOf('撤回') !== -1) return '撤回書';
+  if (formTitle.indexOf('申訴') !== -1) return '申訴書';
+  return formTitle;
+}
+
+function formatSubmittedAt(iso) {
+  if (!iso) return '（無時間資訊）';
+  const d = new Date(iso);
+  if (isNaN(d.getTime())) return String(iso);
+  return d.toLocaleString('zh-TW', { hour12: false });
+}
+
+async function loadCases() {
+  const body = document.getElementById('cases-body');
+  const note = document.getElementById('cases-note');
+  if (!body) return;
+
+  if (!isBackendConfigured()) {
+    body.innerHTML = '';
+    if (note) note.textContent = '尚未連接 Google 表單後端，暫時無法讀取申訴案件。';
+    return;
+  }
+
+  if (note) note.textContent = '讀取中…';
+  const result = await backendGet('listSubmissions');
+
+  if (!result || !result.ok || !Array.isArray(result.submissions)) {
+    if (note) note.textContent = (result && result.error) || '讀取失敗，請點選「重新整理」再試一次。';
+    return;
+  }
+
+  CASES_CACHE = result.submissions;
+  renderCasesTable();
+}
+
+function renderCasesTable() {
+  const body = document.getElementById('cases-body');
+  const note = document.getElementById('cases-note');
+  if (!body) return;
+
+  body.innerHTML = '';
+
+  if (!CASES_CACHE.length) {
+    const tr = document.createElement('tr');
+    const td = document.createElement('td');
+    td.colSpan = 4;
+    td.className = 'preview-empty';
+    td.textContent = '目前尚無任何申訴案件紀錄。';
+    tr.appendChild(td);
+    body.appendChild(tr);
+    if (note) note.textContent = '';
+    return;
+  }
+
+  CASES_CACHE.forEach((item, index) => {
+    const tr = document.createElement('tr');
+
+    const tdTime = document.createElement('td');
+    tdTime.style.padding = '7px 4px';
+    tdTime.style.borderBottom = '1px solid var(--line)';
+    tdTime.textContent = formatSubmittedAt(item.submittedAt);
+
+    const tdType = document.createElement('td');
+    tdType.style.padding = '7px 4px';
+    tdType.style.borderBottom = '1px solid var(--line)';
+    tdType.textContent = shortFormTag(item.formTitle);
+
+    const tdName = document.createElement('td');
+    tdName.style.padding = '7px 4px';
+    tdName.style.borderBottom = '1px solid var(--line)';
+    tdName.textContent = guessApplicantName(item.data || {});
+
+    const tdAction = document.createElement('td');
+    tdAction.style.padding = '7px 4px';
+    tdAction.style.borderBottom = '1px solid var(--line)';
+    tdAction.style.textAlign = 'right';
+    const viewBtn = document.createElement('button');
+    viewBtn.className = 'mini-btn view';
+    viewBtn.textContent = '查看完整內容';
+    viewBtn.addEventListener('click', () => openCaseDetail(index));
+    tdAction.appendChild(viewBtn);
+
+    tr.appendChild(tdTime);
+    tr.appendChild(tdType);
+    tr.appendChild(tdName);
+    tr.appendChild(tdAction);
+    body.appendChild(tr);
+  });
+
+  if (note) note.textContent = `共 ${CASES_CACHE.length} 筆案件（資料來源：Google 表單）`;
+}
+
+function openCaseDetail(index) {
+  const item = CASES_CACHE[index];
+  if (!item) return;
+
+  const titleEl = document.getElementById('case-detail-title');
+  const bodyEl = document.getElementById('case-detail-body');
+  if (titleEl) {
+    titleEl.textContent = `${shortFormTag(item.formTitle)}　${guessApplicantName(item.data || {})}　（${formatSubmittedAt(item.submittedAt)}）`;
+  }
+
+  if (bodyEl) {
+    bodyEl.innerHTML = '';
+    const entries = Object.entries(item.data || {}).filter(([, v]) => v !== '' && v !== null && v !== undefined);
+    if (!entries.length) {
+      const tr = document.createElement('tr');
+      const td = document.createElement('td');
+      td.colSpan = 2;
+      td.className = 'preview-empty';
+      td.textContent = '此筆案件沒有已填寫的欄位資料。';
+      tr.appendChild(td);
+      bodyEl.appendChild(tr);
+    } else {
+      entries.forEach(([label, value]) => {
+        const tr = document.createElement('tr');
+        const tdK = document.createElement('td');
+        tdK.className = 'pk';
+        tdK.textContent = label;
+        const tdV = document.createElement('td');
+        tdV.className = 'pv';
+        tdV.textContent = value;
+        tr.appendChild(tdK);
+        tr.appendChild(tdV);
+        bodyEl.appendChild(tr);
+      });
+    }
+  }
+
+  const overlay = document.getElementById('case-detail-overlay');
+  if (overlay) overlay.classList.add('open');
+}
+
+function closeCaseDetail() {
+  const overlay = document.getElementById('case-detail-overlay');
+  if (overlay) overlay.classList.remove('open');
+}
+
+// 頁面載入時：若同一瀏覽器工作階段已登入過，恢復管理者狀態；並嘗試從 Google 表單同步最新管理員名單
+document.addEventListener('DOMContentLoaded', () => {
+  refreshAdminAccounts().then(() => {
+    let savedUser = null;
+    try { savedUser = sessionStorage.getItem(ADMIN_SESSION_KEY); } catch (e) { /* ignore */ }
+    if (savedUser && ADMIN_ACCOUNTS.some(a => a.username === savedUser)) {
+      applyAdminMode(savedUser);
+    }
+  });
 });
 
 // ====================== 表單預覽與送出 ======================
-const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz8SbiUGN59q0SjfJzL61EalPLrydfzyLN1tZx9WWokluj7rnhPVifJgHrrrUz1DOsM/exec';
-
 let pendingSubmission = null;
 
 // 將單一欄位的值轉為可讀文字
@@ -186,10 +453,10 @@ function fieldDisplayValue(el) {
 }
 
 // 從表單面板中依 data-field 屬性擷取「欄位名稱：值」配對
-// （取代舊版針對表格結構逐一解析的作法，改用明確標記，較不易因排版變動而出錯）
+// （改用明確標記，較不易因排版變動而出錯）
 function extractDataFieldPairs(container) {
   const fieldOrder = [];
-  const groups = new Map(); // fieldName -> { type, values: [] }
+  const groups = new Map(); // fieldName -> { checkbox: bool, values: [] }
 
   container.querySelectorAll('[data-field]').forEach(el => {
     const name = el.dataset.field;
@@ -242,8 +509,10 @@ function openPreview(panelId, formTitle) {
   const titleEl = document.getElementById('preview-title');
   const bodyEl = document.getElementById('preview-body');
   const statusEl = document.getElementById('submit-status');
+  const btn = document.getElementById('confirm-submit-btn');
   if (titleEl) titleEl.textContent = `${formTitle}　資料預覽`;
   if (statusEl) { statusEl.textContent = ''; statusEl.className = 'submit-status'; }
+  if (btn) { btn.disabled = false; btn.textContent = '確認送出'; }
 
   if (bodyEl) {
     bodyEl.innerHTML = '';
@@ -295,6 +564,14 @@ async function confirmSubmit() {
     return;
   }
 
+  if (!isBackendConfigured()) {
+    if (statusEl) {
+      statusEl.textContent = '尚未連接 Google 表單後端，暫時無法送出（請完成 Apps Script 部署後再試）。';
+      statusEl.className = 'submit-status err';
+    }
+    return;
+  }
+
   if (btn) { btn.disabled = true; btn.textContent = '送出中…'; }
   if (statusEl) { statusEl.textContent = '資料送出中，請稍候…'; statusEl.className = 'submit-status'; }
 
@@ -307,23 +584,18 @@ async function confirmSubmit() {
     }, {})
   };
 
-  try {
-    await fetch(APPS_SCRIPT_URL, {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-      body: JSON.stringify(payload)
-    });
-    // no-cors 模式下無法讀取回應內容，僅能假設請求已送達
+  const result = await backendPost('submitForm', payload);
+
+  if (result && result.ok) {
     if (statusEl) {
       statusEl.textContent = '已送出，感謝您的填寫。請記得列印本表並簽章送交受理單位。';
       statusEl.className = 'submit-status ok';
     }
     if (btn) { btn.textContent = '已送出'; }
     setTimeout(closePreview, 2200);
-  } catch (err) {
+  } else {
     if (statusEl) {
-      statusEl.textContent = '送出失敗，請確認網路連線後再試一次。';
+      statusEl.textContent = (result && result.error) || '送出失敗，請確認網路連線後再試一次。';
       statusEl.className = 'submit-status err';
     }
     if (btn) { btn.disabled = false; btn.textContent = '確認送出'; }
@@ -332,6 +604,7 @@ async function confirmSubmit() {
 
 // 暴露給全域（讓 HTML onclick 可以呼叫）
 window.printTab = printTab;
+window.resetForm = resetForm;
 window.openPreview = openPreview;
 window.closePreview = closePreview;
 window.confirmSubmit = confirmSubmit;
@@ -339,3 +612,6 @@ window.adminLogin = adminLogin;
 window.adminLogout = adminLogout;
 window.addAdminAccount = addAdminAccount;
 window.deleteAdminAccount = deleteAdminAccount;
+window.loadCases = loadCases;
+window.openCaseDetail = openCaseDetail;
+window.closeCaseDetail = closeCaseDetail;
