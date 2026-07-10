@@ -442,6 +442,33 @@ footer{background:var(--navy-deep);color:#C9CFD1;padding:40px 0 20px;margin-top:
 .form-doc ol{font-size:13.5px;padding-left:20px;color:#333b3f;}
 .form-doc ol li{margin-bottom:6px;}
 
+/* ---------- fillable (applicant fill-in) highlight ---------- */
+.form-doc .fillable td:not(.label):not(.section-title){
+  background-color:#FFF176;
+}
+.form-doc .fillable input[type="text"],
+.form-doc .fillable textarea{
+  background:transparent;
+}
+.form-doc .checkbox-group label{
+  background-color:#FFF176;
+  padding:2px 6px;
+  border-radius:2px;
+  display:inline-block;
+}
+.form-doc .statement input[type="text"],
+.form-doc .to-line input[type="text"],
+.form-doc .date-line input[type="text"]{
+  background-color:#FFF176;
+  border-radius:2px;
+}
+.form-doc .signature-line input[type="text"]{
+  background-color:#FFF176;
+  border-radius:2px;
+  width:auto;
+  min-width:180px;
+}
+
 .admin-only{
   position:relative;
   border:1px dashed var(--gold);
