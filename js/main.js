@@ -83,10 +83,16 @@ async function backendPost(action, data) {
 }
 
 // ====================== 管理者登入 ======================
+// 角色：ROLE_ADMIN 可管理帳號＋查閱案件；ROLE_SUPERVISOR（主管）僅能查閱申訴案件，
+// 完全不會去讀取或顯示管理員帳號密碼名單。
+const ROLE_ADMIN = 'admin';
+const ROLE_SUPERVISOR = 'supervisor';
+
 const ADMIN_SESSION_KEY = 'bw_admin_session';
+const ADMIN_ROLE_KEY = 'bw_admin_role';
 const ADMIN_CACHE_KEY = 'bw_admin_accounts_cache';
 const DEFAULT_ADMIN_ACCOUNTS = [
-  { username: 'wufatw', password: 'wufatw55050' }
+  { username: 'wufatw', password: 'wufatw55050', role: ROLE_ADMIN }
 ];
 
 function loadCachedAdminAccounts() {
@@ -106,8 +112,10 @@ function cacheAdminAccounts(list) {
 
 let ADMIN_ACCOUNTS = loadCachedAdminAccounts();
 let currentAdmin = null;
+let currentAdminRole = null;
 
 // 向 Google 表單重新抓取最新的管理員名單，抓不到時就沿用本機快取（離線／尚未部署時的備援）
+// 注意：只有 admin 角色登入時才會呼叫這個函式，主管帳號的瀏覽器完全不會要求這份含密碼的名單。
 async function refreshAdminAccounts() {
   const result = await backendGet('listAdmins');
   if (result && result.ok && Array.isArray(result.accounts) && result.accounts.length) {
@@ -118,22 +126,34 @@ async function refreshAdminAccounts() {
   return ADMIN_ACCOUNTS;
 }
 
-function applyAdminMode(username) {
+function applyAdminMode(username, role) {
   currentAdmin = username;
+  currentAdminRole = role === ROLE_SUPERVISOR ? ROLE_SUPERVISOR : ROLE_ADMIN;
+
   document.body.classList.add('admin-mode');
 
   const loginBox = document.getElementById('admin-login-box');
   const panel = document.getElementById('admin-panel');
   const display = document.getElementById('admin-username-display');
+  const roleDisplay = document.getElementById('admin-role-display');
+  const accountPanel = document.getElementById('account-mgmt-panel');
   if (loginBox) loginBox.style.display = 'none';
   if (panel) panel.style.display = 'block';
   if (display) display.textContent = username;
-  if (document.getElementById('admin-list-body')) renderAdminList();
+  if (roleDisplay) roleDisplay.textContent = currentAdminRole === ROLE_SUPERVISOR ? '主管' : '管理員';
+
+  // 主管角色：完全隱藏帳號管理區塊，且從不呼叫 listAdmins（不下載密碼名單）
+  if (accountPanel) accountPanel.style.display = currentAdminRole === ROLE_ADMIN ? 'block' : 'none';
+  if (currentAdminRole === ROLE_ADMIN && document.getElementById('admin-list-body')) {
+    refreshAdminAccounts();
+  }
+
   if (document.getElementById('cases-body')) loadCases();
 }
 
 function clearAdminMode() {
   currentAdmin = null;
+  currentAdminRole = null;
   document.body.classList.remove('admin-mode');
 
   const loginBox = document.getElementById('admin-login-box');
@@ -152,18 +172,25 @@ async function adminLogin() {
   if (msg) msg.textContent = isBackendConfigured() ? '登入驗證中…' : '';
 
   let ok = false;
+  let role = ROLE_ADMIN;
+
   if (isBackendConfigured()) {
     const result = await backendPost('login', { username: u, password: p });
     ok = !!(result && result.ok);
-    if (ok) await refreshAdminAccounts();
+    if (ok) role = result.role === ROLE_SUPERVISOR ? ROLE_SUPERVISOR : ROLE_ADMIN;
   } else {
     // 尚未部署雲端後端時，退回比對本機快取帳號，讓網站在設定期間仍可操作
-    ok = ADMIN_ACCOUNTS.some(a => a.username === u && a.password === p);
+    const matched = ADMIN_ACCOUNTS.find(a => a.username === u && a.password === p);
+    ok = !!matched;
+    if (matched) role = matched.role === ROLE_SUPERVISOR ? ROLE_SUPERVISOR : ROLE_ADMIN;
   }
 
   if (ok) {
-    try { sessionStorage.setItem(ADMIN_SESSION_KEY, u); } catch (e) { /* ignore */ }
-    applyAdminMode(u);
+    try {
+      sessionStorage.setItem(ADMIN_SESSION_KEY, u);
+      sessionStorage.setItem(ADMIN_ROLE_KEY, role);
+    } catch (e) { /* ignore */ }
+    applyAdminMode(u, role);
     if (msg) msg.textContent = '';
   } else if (msg) {
     msg.textContent = '帳號或密碼錯誤，請重新輸入。';
@@ -171,7 +198,10 @@ async function adminLogin() {
 }
 
 function adminLogout() {
-  try { sessionStorage.removeItem(ADMIN_SESSION_KEY); } catch (e) { /* ignore */ }
+  try {
+    sessionStorage.removeItem(ADMIN_SESSION_KEY);
+    sessionStorage.removeItem(ADMIN_ROLE_KEY);
+  } catch (e) { /* ignore */ }
   clearAdminMode();
   const uInput = document.getElementById('admin-user');
   const pInput = document.getElementById('admin-pass');
@@ -192,6 +222,9 @@ function renderAdminList() {
     const tdPass = document.createElement('td');
     tdPass.textContent = acc.password;
 
+    const tdRole = document.createElement('td');
+    tdRole.textContent = acc.role === ROLE_SUPERVISOR ? '主管' : '管理員';
+
     const tdAction = document.createElement('td');
     tdAction.style.textAlign = 'right';
     const delBtn = document.createElement('button');
@@ -204,6 +237,7 @@ function renderAdminList() {
 
     tr.appendChild(tdUser);
     tr.appendChild(tdPass);
+    tr.appendChild(tdRole);
     tr.appendChild(tdAction);
     body.appendChild(tr);
   });
@@ -219,9 +253,11 @@ function renderAdminList() {
 async function addAdminAccount() {
   const uInput = document.getElementById('new-admin-user');
   const pInput = document.getElementById('new-admin-pass');
+  const rInput = document.getElementById('new-admin-role');
   const msg = document.getElementById('new-admin-msg');
   const u = uInput ? uInput.value.trim() : '';
   const p = pInput ? pInput.value.trim() : '';
+  const role = (rInput && rInput.value === ROLE_SUPERVISOR) ? ROLE_SUPERVISOR : ROLE_ADMIN;
 
   if (!msg) return;
 
@@ -240,7 +276,7 @@ async function addAdminAccount() {
   msg.textContent = '新增中…';
 
   if (isBackendConfigured()) {
-    const result = await backendPost('addAdmin', { username: u, password: p });
+    const result = await backendPost('addAdmin', { username: u, password: p, role: role });
     if (!result || !result.ok) {
       msg.style.color = 'var(--danger)';
       msg.textContent = (result && result.error) || '新增失敗，請稍後再試。';
@@ -248,19 +284,27 @@ async function addAdminAccount() {
     }
     await refreshAdminAccounts();
   } else {
-    ADMIN_ACCOUNTS.push({ username: u, password: p });
+    ADMIN_ACCOUNTS.push({ username: u, password: p, role: role });
     cacheAdminAccounts(ADMIN_ACCOUNTS);
     renderAdminList();
   }
 
   msg.style.color = 'var(--teal)';
-  msg.textContent = `已新增管理員「${u}」。`;
+  msg.textContent = `已新增${role === ROLE_SUPERVISOR ? '主管' : '管理員'}「${u}」。`;
   if (uInput) uInput.value = '';
   if (pInput) pInput.value = '';
+  if (rInput) rInput.value = ROLE_ADMIN;
 }
 
 async function deleteAdminAccount(username) {
   if (ADMIN_ACCOUNTS.length <= 1) return;
+
+  const target = ADMIN_ACCOUNTS.find(a => a.username === username);
+  const remainingAdmins = ADMIN_ACCOUNTS.filter(a => (a.role || ROLE_ADMIN) === ROLE_ADMIN && a.username !== username);
+  if (target && (target.role || ROLE_ADMIN) === ROLE_ADMIN && remainingAdmins.length === 0) {
+    alert('至少須保留一組「管理員」角色帳號，否則將無法管理帳號。');
+    return;
+  }
 
   if (isBackendConfigured()) {
     const result = await backendPost('deleteAdmin', { username: username });
@@ -433,13 +477,17 @@ function closeCaseDetail() {
 
 // 頁面載入時：若同一瀏覽器工作階段已登入過，恢復管理者狀態；並嘗試從 Google 表單同步最新管理員名單
 document.addEventListener('DOMContentLoaded', () => {
-  refreshAdminAccounts().then(() => {
-    let savedUser = null;
-    try { savedUser = sessionStorage.getItem(ADMIN_SESSION_KEY); } catch (e) { /* ignore */ }
-    if (savedUser && ADMIN_ACCOUNTS.some(a => a.username === savedUser)) {
-      applyAdminMode(savedUser);
-    }
-  });
+  let savedUser = null;
+  let savedRole = null;
+  try {
+    savedUser = sessionStorage.getItem(ADMIN_SESSION_KEY);
+    savedRole = sessionStorage.getItem(ADMIN_ROLE_KEY);
+  } catch (e) { /* ignore */ }
+  // 登入時已經過後端驗證，這裡直接信任工作階段即可；
+  // 主管角色不會在此觸發 refreshAdminAccounts（見 applyAdminMode）。
+  if (savedUser) {
+    applyAdminMode(savedUser, savedRole);
+  }
 });
 
 // ====================== 表單預覽與送出 ======================
