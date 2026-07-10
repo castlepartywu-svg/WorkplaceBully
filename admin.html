@@ -37,7 +37,8 @@
 
     <div class="admin-note" style="max-width:640px;">
       注意：這是純前端示意登入機制（非真正安全的後端驗證）。正式上線時建議使用後端系統搭配資料庫。<br>
-      帳號分兩種角色：「管理員」可管理帳號並查閱案件；「主管」僅能查閱申訴案件，無法查看或新增管理員帳號密碼。
+      帳號分兩種角色：「管理員」可管理帳號並查閱案件；「主管」僅能查閱申訴案件，無法查看或新增管理員帳號密碼。<br>
+      主管可另外設定「校別」：設為同安或莊敬後，該主管登入時只會看到該校的申訴案件；留空則可查看全部校區案件。
     </div>
 
     <!-- 登入表單 -->
@@ -73,6 +74,7 @@
                   <th style="text-align:left;border-bottom:1px solid var(--line);padding:6px 4px;color:var(--navy-deep);">帳號</th>
                   <th style="text-align:left;border-bottom:1px solid var(--line);padding:6px 4px;color:var(--navy-deep);">密碼</th>
                   <th style="text-align:left;border-bottom:1px solid var(--line);padding:6px 4px;color:var(--navy-deep);">身分</th>
+                  <th style="text-align:left;border-bottom:1px solid var(--line);padding:6px 4px;color:var(--navy-deep);">校別</th>
                   <th style="border-bottom:1px solid var(--line);padding:6px 4px;"></th>
                 </tr>
               </thead>
@@ -97,6 +99,14 @@
               <select id="new-admin-role">
                 <option value="admin">管理員（可管理帳號＋查閱案件）</option>
                 <option value="supervisor">主管（僅可查閱申訴案件）</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="new-admin-branch">校別（僅主管角色會依此過濾案件）</label>
+              <select id="new-admin-branch">
+                <option value="">不分校（可查看全部）</option>
+                <option value="同安">同安</option>
+                <option value="莊敬">莊敬</option>
               </select>
             </div>
             <button class="btn btn-primary" onclick="addAdminAccount()">新增帳號</button>
@@ -128,6 +138,7 @@
             <tr>
               <th style="text-align:left;border-bottom:1px solid var(--line);padding:6px 4px;color:var(--navy-deep);">時間</th>
               <th style="text-align:left;border-bottom:1px solid var(--line);padding:6px 4px;color:var(--navy-deep);">類別</th>
+              <th style="text-align:left;border-bottom:1px solid var(--line);padding:6px 4px;color:var(--navy-deep);">校別</th>
               <th style="text-align:left;border-bottom:1px solid var(--line);padding:6px 4px;color:var(--navy-deep);">申請人</th>
               <th style="border-bottom:1px solid var(--line);padding:6px 4px;"></th>
             </tr>

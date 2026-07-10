@@ -50,6 +50,7 @@
         <h3>職場霸凌申訴書</h3>
         <div style="display:flex;align-items:center;gap:14px;">
           <span class="hint">填寫完成後請列印並簽章送交受理單位</span>
+          <button class="reset-btn" onclick="resetForm('tab-suit', '職場霸凌申訴書')">新增申請</button>
           <button class="submit-btn" onclick="openPreview('tab-suit', '職場霸凌申訴書')">資料送出</button>
           <button class="print-btn" onclick="printTab('tab-suit')">列印本表</button>
         </div>
@@ -91,14 +92,15 @@
           <tr>
             <td class="label">身分別</td>
             <td colspan="3" class="checkbox-group">
-              <label><input type="checkbox" data-field="申訴人身分別" data-value="公務人員"> 公務人員</label>
-              <label><input type="checkbox" data-field="申訴人身分別" data-value="聘任人員"> 聘任人員</label>
-              <label><input type="checkbox" data-field="申訴人身分別" data-value="聘用人員"> 聘用人員</label>
-              <label><input type="checkbox" data-field="申訴人身分別" data-value="約僱人員"> 約僱人員</label>
-              <label><input type="checkbox" data-field="申訴人身分別" data-value="駐衛警"> 駐衛警</label><br>
-              <label><input type="checkbox" data-field="申訴人身分別" data-value="工友（含技工、駕駛）"> 工友（含技工、駕駛）</label>
-              <label><input type="checkbox" data-field="申訴人身分別" data-value="約用人員"> 約用人員</label>
-              <label><input type="checkbox" data-field="申訴人身分別" data-value="其他"> 其他：<input type="text" class="mid" data-field="申訴人身分別其他"></label>
+              <label><input type="radio" name="applicant-identity" data-field="申訴人身分別" data-value="同安櫃台"> 同安櫃台</label>
+              <label><input type="radio" name="applicant-identity" data-field="申訴人身分別" data-value="同安美語"> 同安美語</label>
+              <label><input type="radio" name="applicant-identity" data-field="申訴人身分別" data-value="同安安親"> 同安安親</label>
+              <label><input type="radio" name="applicant-identity" data-field="申訴人身分別" data-value="同安其他"> 同安其他</label><br>
+              <label><input type="radio" name="applicant-identity" data-field="申訴人身分別" data-value="莊敬櫃台"> 莊敬櫃台</label>
+              <label><input type="radio" name="applicant-identity" data-field="申訴人身分別" data-value="莊敬美語"> 莊敬美語</label>
+              <label><input type="radio" name="applicant-identity" data-field="申訴人身分別" data-value="莊敬安親"> 莊敬安親</label>
+              <label><input type="radio" name="applicant-identity" data-field="申訴人身分別" data-value="莊敬其他"> 莊敬其他</label><br>
+              <label><input type="radio" name="applicant-identity" data-field="申訴人身分別" data-value="其他"> 其他</label>
             </td>
           </tr>
           <tr>
@@ -274,6 +276,7 @@
         <h3>職場霸凌事件申訴委任書</h3>
         <div style="display:flex;align-items:center;gap:14px;">
           <span class="hint">若申訴人委任他人代為申訴，請填寫本表</span>
+          <button class="reset-btn" onclick="resetForm('tab-proxy', '職場霸凌事件申訴委任書')">新增申請</button>
           <button class="submit-btn" onclick="openPreview('tab-proxy', '職場霸凌事件申訴委任書')">資料送出</button>
           <button class="print-btn" onclick="printTab('tab-proxy')">列印本表</button>
         </div>
@@ -347,6 +350,7 @@
         <h3>職場霸凌申訴撤回書</h3>
         <div style="display:flex;align-items:center;gap:14px;">
           <span class="hint">申訴人得於調查程序終結前撤回申訴</span>
+          <button class="reset-btn" onclick="resetForm('tab-withdraw', '職場霸凌申訴撤回書')">新增申請</button>
           <button class="submit-btn" onclick="openPreview('tab-withdraw', '職場霸凌申訴撤回書')">資料送出</button>
           <button class="print-btn" onclick="printTab('tab-withdraw')">列印本表</button>
         </div>
