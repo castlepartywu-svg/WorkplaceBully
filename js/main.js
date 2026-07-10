@@ -27,7 +27,7 @@ function resetForm(panelId, formTitle) {
 
   const fields = panel.querySelectorAll('[data-field]');
   const hasContent = Array.from(fields).some(el =>
-    el.type === 'checkbox' ? el.checked : el.value.trim()
+    (el.type === 'checkbox' || el.type === 'radio') ? el.checked : el.value.trim()
   );
 
   if (hasContent && !confirm(`確定要清除「${formTitle || '本表單'}」目前已填寫的所有內容，開始新的申請嗎？此動作無法復原。`)) {
@@ -35,7 +35,7 @@ function resetForm(panelId, formTitle) {
   }
 
   fields.forEach(el => {
-    if (el.type === 'checkbox') {
+    if (el.type === 'checkbox' || el.type === 'radio') {
       el.checked = false;
     } else {
       el.value = '';
@@ -90,9 +90,10 @@ const ROLE_SUPERVISOR = 'supervisor';
 
 const ADMIN_SESSION_KEY = 'bw_admin_session';
 const ADMIN_ROLE_KEY = 'bw_admin_role';
+const ADMIN_BRANCH_KEY = 'bw_admin_branch';
 const ADMIN_CACHE_KEY = 'bw_admin_accounts_cache';
 const DEFAULT_ADMIN_ACCOUNTS = [
-  { username: 'wufatw', password: 'wufatw55050', role: ROLE_ADMIN }
+  { username: 'wufatw', password: 'wufatw55050', role: ROLE_ADMIN, branch: '' }
 ];
 
 function loadCachedAdminAccounts() {
@@ -113,6 +114,7 @@ function cacheAdminAccounts(list) {
 let ADMIN_ACCOUNTS = loadCachedAdminAccounts();
 let currentAdmin = null;
 let currentAdminRole = null;
+let currentAdminBranch = ''; // '' = 不分校（可查看全部）；'同安' / '莊敬' = 僅查看該校案件
 
 // 向 Google 表單重新抓取最新的管理員名單，抓不到時就沿用本機快取（離線／尚未部署時的備援）
 // 注意：只有 admin 角色登入時才會呼叫這個函式，主管帳號的瀏覽器完全不會要求這份含密碼的名單。
@@ -126,9 +128,10 @@ async function refreshAdminAccounts() {
   return ADMIN_ACCOUNTS;
 }
 
-function applyAdminMode(username, role) {
+function applyAdminMode(username, role, branch) {
   currentAdmin = username;
   currentAdminRole = role === ROLE_SUPERVISOR ? ROLE_SUPERVISOR : ROLE_ADMIN;
+  currentAdminBranch = branch || '';
 
   document.body.classList.add('admin-mode');
 
@@ -140,7 +143,10 @@ function applyAdminMode(username, role) {
   if (loginBox) loginBox.style.display = 'none';
   if (panel) panel.style.display = 'block';
   if (display) display.textContent = username;
-  if (roleDisplay) roleDisplay.textContent = currentAdminRole === ROLE_SUPERVISOR ? '主管' : '管理員';
+  if (roleDisplay) {
+    const roleLabel = currentAdminRole === ROLE_SUPERVISOR ? '主管' : '管理員';
+    roleDisplay.textContent = currentAdminBranch ? `${roleLabel}・${currentAdminBranch}校` : roleLabel;
+  }
 
   // 主管角色：完全隱藏帳號管理區塊，且從不呼叫 listAdmins（不下載密碼名單）／通知設定
   if (accountPanel) accountPanel.style.display = currentAdminRole === ROLE_ADMIN ? 'block' : 'none';
@@ -155,6 +161,7 @@ function applyAdminMode(username, role) {
 function clearAdminMode() {
   currentAdmin = null;
   currentAdminRole = null;
+  currentAdminBranch = '';
   document.body.classList.remove('admin-mode');
 
   const loginBox = document.getElementById('admin-login-box');
@@ -174,24 +181,32 @@ async function adminLogin() {
 
   let ok = false;
   let role = ROLE_ADMIN;
+  let branch = '';
 
   if (isBackendConfigured()) {
     const result = await backendPost('login', { username: u, password: p });
     ok = !!(result && result.ok);
-    if (ok) role = result.role === ROLE_SUPERVISOR ? ROLE_SUPERVISOR : ROLE_ADMIN;
+    if (ok) {
+      role = result.role === ROLE_SUPERVISOR ? ROLE_SUPERVISOR : ROLE_ADMIN;
+      branch = result.branch || '';
+    }
   } else {
     // 尚未部署雲端後端時，退回比對本機快取帳號，讓網站在設定期間仍可操作
     const matched = ADMIN_ACCOUNTS.find(a => a.username === u && a.password === p);
     ok = !!matched;
-    if (matched) role = matched.role === ROLE_SUPERVISOR ? ROLE_SUPERVISOR : ROLE_ADMIN;
+    if (matched) {
+      role = matched.role === ROLE_SUPERVISOR ? ROLE_SUPERVISOR : ROLE_ADMIN;
+      branch = matched.branch || '';
+    }
   }
 
   if (ok) {
     try {
       sessionStorage.setItem(ADMIN_SESSION_KEY, u);
       sessionStorage.setItem(ADMIN_ROLE_KEY, role);
+      sessionStorage.setItem(ADMIN_BRANCH_KEY, branch);
     } catch (e) { /* ignore */ }
-    applyAdminMode(u, role);
+    applyAdminMode(u, role, branch);
     if (msg) msg.textContent = '';
   } else if (msg) {
     msg.textContent = '帳號或密碼錯誤，請重新輸入。';
@@ -202,6 +217,7 @@ function adminLogout() {
   try {
     sessionStorage.removeItem(ADMIN_SESSION_KEY);
     sessionStorage.removeItem(ADMIN_ROLE_KEY);
+    sessionStorage.removeItem(ADMIN_BRANCH_KEY);
   } catch (e) { /* ignore */ }
   clearAdminMode();
   const uInput = document.getElementById('admin-user');
@@ -226,6 +242,9 @@ function renderAdminList() {
     const tdRole = document.createElement('td');
     tdRole.textContent = acc.role === ROLE_SUPERVISOR ? '主管' : '管理員';
 
+    const tdBranch = document.createElement('td');
+    tdBranch.textContent = acc.branch || '不分校';
+
     const tdAction = document.createElement('td');
     tdAction.style.textAlign = 'right';
     const delBtn = document.createElement('button');
@@ -239,6 +258,7 @@ function renderAdminList() {
     tr.appendChild(tdUser);
     tr.appendChild(tdPass);
     tr.appendChild(tdRole);
+    tr.appendChild(tdBranch);
     tr.appendChild(tdAction);
     body.appendChild(tr);
   });
@@ -255,10 +275,12 @@ async function addAdminAccount() {
   const uInput = document.getElementById('new-admin-user');
   const pInput = document.getElementById('new-admin-pass');
   const rInput = document.getElementById('new-admin-role');
+  const bInput = document.getElementById('new-admin-branch');
   const msg = document.getElementById('new-admin-msg');
   const u = uInput ? uInput.value.trim() : '';
   const p = pInput ? pInput.value.trim() : '';
   const role = (rInput && rInput.value === ROLE_SUPERVISOR) ? ROLE_SUPERVISOR : ROLE_ADMIN;
+  const branch = bInput ? bInput.value : '';
 
   if (!msg) return;
 
@@ -277,7 +299,7 @@ async function addAdminAccount() {
   msg.textContent = '新增中…';
 
   if (isBackendConfigured()) {
-    const result = await backendPost('addAdmin', { username: u, password: p, role: role });
+    const result = await backendPost('addAdmin', { username: u, password: p, role: role, branch: branch });
     if (!result || !result.ok) {
       msg.style.color = 'var(--danger)';
       msg.textContent = (result && result.error) || '新增失敗，請稍後再試。';
@@ -285,16 +307,18 @@ async function addAdminAccount() {
     }
     await refreshAdminAccounts();
   } else {
-    ADMIN_ACCOUNTS.push({ username: u, password: p, role: role });
+    ADMIN_ACCOUNTS.push({ username: u, password: p, role: role, branch: branch });
     cacheAdminAccounts(ADMIN_ACCOUNTS);
     renderAdminList();
   }
 
+  const branchNote = branch ? `（${branch}校）` : '';
   msg.style.color = 'var(--teal)';
-  msg.textContent = `已新增${role === ROLE_SUPERVISOR ? '主管' : '管理員'}「${u}」。`;
+  msg.textContent = `已新增${role === ROLE_SUPERVISOR ? '主管' : '管理員'}「${u}」${branchNote}。`;
   if (uInput) uInput.value = '';
   if (pInput) pInput.value = '';
   if (rInput) rInput.value = ROLE_ADMIN;
+  if (bInput) bInput.value = '';
 }
 
 async function deleteAdminAccount(username) {
@@ -417,7 +441,11 @@ async function loadCases() {
   }
 
   if (note) note.textContent = '讀取中…';
-  const result = await backendGet('listSubmissions');
+  // 若目前登入者是被限定校別的主管，向後端要求只回傳該校別（或未分類）的案件
+  const params = (currentAdminRole === ROLE_SUPERVISOR && currentAdminBranch)
+    ? { branch: currentAdminBranch }
+    : {};
+  const result = await backendGet('listSubmissions', params);
 
   if (!result || !result.ok || !Array.isArray(result.submissions)) {
     if (note) note.textContent = (result && result.error) || '讀取失敗，請點選「重新整理」再試一次。';
@@ -438,7 +466,7 @@ function renderCasesTable() {
   if (!CASES_CACHE.length) {
     const tr = document.createElement('tr');
     const td = document.createElement('td');
-    td.colSpan = 4;
+    td.colSpan = 5;
     td.className = 'preview-empty';
     td.textContent = '目前尚無任何申訴案件紀錄。';
     tr.appendChild(td);
@@ -460,6 +488,11 @@ function renderCasesTable() {
     tdType.style.borderBottom = '1px solid var(--line)';
     tdType.textContent = shortFormTag(item.formTitle);
 
+    const tdBranch = document.createElement('td');
+    tdBranch.style.padding = '7px 4px';
+    tdBranch.style.borderBottom = '1px solid var(--line)';
+    tdBranch.textContent = (item.data && item.data['校別']) || '—';
+
     const tdName = document.createElement('td');
     tdName.style.padding = '7px 4px';
     tdName.style.borderBottom = '1px solid var(--line)';
@@ -477,6 +510,7 @@ function renderCasesTable() {
 
     tr.appendChild(tdTime);
     tr.appendChild(tdType);
+    tr.appendChild(tdBranch);
     tr.appendChild(tdName);
     tr.appendChild(tdAction);
     body.appendChild(tr);
@@ -535,14 +569,16 @@ function closeCaseDetail() {
 document.addEventListener('DOMContentLoaded', () => {
   let savedUser = null;
   let savedRole = null;
+  let savedBranch = null;
   try {
     savedUser = sessionStorage.getItem(ADMIN_SESSION_KEY);
     savedRole = sessionStorage.getItem(ADMIN_ROLE_KEY);
+    savedBranch = sessionStorage.getItem(ADMIN_BRANCH_KEY);
   } catch (e) { /* ignore */ }
   // 登入時已經過後端驗證，這裡直接信任工作階段即可；
   // 主管角色不會在此觸發 refreshAdminAccounts（見 applyAdminMode）。
   if (savedUser) {
-    applyAdminMode(savedUser, savedRole);
+    applyAdminMode(savedUser, savedRole, savedBranch);
   }
 });
 
@@ -552,24 +588,25 @@ let pendingSubmission = null;
 // 將單一欄位的值轉為可讀文字
 function fieldDisplayValue(el) {
   if (el.tagName === 'TEXTAREA') return el.value.trim();
-  if (el.type === 'checkbox') return el.checked ? (el.dataset.value || '是') : '';
+  if (el.type === 'checkbox' || el.type === 'radio') return el.checked ? (el.dataset.value || '是') : '';
   return el.value.trim();
 }
 
 // 從表單面板中依 data-field 屬性擷取「欄位名稱：值」配對
-// （改用明確標記，較不易因排版變動而出錯）
+// （改用明確標記，較不易因排版變動而出錯；checkbox 與 radio 都視為選項式欄位）
 function extractDataFieldPairs(container) {
   const fieldOrder = [];
-  const groups = new Map(); // fieldName -> { checkbox: bool, values: [] }
+  const groups = new Map(); // fieldName -> { choice: bool, values: [] }
 
   container.querySelectorAll('[data-field]').forEach(el => {
     const name = el.dataset.field;
+    const isChoice = el.type === 'checkbox' || el.type === 'radio';
     if (!groups.has(name)) {
-      groups.set(name, { checkbox: el.type === 'checkbox', values: [] });
+      groups.set(name, { choice: isChoice, values: [] });
       fieldOrder.push(name);
     }
     const group = groups.get(name);
-    if (el.type === 'checkbox') {
+    if (isChoice) {
       if (el.checked) group.values.push(el.dataset.value || '是');
     } else {
       const v = fieldDisplayValue(el);
@@ -581,6 +618,14 @@ function extractDataFieldPairs(container) {
     label: name,
     value: groups.get(name).values.join('、')
   }));
+}
+
+// 依「申訴人身分別」推算所屬校別（同安／莊敬／其他），寫入案件記錄的「校別」欄位
+function deriveBranchFromIdentity(identity) {
+  if (!identity) return '';
+  if (identity.indexOf('同安') !== -1) return '同安';
+  if (identity.indexOf('莊敬') !== -1) return '莊敬';
+  return '其他';
 }
 
 // 舊版函式名稱保留，內部統一改用 data-field 擷取邏輯，避免表格結構差異造成解析失敗
@@ -603,7 +648,16 @@ function collectPreviewPairs(panelId) {
   const panel = document.getElementById(panelId);
   if (!panel) return [];
   // 目前所有表單皆改用 data-field 標記欄位，統一擷取即可涵蓋各表單版型
-  return extractDataFieldPairs(panel);
+  const pairs = extractDataFieldPairs(panel);
+
+  // 申訴書有「申訴人身分別」欄位時，額外附加一個推算出的「校別」欄位，
+  // 讓案件記錄與管理者的校別過濾都能直接使用。
+  const identityPair = pairs.find(p => p.label === '申訴人身分別');
+  if (identityPair && identityPair.value) {
+    pairs.push({ label: '校別', value: deriveBranchFromIdentity(identityPair.value) });
+  }
+
+  return pairs;
 }
 
 function openPreview(panelId, formTitle) {
