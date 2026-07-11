@@ -99,6 +99,45 @@ nav.main-nav a.admin-link{color:var(--gold);}
   overflow:hidden;
   border-bottom:1px solid var(--line);
 }
+.visit-counter{
+  position:absolute;
+  top:18px;
+  left:28px;
+  z-index:5;
+  background:rgba(255,255,255,.94);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  padding:10px 14px;
+  box-shadow:0 2px 10px rgba(18,39,51,.08);
+  display:flex;
+  flex-direction:column;
+  gap:3px;
+}
+.visit-counter .vc-row{
+  display:flex;
+  align-items:baseline;
+  gap:8px;
+  white-space:nowrap;
+}
+.visit-counter .vc-label{
+  font-size:11.5px;
+  color:#75808a;
+  letter-spacing:.04em;
+}
+.visit-counter .vc-value{
+  font-family:"Noto Serif TC",serif;
+  font-weight:900;
+  color:var(--navy-deep);
+  font-size:15px;
+  min-width:1.5em;
+  text-align:right;
+}
+.visit-counter .vc-note{
+  font-size:10px;
+  color:#9aa3a8;
+  margin-top:1px;
+}
+
 .hero .eyebrow{
   display:inline-flex;
   align-items:center;
@@ -162,6 +201,23 @@ section{padding:72px 0;}
 }
 .info-card h3{font-size:16.5px;margin-bottom:10px;}
 .info-card p{font-size:14px;color:#4d555a;margin-bottom:0;}
+
+.edu-group-title{font-size:16.5px;margin-bottom:16px;color:var(--navy-deep);}
+.edu-card p{margin-bottom:16px;}
+.edu-link-row{display:flex;gap:10px;flex-wrap:wrap;}
+.edu-link-row a{
+  font-size:13px;
+  font-weight:700;
+  text-decoration:none;
+  padding:6px 12px;
+  border-radius:var(--radius);
+  border:1px solid var(--navy-deep);
+  color:var(--navy-deep);
+  transition:background .2s, color .2s;
+}
+.edu-link-row a:first-child{background:var(--navy-deep);color:#fff;}
+.edu-link-row a:first-child:hover{background:var(--navy);}
+.edu-link-row a:last-child:hover{background:var(--navy-deep);color:#fff;}
 
 .video-embed-card{padding:16px 16px 20px;}
 .video-frame{
@@ -579,6 +635,13 @@ body.admin-mode .admin-only{display:block;}
   section{padding:52px 0;}
   .form-doc{padding:22px 16px 30px;}
   .form-doc td.section-title{writing-mode:horizontal-tb;width:auto;}
+  .visit-counter{
+    position:static;
+    flex-direction:row;
+    gap:16px;
+    margin:0 0 18px 28px;
+    width:fit-content;
+  }
 }
 
 /* ---------- print ---------- */
