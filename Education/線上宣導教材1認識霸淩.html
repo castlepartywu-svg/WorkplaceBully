@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>你被職場霸凌了嗎？認識職場霸凌｜線上教材單元1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700;900&family=Noto+Sans+TC:wght@400;500;700;900&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F1ECE0;
+    --card:#FAF7EF;
+    --ink:#241F1B;
+    --ink-soft:#544A3C;
+    --ink-faint:#8B7F6A;
+    --navy:#1F3A52;
+    --navy-soft:#3C5A73;
+    --stamp:#8C2F28;
+    --gold:#AD8935;
+    --line:#DBD0B7;
+    --line-strong:#C4B48C;
+    --victim:#5A6E8C;
+    --offender:#8C2F28;
+    --serif:'Noto Serif TC', serif;
+    --sans:'Noto Sans TC', sans-serif;
+    --mono:'IBM Plex Mono', monospace;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--sans);
+    line-height:1.75;
+    -webkit-font-smoothing:antialiased;
+  }
+  body::before{
+    content:"";
+    position:fixed; inset:0; z-index:0; pointer-events:none;
+    background-image:
+      repeating-linear-gradient(0deg, rgba(36,31,27,0.015) 0px, rgba(36,31,27,0.015) 1px, transparent 1px, transparent 26px),
+      radial-gradient(ellipse at top right, rgba(31,58,82,0.06), transparent 55%);
+  }
+  a{color:inherit;}
+
+  .shell{position:relative; z-index:1; display:grid; grid-template-columns:236px minmax(0,1fr); max-width:1180px; margin:0 auto;}
+  @media (max-width:900px){.shell{grid-template-columns:1fr;}}
+
+  .rail{
+    position:sticky; top:0; align-self:start; height:100vh;
+    padding:36px 0 36px 26px;
+    display:flex; flex-direction:column; gap:24px;
+    border-right:1px solid var(--line-strong);
+  }
+  @media (max-width:900px){.rail{position:static;height:auto;padding:22px 20px;border-right:none;border-bottom:1px solid var(--line-strong);flex-direction:row;flex-wrap:wrap;align-items:center;gap:12px;}}
+  .rail-tag{font-family:var(--mono); font-size:10.5px; letter-spacing:.14em; color:var(--stamp); text-transform:uppercase; border:1px solid var(--stamp); display:inline-block; padding:3px 8px; width:fit-content;}
+  .rail-title{font-family:var(--serif); font-weight:900; font-size:16.5px; line-height:1.55; max-width:190px; margin-top:4px;}
+  .rail nav{display:flex; flex-direction:column; gap:1px;}
+  @media (max-width:900px){.rail nav{flex-direction:row;flex-wrap:wrap;gap:8px 16px;}}
+  .rail nav a{display:flex; gap:9px; align-items:baseline; padding:8px 8px 8px 0; text-decoration:none; font-size:13.5px; color:var(--ink-soft); border-left:2px solid transparent;}
+  .rail nav a:hover{color:var(--navy); border-left-color:var(--navy);}
+  .rail nav a .n{font-family:var(--mono); font-size:10.5px; color:var(--navy); min-width:16px;}
+  .rail-foot{margin-top:auto; font-family:var(--mono); font-size:10px; color:var(--ink-faint); line-height:2;}
+  @media (max-width:900px){.rail-foot{display:none;}}
+
+  main{padding:0 40px 80px;}
+  @media (max-width:900px){main{padding:0 20px 60px;}}
+  @media (max-width:520px){main{padding:0 16px 44px;}}
+
+  /* hero — folder / dossier cover */
+  .hero{padding:70px 0 50px; border-bottom:1px solid var(--line-strong);}
+  .hero-tab{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:var(--mono); font-size:11.5px; letter-spacing:.12em;
+    color:var(--paper); background:var(--navy);
+    padding:6px 14px; margin-bottom:22px; text-transform:uppercase;
+  }
+  .hero h1{font-family:var(--serif); font-weight:900; font-size:clamp(30px,4.6vw,48px); line-height:1.35; margin:0 0 10px;}
+  .hero h1 .q{color:var(--stamp);}
+  .hero h2{font-family:var(--serif); font-weight:700; font-size:clamp(18px,2.2vw,24px); color:var(--navy-soft); margin:0 0 26px;}
+  .hero-byline{display:flex; gap:26px; flex-wrap:wrap; font-size:13px; color:var(--ink-faint); margin-bottom:34px;}
+  .hero-byline strong{display:block; font-family:var(--serif); font-weight:700; font-size:14.5px; color:var(--ink);}
+  .stamp-corner{
+    position:relative; display:inline-block;
+    border:2px solid var(--stamp); color:var(--stamp);
+    font-family:var(--serif); font-weight:900; font-size:13px;
+    padding:10px 20px; transform:rotate(-3deg); letter-spacing:.08em;
+    border-radius:2px;
+  }
+
+  .chapter{padding:64px 0 6px; border-bottom:1px solid var(--line-strong);}
+  .chapter:last-of-type{border-bottom:none;}
+  .chapter-head{display:flex; align-items:flex-end; gap:16px; margin-bottom:34px;}
+  .chapter-num{font-family:var(--mono); font-weight:600; font-size:14px; color:var(--navy); border:1px solid var(--navy); padding:5px 11px; border-radius:2px;}
+  .chapter-head h2{font-family:var(--serif); font-weight:900; font-size:clamp(22px,3.2vw,30px); margin:0;}
+  .chapter-sub{color:var(--ink-faint); font-size:14px; margin:-24px 0 30px;}
+
+  /* policy trio cards */
+  .policy-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin:20px 0 10px;}
+  @media (max-width:820px){.policy-grid{grid-template-columns:1fr;}}
+  .policy-card{background:var(--card); border:1px solid var(--line-strong); border-radius:3px; padding:20px 20px 22px; display:flex; flex-direction:column; gap:14px;}
+  .policy-card h3{font-family:var(--serif); font-size:15.5px; font-weight:700; color:var(--navy); margin:0; line-height:1.5;}
+  .policy-block{font-size:13px;}
+  .policy-block .lbl{display:block; font-family:var(--mono); font-size:10px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-faint); margin-bottom:6px;}
+  .policy-block.problem{color:var(--ink-soft);}
+  .policy-block.answer{color:var(--ink-soft); border-top:1px dashed var(--line-strong); padding-top:12px;}
+  .policy-block ul{margin:4px 0; padding-left:16px;}
+  .policy-block li{margin:5px 0;}
+  .policy-block mark{background:rgba(173,137,53,0.25); color:var(--gold); font-weight:700; padding:0 2px;}
+
+  /* legal definition dossier */
+  .lawbox{
+    background:var(--card); border-left:3px solid var(--navy);
+    border-top:1px solid var(--line-strong); border-right:1px solid var(--line-strong); border-bottom:1px solid var(--line-strong);
+    padding:22px 26px; margin:18px 0; border-radius:0 3px 3px 0;
+    font-size:15px; line-height:1.95;
+  }
+  .lawbox .cite{display:block; margin-top:12px; font-family:var(--mono); font-size:11px; color:var(--ink-faint);}
+  .lawbox .num{color:var(--stamp); font-weight:700;}
+
+  .element-grid{display:grid; grid-template-columns:1fr; gap:14px; margin:22px 0;}
+  .element-card{
+    display:grid; grid-template-columns:52px 1fr; gap:16px;
+    background:var(--card); border:1px solid var(--line-strong); border-radius:3px; padding:18px 20px;
+  }
+  .element-card .num{
+    font-family:var(--serif); font-weight:900; font-size:22px; color:var(--paper);
+    background:var(--navy); width:44px; height:44px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .element-card h4{margin:0 0 6px; font-family:var(--serif); font-size:16px; color:var(--navy);}
+  .element-card p{margin:6px 0; font-size:14px; color:var(--ink-soft);}
+  .element-card .sub-lbl{font-family:var(--mono); font-size:10.5px; color:var(--gold); text-transform:uppercase; letter-spacing:.08em;}
+
+  .divider-tick{display:flex; align-items:center; gap:10px; margin:36px 0 22px; color:var(--ink-faint); font-family:var(--mono); font-size:11px; letter-spacing:.1em; text-transform:uppercase;}
+  .divider-tick::before,.divider-tick::after{content:""; flex:1; height:1px; background:var(--line-strong);}
+
+  /* ===== case type block ===== */
+  .type-block{margin:0 0 56px;}
+  .type-head{display:flex; align-items:baseline; gap:12px; margin-bottom:6px; flex-wrap:wrap;}
+  .type-head .badge{font-family:var(--mono); font-size:11px; color:var(--navy); border:1px solid var(--navy); padding:2px 8px; border-radius:2px;}
+  .type-head h3{font-family:var(--serif); font-weight:900; font-size:22px; margin:0;}
+
+  .lawbox.compact{margin:12px 0 22px; padding:16px 20px; font-size:13.5px; line-height:1.8;}
+
+  /* case file */
+  .case-file{
+    background:var(--card); border:1px solid var(--line-strong); border-radius:3px;
+    padding:24px 26px 26px; position:relative; overflow:hidden;
+  }
+  .case-file::before{
+    content:""; position:absolute; top:0; left:0; width:6px; height:100%;
+    background:var(--offender);
+  }
+  .case-head{display:flex; justify-content:space-between; align-items:flex-start; gap:16px; flex-wrap:wrap; margin-bottom:18px;}
+  .case-id{font-family:var(--mono); font-size:11px; color:var(--stamp); letter-spacing:.08em;}
+  .case-court{font-size:12px; color:var(--ink-faint); margin-top:3px;}
+  .stamp{
+    font-family:var(--serif); font-weight:900; font-size:12px; color:var(--navy);
+    border:2px solid var(--navy); border-radius:50%; width:78px; height:78px;
+    display:flex; align-items:center; justify-content:center; text-align:center;
+    transform:rotate(-8deg); flex:none; line-height:1.25; padding:6px;
+  }
+  .stamp.no{color:var(--offender); border-color:var(--offender);}
+
+  .case-body{display:grid; grid-template-columns:1.1fr 1.4fr; gap:24px;}
+  @media (max-width:760px){.case-body{grid-template-columns:1fr;}}
+
+  .relation{display:flex; align-items:center; justify-content:center; gap:10px; padding:18px 10px; background:rgba(31,58,82,0.04); border:1px dashed var(--line-strong); border-radius:3px; margin-bottom:16px;}
+  .relation .role{text-align:center; font-size:12.5px;}
+  .relation .role .box{
+    width:64px; height:64px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--serif); font-weight:700; font-size:13px; color:#fff;
+    margin:0 auto 6px;
+  }
+  .relation .role.offender .box{background:var(--offender);}
+  .relation .role.victim .box{background:var(--victim);}
+  .relation .role .tag{font-family:var(--mono); font-size:10px; color:var(--ink-faint); text-transform:uppercase;}
+  .relation .arrow{font-size:20px; color:var(--ink-faint);}
+
+  .case-points{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:8px;}
+  .case-points li{font-size:13.5px; color:var(--ink-soft); padding-left:16px; position:relative;}
+  .case-points li::before{content:"–"; position:absolute; left:0; color:var(--stamp);}
+
+  .verdict{margin-top:14px; padding:12px 14px; background:rgba(140,47,40,0.06); border:1px solid rgba(140,47,40,0.25); border-radius:3px; font-size:13.5px; color:var(--ink);}
+  .verdict .lbl{display:block; font-family:var(--mono); font-size:10px; letter-spacing:.1em; text-transform:uppercase; color:var(--stamp); margin-bottom:4px;}
+  .verdict.pass{background:rgba(31,58,82,0.05); border-color:rgba(31,58,82,0.25);}
+  .verdict.pass .lbl{color:var(--navy);}
+
+  .steps{display:flex; flex-direction:column; gap:10px;}
+  .step{display:grid; grid-template-columns:30px 1fr; gap:12px; align-items:flex-start;}
+  .step .idx{
+    width:26px; height:26px; border-radius:50%; background:var(--navy); color:#fff;
+    font-family:var(--mono); font-size:12px; display:flex; align-items:center; justify-content:center; flex:none;
+  }
+  .step .txt h5{margin:0 0 3px; font-size:13.5px; font-family:var(--serif); font-weight:700; color:var(--ink);}
+  .step .txt p{margin:0; font-size:12.5px; color:var(--ink-soft);}
+  .steps-title{font-family:var(--mono); font-size:10.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-faint); margin:0 0 10px;}
+
+  .insight{margin-top:16px; padding:12px 16px; background:rgba(173,137,53,0.08); border-left:3px solid var(--gold); font-size:13px; color:var(--ink-soft); border-radius:0 3px 3px 0;}
+  .insight strong{color:var(--gold); font-family:var(--serif);}
+
+  .closing{padding:64px 0 90px; text-align:center;}
+  .closing h2{font-family:var(--serif); font-weight:900; font-size:clamp(24px,3.6vw,32px); margin:0 0 18px;}
+  .closing p{color:var(--ink-faint); font-size:13.5px; margin:0 0 30px;}
+  .final-stamp{
+    display:inline-block; font-family:var(--serif); font-weight:900; font-size:20px;
+    color:var(--paper); background:var(--navy); padding:16px 36px; letter-spacing:.06em; border-radius:2px;
+  }
+
+  ::selection{background:rgba(173,137,53,0.3);}
+  @media print{.rail{display:none;} .shell{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <aside class="rail">
+    <div>
+      <span class="rail-tag">線上教材 · 單元1</span>
+      <div class="rail-title">你被職場霸凌<br>了嗎？</div>
+    </div>
+    <nav>
+      <a href="#ch1"><span class="n">01</span>防治新制簡介</a>
+      <a href="#ch2"><span class="n">02</span>何謂職場霸凌</a>
+      <a href="#ch3"><span class="n">03</span>常見樣態與案例</a>
+      <a href="#ch4"><span class="n">04</span>不成立之情形</a>
+    </nav>
+    <div class="rail-foot">
+      講師｜鄭津津教授<br>
+      國立中正大學法律系<br>
+      勞動部職業安全衛生署
+    </div>
+  </aside>
+
+  <main>
+
+    <section class="hero">
+      <span class="hero-tab">Unit 01 · Recognizing Workplace Bullying</span>
+      <h1>你被<span class="q">職場霸凌</span>了嗎？<br>認識職場霸凌</h1>
+      <h2>從法條要件到六件真實判決，建立辨識霸凌的判斷框架</h2>
+      <div class="hero-byline">
+        <div><strong>講師</strong>鄭津津教授</div>
+        <div><strong>服務單位</strong>國立中正大學法律系</div>
+        <div><strong>主辦</strong>勞動部職業安全衛生署</div>
+      </div>
+      <span class="stamp-corner">職安法 §22-1 施行</span>
+    </section>
+
+    <!-- ============ CHAPTER 1 ============ -->
+    <section class="chapter" id="ch1">
+      <div class="chapter-head">
+        <span class="chapter-num">01</span>
+        <h2>職業安全衛生法職場霸凌防治新制簡介</h2>
+      </div>
+
+      <div class="policy-grid">
+        <div class="policy-card">
+          <h3>明確定義何謂職場霸凌</h3>
+          <div class="policy-block problem">
+            <span class="lbl">希望解決的問題</span>
+            <ul>
+              <li>職場霸凌界定不明確，<mark>認定不易</mark>。</li>
+              <li>微型及小型企業，不知如何辦理預防措施。</li>
+            </ul>
+          </div>
+          <div class="policy-block answer">
+            <span class="lbl">新法要求</span>
+            <ul>
+              <li>明確定義：勞工於勞動場所執行職務，因其事業單位人員利用<mark>職務或權勢</mark>等關係，逾越業務上必要且合理範圍，<mark>持續</mark>以冒犯、威脅、冷落、孤立或侮辱等不當言行，致其身心健康遭受危害。<mark>但情節重大者，不以持續發生為必要</mark>。</li>
+              <li>依<mark>事業單位規模</mark>，訂定不同防治措施。</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="policy-card">
+          <h3>課予雇主防治義務並明定調查處理程序</h3>
+          <div class="policy-block problem">
+            <span class="lbl">希望解決的問題</span>
+            <ul>
+              <li>提出申訴後，雇主可能<mark>消極不處理</mark>。</li>
+              <li>沒有透明的申訴調查程序，調查過程<mark>未客觀、公正及公平</mark>。</li>
+            </ul>
+          </div>
+          <div class="policy-block answer">
+            <span class="lbl">新法要求</span>
+            <ul>
+              <li>明定雇主於知悉勞工遭受職場霸凌，應<mark>立即採取有效適當措施</mark>。</li>
+              <li>規範明確的<mark>調查或協調</mark>與申復處理程序。</li>
+              <li><mark>建立通報機制</mark>，雇主於接獲申訴時及處理結果均需通報。</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="policy-card">
+          <h3>建立外部調查機制</h3>
+          <div class="policy-block problem">
+            <span class="lbl">希望解決的問題</span>
+            <ul>
+              <li>受雇主權勢霸凌，沒有外部調查機制。</li>
+            </ul>
+          </div>
+          <div class="policy-block answer">
+            <span class="lbl">新法要求</span>
+            <ul>
+              <li>建立外部救濟管道，<mark>被申訴人為最高負責人</mark>，得向地方主管機關提起申訴。</li>
+              <li>明定<mark>申訴時效</mark>；申訴人、被申訴人及受邀協助的個人或單位，應配合調查。</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CHAPTER 2 ============ -->
+    <section class="chapter" id="ch2">
+      <div class="chapter-head">
+        <span class="chapter-num">02</span>
+        <h2>何謂職場霸凌？</h2>
+      </div>
+      <p class="chapter-sub">職業安全衛生法第22條之1第1項 — 五個要件缺一不可，但情節重大者不以持續發生為必要</p>
+
+      <div class="lawbox">
+        本法所稱職場霸凌，指<span class="num">①</span>勞工於勞動場所執行職務，因其<span class="num">②</span>事業單位人員利用職務或權勢等關係<span class="num">③</span>逾越業務上必要且合理範圍，<span class="num">④</span>持續以冒犯、威脅、冷落、孤立、侮辱或其他不當之言詞或行為，<span class="num">⑤</span>致其身心健康遭受危害。但情節重大者，不以持續發生為必要。
+        <span class="cite">職業安全衛生法第22條之1第1項</span>
+      </div>
+
+      <div class="element-grid">
+        <div class="element-card">
+          <div class="num">①</div>
+          <div>
+            <h4>勞動場所</h4>
+            <span class="sub-lbl">職安法第2條第6款</span>
+            <p>指於勞動契約存續中，由雇主所提示，使勞工履行契約提供勞務之場所；自營作業者實際從事勞動之場所；及其他受工作場所負責人指揮或監督從事勞動之人員，實際從事勞動之場所。</p>
+            <p>不侷限於雇主登記的營業地點，出差途中、外派現場，甚至居家辦公皆屬之。與勞務提供密切相關、已融入工作指揮或管理過程的虛擬空間（如工作群組、電子郵件系統），縱使非上班時間，亦可能是勞動場所。</p>
+          </div>
+        </div>
+
+        <div class="element-card">
+          <div class="num">②</div>
+          <div>
+            <h4>事業單位人員利用職務或權勢等關係</h4>
+            <p><strong>事業單位人員：</strong>言行須源自組織內部成員，包含雇主、各級主管、受僱勞工及其他受工作場所負責人指揮或監督從事勞動之人員。若為顧客等組織外部第三人所為，則應適用職安法第6條第2項的職場不法侵害相關法令。</p>
+            <p><strong>職務或權勢等關係：</strong>指行為人在組織內所具有的職位、人事考核權限、指揮監督權限、資源之管理分配權限、業務上不可或缺的能力或經驗，及其他事實上足以影響他人工作條件或職場環境之關係。</p>
+          </div>
+        </div>
+
+        <div class="element-card">
+          <div class="num">③</div>
+          <div>
+            <h4>逾越業務上必要且合理範圍</h4>
+            <p><strong>必要性：</strong>應以該言行是否為執行業務所不可或缺的行動為基準判斷。例如主管要求部屬下班後處理主管的私人家務事，因與業務完全無關，難謂具有必要性。</p>
+            <p><strong>合理性：</strong>須符合比例原則。例如要求犯錯部屬繳交善後報告書具必要性，但嚴令只能手寫而禁止打字，若無正當理由則欠缺合理性。</p>
+          </div>
+        </div>
+
+        <div class="element-card">
+          <div class="num">④</div>
+          <div>
+            <h4>持續性或重大性</h4>
+            <p><strong>持續性：</strong>不當言行原則上須具持續性，反覆發生或維持長達一定期間，始可能構成職場霸凌。</p>
+            <p><strong>重大性：</strong>單一偶發的不當言行，若情節重大，則仍可能例外地構成職場霸凌。</p>
+          </div>
+        </div>
+
+        <div class="element-card">
+          <div class="num">⑤</div>
+          <div>
+            <h4>致勞工身心健康遭受危害</h4>
+            <p>不以行為對勞工造成實質具體傷害為限；「危害」中的「危」包含產生危險的情形，例如不當言行形成明顯敵意或惡劣之工作環境，可能導致勞工罹病或傷害（含生理與精神上）者，即足以認定符合本要件。</p>
+            <p>實務上宜保存就醫紀錄、心理諮商紀錄、對話紀錄、工作環境變化及證人資料，以利判斷危害與行為間之關聯。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CHAPTER 3 ============ -->
+    <section class="chapter" id="ch3">
+      <div class="chapter-head">
+        <span class="chapter-num">03</span>
+        <h2>職場霸凌之常見樣態</h2>
+      </div>
+      <p class="chapter-sub">五種樣態、五件成立判決 — 每件皆附法院字號、關係人角色與具體行為軌跡</p>
+
+      <!-- TYPE 1 -->
+      <div class="type-block">
+        <div class="type-head"><span class="badge">樣態 01</span><h3>社交排斥</h3></div>
+        <div class="lawbox compact">職場霸凌防治措施準則第2條第1款 — 對特定人刻意排擠、忽視、冷落、不讓參與必要之重要會議、事務或活動。</div>
+
+        <div class="case-file">
+          <div class="case-head">
+            <div>
+              <div class="case-id">案件 01 · 社交排斥案件</div>
+              <div class="case-court">新竹地方法院113年度勞訴字第32號民事判決</div>
+            </div>
+            <div class="stamp no">職場<br>霸凌<br>成立</div>
+          </div>
+          <div class="case-body">
+            <div>
+              <div class="relation">
+                <div class="role offender"><div class="box">主管</div><span class="tag">加害者</span></div>
+                <div class="arrow">→</div>
+                <div class="role victim"><div class="box">甲</div><span class="tag">受害者</span></div>
+              </div>
+              <ul class="case-points">
+                <li>主管在公開場合大聲斥責辱罵甲。</li>
+                <li>自行創立新群組，故意將甲排除在外，聯合其他幹部疏遠甲。</li>
+                <li>刻意不安排甲參與演出上秀及排演，長期讓甲無演出機會。</li>
+                <li>要求甲持續練習當時並無要演出的偶裝。</li>
+                <li>僅要求甲撰寫工作日誌，對其他員工則否。</li>
+                <li>要求甲之下屬不得聽從甲之指揮，削弱其領導權威。</li>
+              </ul>
+              <div class="verdict">
+                <span class="lbl">判決結果</span>
+                法院認定主管構成職場霸凌，侵害甲之人格權與工作權；雇主解僱主管係屬合法。
+              </div>
+            </div>
+            <div>
+              <p class="steps-title">霸凌行為示意</p>
+              <div class="steps">
+                <div class="step"><div class="idx">1</div><div class="txt"><h5>排除群組</h5><p>主管自行創立新群組，故意將甲排除在外，聯合其他幹部疏遠甲。</p></div></div>
+                <div class="step"><div class="idx">2</div><div class="txt"><h5>不安排正式演出</h5><p>刻意不安排甲參與演出上秀及排演，長期讓甲沒有正式演出機會。</p></div></div>
+                <div class="step"><div class="idx">3</div><div class="txt"><h5>強制撰寫工作日誌</h5><p>僅要求甲撰寫工作日誌，並要求甲持續練習當時並無要演出的偶裝。</p></div></div>
+                <div class="step"><div class="idx">4</div><div class="txt"><h5>長期孤立排擠</h5><p>要求甲之下屬不得聽從甲之指揮，削弱其領導權威，長期孤立排擠甲。</p></div></div>
+              </div>
+              <div class="insight"><strong>重點說明</strong> — 主管利用權力，透過排除、孤立、不安排工作、限制職務發揮等方式，長期使甲感到被排擠、受歧視與羞辱，身心受創，已逾社會通念上容許之範圍，構成職場霸凌。</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TYPE 2 -->
+      <div class="type-block">
+        <div class="type-head"><span class="badge">樣態 02</span><h3>職務干預</h3></div>
+        <div class="lawbox compact">職場霸凌防治措施準則第2條第2款 — 對特定人破壞或刻意阻礙其工作、利用職務刁難、刻意隱瞞資訊或提供不實資訊。</div>
+
+        <div class="case-file">
+          <div class="case-head">
+            <div>
+              <div class="case-id">案件 02 · 職務干預案件</div>
+              <div class="case-court">新北地方法院109年度勞簡上字第36號民事判決（定讞判決）</div>
+            </div>
+            <div class="stamp no">職場<br>霸凌<br>成立</div>
+          </div>
+          <div class="case-body">
+            <div>
+              <div class="relation">
+                <div class="role offender"><div class="box">公司</div><span class="tag">加害者</span></div>
+                <div class="arrow">→</div>
+                <div class="role victim"><div class="box">勞工</div><span class="tag">受害者</span></div>
+              </div>
+              <ul class="case-points">
+                <li>公司以「開發業務將縮小編制並漸漸轉型」為由，資遣解僱擔任都更開發人員之勞工。</li>
+                <li>勞工起訴確認該解僱無效，於第一審取得勝訴。</li>
+                <li>公司依第一審判決通知勞工回復原職原薪。</li>
+                <li>勞工復職後，公司僅給予一張辦公桌，桌上無任何電腦、電話、文具等執行業務所必要的設備。</li>
+                <li>勞工復職後的主要工作是在辦公室接聽電話回答地主來電有關都更業務進展之詢問，但雇主卻要求勞工必須去別人的辦公桌接聽電話。</li>
+              </ul>
+              <div class="verdict">
+                <span class="lbl">判決結果</span>
+                雇主對勞工之辦公室有不當配置之事實，顯然是想讓勞工知難而退放棄復職，已構成職場霸凌，應負損害賠償責任。
+              </div>
+            </div>
+            <div>
+              <p class="steps-title">霸凌行為示意</p>
+              <div class="steps">
+                <div class="step"><div class="idx">1</div><div class="txt"><h5>僅給予空桌</h5><p>員工復職後，公司僅給予一張辦公桌，桌上無任何電腦、電話、文具等執行業務所必要的設備。</p></div></div>
+                <div class="step"><div class="idx">2</div><div class="txt"><h5>要求至別人辦公桌接電話</h5><p>公司要求員工至別人的辦公桌接聽電話，剝奪其執行職務所必要的設備與空間。</p></div></div>
+              </div>
+              <div class="insight"><strong>重點說明</strong> — 雇主刻意剝奪勞工執行職務所必要之設備，即有可能構成職場霸凌（職務干預）。</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TYPE 3 -->
+      <div class="type-block">
+        <div class="type-head"><span class="badge">樣態 03</span><h3>權力濫用</h3></div>
+        <div class="lawbox compact">職場霸凌防治措施準則第2條第3款 — 對特定人以權力欺壓，刻意分配不合理工作目標或與能力明顯不符之工作。</div>
+
+        <div class="case-file">
+          <div class="case-head">
+            <div>
+              <div class="case-id">案件 03 · 權力濫用案件</div>
+              <div class="case-court">高雄高等行政法院109年度訴字第385號判決（經最高行政法院111年度上字第765號判決維持）</div>
+            </div>
+            <div class="stamp no">職場<br>霸凌<br>成立</div>
+          </div>
+          <div class="case-body">
+            <div>
+              <div class="relation">
+                <div class="role offender"><div class="box">甲醫師</div><span class="tag">加害者</span></div>
+                <div class="arrow">→</div>
+                <div class="role victim"><div class="box">護理人員</div><span class="tag">受害者</span></div>
+              </div>
+              <ul class="case-points">
+                <li>甲醫師因不認同護理長在會議中所陳述的內容而大聲斥責護理長。</li>
+                <li>就醫療照護之執行事項，甲醫師動輒對護理長及護理人員恫嚇脅迫要移送法辦、移送監察院。</li>
+                <li>職場霸凌申訴評議委員會認定甲醫師之行為成立職場霸凌。</li>
+                <li>甲醫師連同其他違失已累計兩大過而遭雇主免職。</li>
+              </ul>
+              <div class="verdict">
+                <span class="lbl">判決結果</span>
+                甲醫師之行為已構成職場霸凌；雇主將甲醫師予以免職係屬合法。
+              </div>
+            </div>
+            <div>
+              <p class="steps-title">霸凌行為示意</p>
+              <div class="steps">
+                <div class="step"><div class="idx">1</div><div class="txt"><h5>職務與權勢</h5><p>甲醫師對護理人員具有指揮監督之權限。</p></div></div>
+                <div class="step"><div class="idx">2</div><div class="txt"><h5>言語攻擊</h5><p>甲醫師因不認同護理長在會議中所陳述的內容而大聲斥責護理長。</p></div></div>
+                <div class="step"><div class="idx">3</div><div class="txt"><h5>恫嚇脅迫</h5><p>就醫療照護之執行事項，甲醫師動輒對護理長及護理人員恫嚇脅迫要移送法辦、移送監察院。</p></div></div>
+              </div>
+              <div class="insight"><strong>重點說明</strong> — 職場上具監督權責者，對受督導者所為之管理應合理且適當，若以不當言語加以恫嚇或脅迫即有可能構成職場霸凌。</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TYPE 4 -->
+      <div class="type-block">
+        <div class="type-head"><span class="badge">樣態 04</span><h3>名譽侵害</h3></div>
+        <div class="lawbox compact">職場霸凌防治措施準則第2條第4款 — 對特定人刻意散布其謠言或揭露隱私。</div>
+      </div>
+
+      <!-- TYPE 5 -->
+      <div class="type-block">
+        <div class="type-head"><span class="badge">樣態 05</span><h3>其他：敵意工作環境</h3></div>
+
+        <div class="case-file">
+          <div class="case-head">
+            <div>
+              <div class="case-id">案件 05 · 敵意工作環境案件</div>
+              <div class="case-court">臺灣高等法院113年度勞上字第37號民事判決（經最高法院114年度台上字第1899號裁定維持）</div>
+            </div>
+            <div class="stamp no">職場<br>霸凌<br>成立</div>
+          </div>
+          <div class="case-body">
+            <div>
+              <div class="relation">
+                <div class="role offender"><div class="box">甲</div><span class="tag">加害者</span></div>
+                <div class="arrow">→</div>
+                <div class="role victim"><div class="box">古員</div><span class="tag">受害者</span></div>
+              </div>
+              <ul class="case-points">
+                <li>甲對古員，汙穢水晶球、強制關機、倒髒液進紙袋。</li>
+                <li>公司組成專案小組調查此事。</li>
+                <li>公司將甲調職為文字記者。</li>
+                <li>法院認為公司調職行為合法。</li>
+                <li>後續甲未遵從調職，公司以連續曠職為由將甲解僱係屬合法。</li>
+              </ul>
+              <div class="verdict">
+                <span class="lbl">判決結果</span>
+                法院認為公司調職為文字記者之措施合法，後續解僱行為亦屬合法。
+              </div>
+            </div>
+            <div>
+              <p class="steps-title">霸凌行為示意</p>
+              <div class="steps">
+                <div class="step"><div class="idx">1</div><div class="txt"><h5>汙穢水晶球</h5><p>甲對古員的水晶球反覆污損、破壞。</p></div></div>
+                <div class="step"><div class="idx">2</div><div class="txt"><h5>強制關機</h5><p>甲強制關閉古員正在使用的電腦。</p></div></div>
+                <div class="step"><div class="idx">3</div><div class="txt"><h5>倒髒液進紙袋</h5><p>甲將不明髒液倒入紙袋中，造成古員的物品汙損及困擾。</p></div></div>
+                <div class="step"><div class="idx">4</div><div class="txt"><h5>形成敵意工作環境</h5><p>上述行為使古員長期處於敵意工作環境，身心受影響。</p></div></div>
+              </div>
+              <div class="insight"><strong>重點說明</strong> — 甲持續故意污損、變動古員置於辦公桌上物品，使古員處於具有敵意及不友善之工作環境，對古員造成財產上及精神上不法侵害，已構成職場霸凌。</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CHAPTER 4 ============ -->
+    <section class="chapter" id="ch4">
+      <div class="chapter-head">
+        <span class="chapter-num">04</span>
+        <h2>不成立職場霸凌之情形</h2>
+      </div>
+      <div class="type-block">
+        <div class="type-head"><span class="badge">情形</span><h3>業務上必要且合理之言行</h3></div>
+
+        <div class="case-file">
+          <div class="case-head">
+            <div>
+              <div class="case-id">案件 06 · 業務上必要且合理之言行（不成立職場霸凌）</div>
+              <div class="case-court">臺灣高等法院112年度勞上字第98號民事判決（經最高法院113年度台上字第1590號裁定維持）</div>
+            </div>
+            <div class="stamp">職場<br>霸凌<br>不成立</div>
+          </div>
+          <div class="case-body">
+            <div>
+              <div class="relation">
+                <div class="role offender"><div class="box">主管</div><span class="tag">被申訴人</span></div>
+                <div class="arrow">→</div>
+                <div class="role victim"><div class="box">勞工</div><span class="tag">申訴人</span></div>
+              </div>
+              <ul class="case-points">
+                <li>勞工多次未經核准離開工作崗位或不到勤。</li>
+                <li>勞工張貼紙張遮蔽辦公室透明隔板，讓主管難以肉眼觀察勞工是否離開座位。</li>
+                <li>主管多次指示勞工須搬遷辦公室座位，但勞工不服從搬遷命令。</li>
+                <li>主管強制搬遷勞工之電腦時與勞工發生肢體衝突。</li>
+                <li>雇主已透過記過、申誡及減薪調職等非解僱手段，促使勞工改善工作態度及工作表現，但勞工仍未有改善。</li>
+                <li>雇主將勞工予以解僱。</li>
+              </ul>
+              <div class="verdict pass">
+                <span class="lbl">判決結果</span>
+                主管之管理與指導具有業務上之必要性與合理性，尚難認有職場霸凌；雇主對勞工所為之解僱符合解僱最後手段性，應屬合法。
+              </div>
+            </div>
+            <div>
+              <p class="steps-title">必要且合理之管理行為示意</p>
+              <div class="steps">
+                <div class="step"><div class="idx">1</div><div class="txt"><h5>糾正出勤缺失</h5><p>勞工多次違反出勤規定，主管提醒並要求勞工遵守出勤規定。</p></div></div>
+                <div class="step"><div class="idx">2</div><div class="txt"><h5>要求移除遮蔽物</h5><p>勞工張貼紙張遮蔽辦公室隔板，主管要求移除，避免遮蔽透明隔板。</p></div></div>
+                <div class="step"><div class="idx">3</div><div class="txt"><h5>要求更換座位</h5><p>主管多次要求勞工更換座位，以利業務管理，惟勞工仍不配合。</p></div></div>
+                <div class="step"><div class="idx">4</div><div class="txt"><h5>依權限搬遷座位</h5><p>主管依業務管理權限強制搬遷勞工座位，雙方因此發生衝突。</p></div></div>
+              </div>
+              <div class="insight"><strong>重點說明</strong> — 主管的管理與指導行動是為了糾正勞工的勤務缺失，內容合理且未逾越必要程度，因此不成立職場霸凌。</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="closing">
+      <h2>課程結束</h2>
+      <p>你被職場霸凌了嗎？認識職場霸凌 — 鄭津津教授／國立中正大學法律系｜勞動部職業安全衛生署</p>
+      <div class="final-stamp">認識霸凌・保護自己・尊重他人</div>
+    </section>
+
+  </main>
+</div>
+</body>
+</html>
