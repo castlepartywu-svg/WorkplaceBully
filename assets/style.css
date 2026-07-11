@@ -163,28 +163,27 @@ section{padding:72px 0;}
 .info-card h3{font-size:16.5px;margin-bottom:10px;}
 .info-card p{font-size:14px;color:#4d555a;margin-bottom:0;}
 
-.video-card{
-  text-decoration:none;
+.video-embed-card{padding:16px 16px 20px;}
+.video-frame{
   position:relative;
-  transition:transform .15s, box-shadow .2s, border-color .2s;
+  width:100%;
+  padding-top:56.25%;
+  background:#000;
+  border-radius:var(--radius);
+  overflow:hidden;
+  margin-bottom:14px;
 }
-.video-card:hover{
-  transform:translateY(-2px);
-  box-shadow:0 6px 16px rgba(18,39,51,.10);
-  border-top-color:var(--gold);
+.video-frame iframe{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  border:0;
 }
-.video-play{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  width:34px;
-  height:34px;
-  border-radius:50%;
-  background:var(--navy-deep);
-  color:#fff;
-  font-size:13px;
-  margin-bottom:12px;
-}
+.video-embed-card h3{font-size:15.5px;margin-bottom:6px;}
+.video-embed-card p{font-size:13px;color:#4d555a;margin-bottom:0;}
+.video-embed-card p a{color:var(--teal);font-weight:700;text-decoration:none;margin-left:6px;}
+.video-embed-card p a:hover{text-decoration:underline;}
 
 /* ---------- timeline ---------- */
 .timeline{
