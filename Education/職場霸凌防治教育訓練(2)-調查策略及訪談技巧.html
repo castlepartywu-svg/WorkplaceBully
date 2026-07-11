@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>職場霸凌防治教育訓練（2）｜調查策略及訪談技巧</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;600;700;900&family=Noto+Sans+TC:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#EFEAE0;
+  --paper-card:#F8F5EC;
+  --paper-alt:#E4DCC5;
+  --ink:#211E1A;
+  --ink-soft:#57534A;
+  --navy:#1B3A54;
+  --navy-soft:#345170;
+  --seal:#9C2B2B;
+  --seal-soft:#B85555;
+  --brass:#A07A32;
+  --teal:#3E6B5E;
+  --line:#CFC3A3;
+  --line-soft:#DED4B9;
+  --radius:2px;
+  --serif:'Noto Serif TC', serif;
+  --sans:'Noto Sans TC', sans-serif;
+  --mono:'IBM Plex Mono', monospace;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto;}
+  *{animation-duration:0.01ms !important; transition-duration:0.01ms !important;}
+}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--sans);
+  line-height:1.75;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:inherit;}
+body::before{
+  content:"";
+  position:fixed; inset:0;
+  background-image:
+    repeating-linear-gradient(0deg, rgba(0,0,0,0.015) 0px, rgba(0,0,0,0.015) 1px, transparent 1px, transparent 3px);
+  pointer-events:none;
+  z-index:0;
+}
+.shell{
+  display:grid;
+  grid-template-columns: 264px 1fr;
+  max-width:1240px;
+  margin:0 auto;
+  position:relative;
+  z-index:1;
+}
+@media (max-width: 900px){ .shell{grid-template-columns: 1fr;} }
+.toc{
+  position:sticky; top:0; align-self:start; height:100vh; overflow-y:auto;
+  padding:38px 20px 40px 28px; border-right:1px solid var(--line);
+}
+@media (max-width: 900px){
+  .toc{position:relative; height:auto; border-right:none; border-bottom:1px solid var(--line); padding:24px 20px;}
+}
+.toc-seal{
+  width:52px; height:52px; border-radius:50%;
+  border:1.5px solid var(--teal); color:var(--teal);
+  display:flex; align-items:center; justify-content:center;
+  font-family:var(--serif); font-weight:700; font-size:17px;
+  margin-bottom:14px; transform:rotate(-6deg);
+}
+.toc-title{font-family:var(--serif); font-weight:700; font-size:15px; color:var(--navy); margin:0 0 2px; letter-spacing:0.02em;}
+.toc-sub{font-size:11.5px; color:var(--ink-soft); margin:0 0 24px; font-family:var(--mono); letter-spacing:0.03em;}
+.toc-list{list-style:none; margin:0; padding:0; border-top:1px solid var(--line-soft);}
+.toc-list li{border-bottom:1px solid var(--line-soft);}
+.toc-list a{display:flex; gap:10px; align-items:baseline; padding:11px 4px; text-decoration:none; font-size:13.5px; color:var(--ink-soft); transition:color .15s ease, padding-left .15s ease;}
+.toc-list a:hover{color:var(--teal); padding-left:6px;}
+.toc-num{font-family:var(--mono); font-size:11px; color:var(--brass); flex-shrink:0; padding-top:1px;}
+
+main{padding:0 0 80px;}
+.hero{padding:64px 56px 40px; border-bottom:1px solid var(--line); position:relative;}
+@media (max-width:640px){.hero{padding:44px 24px 32px;}}
+.hero-eyebrow{font-family:var(--mono); font-size:12px; letter-spacing:0.14em; color:var(--teal); text-transform:uppercase; margin:0 0 18px; display:flex; align-items:center; gap:10px;}
+.hero-eyebrow::before{content:""; width:26px; height:1px; background:var(--teal); display:inline-block;}
+.hero h1{font-family:var(--serif); font-weight:900; font-size:clamp(30px, 4.4vw, 46px); line-height:1.28; color:var(--navy); margin:0 0 18px;}
+.hero h1 em{font-style:normal; color:var(--seal);}
+.hero p.lead{max-width:640px; font-size:16px; color:var(--ink-soft); margin:0 0 26px;}
+.hero-meta{display:flex; flex-wrap:wrap; gap:28px; font-size:13px; color:var(--ink-soft); font-family:var(--mono);}
+.hero-meta strong{color:var(--navy); font-family:var(--sans); font-weight:600;}
+
+section.block{padding:52px 56px; border-bottom:1px solid var(--line);}
+@media (max-width:640px){section.block{padding:40px 24px;}}
+section.block:target{animation:flash 1.4s ease;}
+@keyframes flash{ from{background:var(--paper-alt);} to{background:transparent;} }
+.block-head{display:flex; align-items:flex-start; gap:18px; margin-bottom:28px;}
+.stamp{
+  flex-shrink:0; width:46px; height:46px; border-radius:50%;
+  border:1.5px solid var(--teal); color:var(--teal);
+  font-family:var(--mono); font-weight:600; font-size:13px;
+  display:flex; align-items:center; justify-content:center; text-align:center; line-height:1.1;
+}
+.block-head h2{font-family:var(--serif); font-weight:700; font-size:clamp(21px,2.6vw,27px); color:var(--navy); margin:2px 0 0;}
+.block-head .cite{font-family:var(--mono); font-size:12px; color:var(--brass); display:block; margin-top:5px;}
+
+.card{background:var(--paper-card); border:1px solid var(--line); border-radius:var(--radius); padding:22px 24px;}
+.card + .card{margin-top:14px;}
+.grid2{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+.grid3{display:grid; grid-template-columns:repeat(3,1fr); gap:16px;}
+.grid4{display:grid; grid-template-columns:repeat(4,1fr); gap:14px;}
+@media (max-width:760px){.grid2,.grid3,.grid4{grid-template-columns:1fr;}}
+
+.tag{display:inline-block; font-family:var(--mono); font-size:11px; color:var(--navy); background:var(--paper-alt); border:1px solid var(--line); padding:2px 8px; border-radius:20px; margin-bottom:10px;}
+ul.plain{margin:0; padding-left:20px;}
+ul.plain li{margin-bottom:9px;}
+ul.plain li::marker{color:var(--seal);}
+.definition{border-left:3px solid var(--seal); padding:6px 0 6px 22px; font-size:16px; color:var(--ink); margin:0 0 20px;}
+.definition b{color:var(--seal); font-weight:700;}
+.definition .faded{color:#B7A98A;}
+
+table{width:100%; border-collapse:collapse; font-size:13.5px; background:var(--paper-card);}
+thead th{background:var(--navy); color:var(--paper); font-family:var(--sans); font-weight:600; text-align:left; padding:11px 14px; font-size:12.5px;}
+tbody td, tbody th{padding:10px 14px; border-bottom:1px solid var(--line-soft); vertical-align:top;}
+tbody th{text-align:left; font-weight:600; color:var(--navy); white-space:nowrap;}
+tbody tr:last-child td, tbody tr:last-child th{border-bottom:none;}
+.table-wrap{overflow-x:auto; border:1px solid var(--line); border-radius:var(--radius);}
+
+.note{font-size:12.5px; color:var(--ink-soft); border-top:1px dashed var(--line); margin-top:16px; padding-top:12px;}
+.note b{color:var(--brass);}
+.callout{background:var(--navy); color:var(--paper); padding:16px 20px; border-radius:var(--radius); font-size:13.5px; margin-top:16px; line-height:1.65;}
+.callout b{color:#E8C97A;}
+h3.sub{font-family:var(--sans); font-weight:700; font-size:14.5px; color:var(--navy); margin:0 0 10px; display:flex; align-items:center; gap:8px;}
+h3.sub::before{content:""; width:5px; height:5px; background:var(--seal); border-radius:50%; display:inline-block;}
+
+/* pillar diagram */
+.pillars{display:flex; flex-direction:column; gap:0; margin-bottom:6px;}
+.pillar-row{display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:10px;}
+@media (max-width:640px){.pillar-row{grid-template-columns:1fr;}}
+.pillar{
+  background:var(--paper-alt); border:1px solid var(--line);
+  padding:22px 14px; text-align:center; font-weight:600; font-size:14px; color:var(--navy);
+}
+.pillar.light{background:#F3ECD8;}
+.foundation{
+  background:var(--brass); color:var(--paper);
+  text-align:center; padding:12px; font-weight:600; font-size:13.5px; letter-spacing:0.05em;
+}
+
+/* speech / script card */
+.script{
+  background:#FBFAF5; border:1px dashed var(--brass);
+  padding:18px 20px; font-size:13.5px; color:var(--ink); line-height:1.9;
+  position:relative; margin-top:10px;
+}
+.script::before{
+  content:"訪談腳本";
+  position:absolute; top:-11px; left:16px;
+  background:var(--paper); padding:0 8px;
+  font-family:var(--mono); font-size:11px; color:var(--brass);
+}
+.blank{border-bottom:1px solid var(--ink-soft); padding:0 3px; color:var(--ink-soft);}
+
+/* gantt */
+.gantt{overflow-x:auto;}
+.gantt table{min-width:640px;}
+.gbar{height:8px; background:var(--seal); border-radius:4px; margin:0 auto;}
+
+/* venn-ish comparison */
+.compare3{display:grid; grid-template-columns:repeat(3,1fr); gap:14px;}
+@media (max-width:760px){.compare3{grid-template-columns:1fr;}}
+.compare-card{border:1px solid var(--line); background:var(--paper-card); padding:18px;}
+.compare-card .head{
+  font-family:var(--sans); font-weight:700; font-size:13.5px; color:var(--paper);
+  background:var(--brass); display:inline-block; padding:4px 12px; border-radius:20px; margin-bottom:12px;
+}
+.compare-card.alt .head{background:var(--teal);}
+.compare-card.main .head{background:var(--seal);}
+
+footer{padding:50px 56px 70px; text-align:center;}
+footer .seal-big{width:64px; height:64px; margin:0 auto 16px; border-radius:50%; border:1.5px solid var(--teal); color:var(--teal); display:flex; align-items:center; justify-content:center; font-family:var(--serif); font-weight:700; font-size:20px; transform:rotate(-6deg);}
+footer p{font-family:var(--serif); color:var(--navy); font-size:18px; margin:0;}
+footer span{display:block; font-family:var(--mono); font-size:11.5px; color:var(--ink-soft); margin-top:10px;}
+</style>
+</head>
+<body>
+
+<div class="shell">
+  <nav class="toc">
+    <div class="toc-seal">訪談</div>
+    <p class="toc-title">職場霸凌防治<br>教育訓練（2）</p>
+    <p class="toc-sub">調查策略及訪談技巧・目錄</p>
+    <ul class="toc-list">
+      <li><a href="#sec1"><span class="toc-num">一</span>受理申訴案</a></li>
+      <li><a href="#sec2"><span class="toc-num">二</span>案件的問題分析</a></li>
+      <li><a href="#sec3"><span class="toc-num">三</span>訪談前會前會</a></li>
+      <li><a href="#sec4"><span class="toc-num">四</span>訪談設置與流程</a></li>
+      <li><a href="#sec5"><span class="toc-num">五</span>小結</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <div class="hero">
+      <p class="hero-eyebrow">職場霸凌防治教育訓練（2）</p>
+      <h1>調查策略及訪談技巧<br><em>——從受理到訪談的實務指引</em></h1>
+      <p class="lead">承接第一堂課的法規基礎，本篇聚焦調查小組成員的實務職能：如何分析案件、籌組內外部委員、準備訪談，以及在訪談現場掌握設置與流程，做出禁得起檢驗的調查。</p>
+      <div class="hero-meta">
+        <div><strong>主辦機關</strong><br>勞動部職業安全衛生署</div>
+        <div><strong>主講</strong><br>林愷庭／臨床心理師</div>
+        <div><strong>平台</strong><br>職業安全衛生數位學習平台</div>
+      </div>
+    </div>
+
+    <!-- 核心職能 overview -->
+    <section class="block">
+      <div class="block-head">
+        <div class="stamp">職能</div>
+        <div>
+          <h2>申訴事件調查小組成員的核心職能</h2>
+          <span class="cite">貫穿全篇的四項基礎能力</span>
+        </div>
+      </div>
+      <div class="pillars">
+        <div class="pillar-row">
+          <div class="pillar light">訪談</div>
+          <div class="pillar">事實認定及理由</div>
+          <div class="pillar">調查報告</div>
+        </div>
+        <div class="foundation">法　規</div>
+      </div>
+      <p class="note">以法規為地基，透過訪談蒐集事證，形成事實認定及理由，最終產出可支撐決定的調查報告——這四項是貫穿本篇所有內容的核心骨架。</p>
+    </section>
+
+    <!-- 01 -->
+    <section class="block" id="sec1">
+      <div class="block-head">
+        <div class="stamp">一</div>
+        <div>
+          <h2>受理申訴案</h2>
+          <span class="cite">誰來調查、什麼情況不受理</span>
+        </div>
+      </div>
+
+      <h3 class="sub">外部委員與內部委員提供的服務</h3>
+      <div class="compare3">
+        <div class="compare-card">
+          <span class="head">外部委員・核心服務</span>
+          <ul class="plain" style="font-size:13.5px;">
+            <li>調查知能（使做法符合規定）</li>
+            <li>調查獨立性</li>
+          </ul>
+        </div>
+        <div class="compare-card alt">
+          <span class="head">外部委員・特殊服務</span>
+          <ul class="plain" style="font-size:13.5px;">
+            <li>各類型法律／其他專業意見</li>
+            <li>身心健康的危機處置</li>
+          </ul>
+        </div>
+        <div class="compare-card main">
+          <span class="head">內部委員</span>
+          <p style="font-size:13.5px; margin:0 0 8px;">以達成預防及改善職場霸凌現象為目標，是調查過程中的<b>內部角色</b>（例如：規劃、訊息提供……）。</p>
+        </div>
+      </div>
+
+      <h3 class="sub" style="margin-top:26px;">申訴不予受理的狀況</h3>
+      <div class="card">
+        <p style="font-size:13.5px; margin:0 0 10px;">有下列情形之一者，雇主得<b style="color:var(--seal);">不予受理</b>：</p>
+        <ul class="plain" style="font-size:13.5px; columns:2; column-gap:24px;">
+          <li>非屬本法第22條之1第1項所稱職場霸凌事項。</li>
+          <li>無具體之內容。</li>
+          <li>申訴人未具真實姓名或足以辨別其身分之資訊。</li>
+          <li>同一事件已不受理或已作成終局實體處理。</li>
+          <li>申訴事件已撤回申訴。</li>
+          <li>已逾申訴期限。</li>
+        </ul>
+      </div>
+
+      <h3 class="sub" style="margin-top:26px;">職場霸凌法治化後的定義</h3>
+      <p class="definition">
+        ……本法所稱職場霸凌，指勞工於勞動場所執行職務，<span class="faded">因事業單位人員利用職務或權勢等關係，逾越業務上必要且合理範圍，持續以冒犯、威脅、冷落、孤立、侮辱或其他不當言詞或行為</span>，致其身心健康遭受危害。但情節重大者，不以持續發生為必要。
+      </p>
+      <div class="callout"><b>淺色的內容字部分均為實質的判斷，調查後才會知道。</b>——定義中大部分要件，都必須透過調查才能確認是否成立，這正是調查小組存在的意義。</div>
+
+      <h3 class="sub" style="margin-top:26px;">看得到的危害，比看不見的好</h3>
+      <div class="card">
+        <ul class="plain" style="font-size:13.5px;">
+          <li>感謝同仁願意告訴我們問題，讓我們有機會為同仁處理。</li>
+          <li>申訴人在決定要不要申訴的時候，也需要同時承擔申訴人的角色與責任，<b>依申訴人的意願為依據</b>。</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 02 -->
+    <section class="block" id="sec2">
+      <div class="block-head">
+        <div class="stamp">二</div>
+        <div>
+          <h2>案件的問題分析</h2>
+          <span class="cite">開始調查前，先看懂這是什麼問題</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3 class="sub">案件的基本分析（四個起手式問題）</h3>
+        <ul class="plain" style="font-size:13.5px;">
+          <li>這是誰對誰的申訴，與優勢地位有沒有關係？</li>
+          <li>爭議事件的核心問題是什麼？</li>
+          <li>這個問題要找外部委員，找誰會比較適合，可以解決我的問題？</li>
+          <li>這個問題要找內部委員，找誰會比較適合？</li>
+        </ul>
+      </div>
+
+      <h3 class="sub" style="margin-top:24px;">優勢地位關係（職級）</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>被申訴人 ＼ 申訴人</th><th>管理職</th><th>非管理職</th></tr></thead>
+          <tbody>
+            <tr><th>管理職</th><td>管理職申訴管理職 (1)</td><td>非管理職申訴管理職 (3)</td></tr>
+            <tr><th>非管理職</th><td>管理職申訴非管理職 (2)</td><td>非管理職申訴非管理職 (1)</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note">職級落點不同，案件的權力結構與調查切入角度也不同——這是判斷「誰對誰」的第一步。</p>
+
+      <h3 class="sub" style="margin-top:26px;">爭議事件的核心（三種樣態）</h3>
+      <div class="grid3">
+        <div class="card"><h3 class="sub">疑似違法行為</h3><p style="font-size:13px; color:var(--ink-soft); margin:0;">涉及名譽權、個人資料保護等法律議題。</p></div>
+        <div class="card"><h3 class="sub">管理風格或管理困難</h3><p style="font-size:13px; color:var(--ink-soft); margin:0;">主管溝通方式、部屬配合度引發的爭議。</p></div>
+        <div class="card"><h3 class="sub">社會心理危害議題</h3><p style="font-size:13px; color:var(--ink-soft); margin:0;">當事人已需要心理健康協助或危機處置。</p></div>
+      </div>
+
+      <h3 class="sub" style="margin-top:26px;">常見的疑似違法事項</h3>
+      <div class="card">
+        <p style="font-size:13.5px; margin:0 0 12px;"><b>名譽權相關</b>、<b>個人資料保護相關</b>——常見於言語衝突類申訴，實務上言語內容是否構成公然侮辱或損害名譽，須個案判斷。</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>罵人內容</th><th>判賠預估金額</th><th>法律分析</th></tr></thead>
+            <tbody>
+              <tr><td>幹</td><td>0</td><td>台語發語詞不構成公然侮辱</td></tr>
+              <tr><td>更年期到了</td><td>4,800</td><td>涉及個人私事，被判刑公然侮辱</td></tr>
+              <tr><td>賤貨</td><td>6,000</td><td>指控對方犯罪行為</td></tr>
+              <tr><td>米蟲</td><td>7,500</td><td>具有明顯侮辱性的言論</td></tr>
+              <tr><td>王八蛋</td><td>8,000</td><td>涉及具體人名，造成名譽損害</td></tr>
+              <tr><td>不要臉的賤東西</td><td>9,000</td><td>具有明顯侮辱性的言論</td></tr>
+              <tr><td>你去吃屎啦</td><td>4,500</td><td>言語造成對方身心受創，需要醫療護理</td></tr>
+              <tr><td>敗類</td><td>9,000</td><td>言論使對方人格受損</td></tr>
+              <tr><td>智障</td><td>4,500</td><td>使用具有歧視意味的詞語</td></tr>
+              <tr><td>賤人就是矯情</td><td>6,000</td><td>貶低他人身份，造成心理傷害</td></tr>
+              <tr><td>頭殼裝屎</td><td>9,000</td><td>言論對他人造成精神折磨</td></tr>
+              <tr><td>白痴</td><td>7,500</td><td>涉及對他人家庭和個人品德的侮辱</td></tr>
+              <tr><td>婊子</td><td>5,000</td><td>對對方身份或性格的嚴重侮辱</td></tr>
+              <tr><td>下流</td><td>6,000</td><td>使用具有侮辱性的詞語</td></tr>
+              <tr><td>幹X娘</td><td>7,500</td><td>具有極大的侮辱性，造成心理傷害</td></tr>
+              <tr><td>死番仔</td><td>9,000</td><td>涉及種族歧視的言論</td></tr>
+              <tr><td>人渣公務員</td><td>9,000</td><td>公然侮辱公職人員，造成精神折磨</td></tr>
+              <tr><td>神經病</td><td>4,500</td><td>使用侮辱性詞語，對對方造成精神傷害</td></tr>
+              <tr><td>特殊性關係</td><td>6,000</td><td>使用極度惡劣言語，需公開道歉</td></tr>
+              <tr><td>滾蛋</td><td>7,500</td><td>具有明顯的貶低性，影響社會風氣</td></tr>
+              <tr><td>笨蛋</td><td>5,000</td><td>侮辱性言論，造成對方心理不適</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="note">資料引用：law004580.com.tw／新聞分析（判賠金額僅為該案例估算，非固定標準，實際須依個案判斷）。</p>
+      </div>
+
+      <div class="grid2" style="margin-top:16px;">
+        <div class="card">
+          <h3 class="sub">管理風格或管理困難</h3>
+          <ul class="plain" style="font-size:13.5px;">
+            <li>主管溝通的方式，容易讓部屬有<b>敵意知覺</b>。</li>
+            <li>主管在執行管理職責上碰到難以配合的部屬，透過<b>申訴尋求協助</b>。</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3 class="sub">社會心理危害</h3>
+          <ul class="plain" style="font-size:13.5px;">
+            <li>申訴人已在心理健康面向上需要協助，包括各類型危機處置。</li>
+            <li>其他部屬都有類似的經驗，且其他一般人在相同環境下都有可能有相同遭遇。</li>
+          </ul>
+        </div>
+      </div>
+
+      <h3 class="sub" style="margin-top:26px;">外部調查小組成員要找誰？</h3>
+      <div class="card">
+        <p style="font-size:13px; color:var(--ink-soft); margin:0 0 10px;">依「職場霸凌調查專業人士培訓及專業人才資料庫建置要點」，具下列資格者可列入外部人才庫：</p>
+        <ul class="plain" style="font-size:13.5px;">
+          <li>執業律師、臨床心理師或諮商心理師。</li>
+          <li>現任本部、地方主管機關勞資爭議仲裁委員或勞資爭議調解委員。</li>
+          <li>現任教育部審定合格之大專校院講師以上職級，並教授職業安全衛生、勞資關係、人力資源管理、心理或法律相關課程達三年以上。</li>
+          <li>曾任或現任勞工行政或勞動檢查工作達三年以上。</li>
+          <li>具勞工健康保護規則所定勞工健康服務醫師、護理人員資格，且從事勞工健康服務工作達三年以上。</li>
+        </ul>
+      </div>
+
+      <h3 class="sub" style="margin-top:26px;">內部調查小組成員要找誰？</h3>
+      <div class="grid2">
+        <div class="card">
+          <h3 class="sub">內部委員的功能</h3>
+          <ul class="plain" style="font-size:13.5px;">
+            <li>人資／作業單位／職安衛</li>
+            <li>功能</li>
+            <li>獨立性考量</li>
+          </ul>
+        </div>
+        <div class="card">
+          <ul class="plain" style="font-size:13.5px;">
+            <li>熟悉內部人事管理規則（行政規則：請假、座位安排等等）</li>
+            <li>熟悉作業背景脈絡的作業標準（定義必要之手段）</li>
+            <li>熟悉公司內可執行的保護措施</li>
+            <li>熟悉公司內可執行的訓練措施</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 03 -->
+    <section class="block" id="sec3">
+      <div class="block-head">
+        <div class="stamp">三</div>
+        <div>
+          <h2>訪談前會前會</h2>
+          <span class="cite">把訪談前該備妥的事都對齊</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3 class="sub">訪談前準備事項（或會前會）</h3>
+        <ul class="plain" style="font-size:13.5px;">
+          <li>申訴書（及各類文件）</li>
+          <li>本次調查小組成員</li>
+          <li>擬問稿及工作分配</li>
+          <li>訪談計畫（人員、時間、地點）</li>
+        </ul>
+      </div>
+
+      <div class="grid2" style="margin-top:14px;">
+        <div class="card">
+          <h3 class="sub">申訴書載明事項</h3>
+          <p style="font-size:13.5px;">申訴人得以言詞、電子郵件或書面提出申訴。以言詞或電子郵件為之者，受理之人員或單位應作成紀錄，並向申訴人朗讀或使閱覽，確認其內容無誤。前項紀錄應由申訴人<b>簽名或蓋章</b>，並載明：</p>
+          <ul class="plain" style="font-size:13.5px;">
+            <li>申訴人姓名、服務單位及職稱、住居所、聯絡電話及申訴日期。</li>
+            <li>有法定代理人或委任代理人者，其姓名、住居所、聯絡電話；委任者，並應檢附委任書。</li>
+            <li>申訴之事實內容及相關證據。</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3 class="sub">其他建議一起準備的文件</h3>
+          <ul class="plain" style="font-size:13.5px;">
+            <li>事業單位的職場霸凌／不法侵害防治相關作業辦法</li>
+            <li>（與前述作業辦法相連結的）事業單位的人事管理規則／人事業務手冊</li>
+            <li><b>與本次爭議事件背景相關的作業標準文件</b></li>
+          </ul>
+        </div>
+      </div>
+
+      <h3 class="sub" style="margin-top:26px;">調查小組成員（事業單位可組建的專業組合）</h3>
+      <div class="grid3">
+        <div class="card"><h3 class="sub">律師</h3><p style="font-size:13px; color:var(--ink-soft); margin:0;">專長：職安法規遵循、職場霸凌行為對焦</p></div>
+        <div class="card"><h3 class="sub">醫事人員（醫師、護理師、心理師）</h3><p style="font-size:13px; color:var(--ink-soft); margin:0;">專長：身心健康關懷、危機處置</p></div>
+        <div class="card"><h3 class="sub">其他各類專業人員</h3><p style="font-size:13px; color:var(--ink-soft); margin:0;">依案件性質彈性納入。</p></div>
+      </div>
+
+      <h3 class="sub" style="margin-top:26px;">建議討論分工的事項舉例</h3>
+      <div class="card">
+        <ul class="plain" style="font-size:13.5px;">
+          <li>擬問：有沒有需要寫、建議由哪位小組成員主導撰寫</li>
+          <li>訪談過程：哪位小組成員開場、主導發問</li>
+          <li>訪談紀錄：哪位小組成員紀錄、如何記錄</li>
+          <li>調查小組會議記錄（若有）：哪位小組成員紀錄、如何記錄</li>
+          <li>調查報告：哪位小組成員擬稿撰寫</li>
+        </ul>
+        <div class="callout">分工涉及資源分配及調查預期，建議由<b>事業單位主導</b>，外部調查小組成員配合。</div>
+      </div>
+
+      <h3 class="sub" style="margin-top:26px;">訪談計畫</h3>
+      <div class="card">
+        <ul class="plain" style="font-size:13.5px;">
+          <li><b>申訴人要比被申訴人先訪。</b>事件是跟著人走，確定本案件申訴的對象、申訴範圍；複數申訴人亦同。</li>
+          <li><b>關係人：看訪的用意。</b>申訴人提到「那個XXX也有過類似的遭遇」，有可能會轉成申訴人，建議先訪；若提到「XXX有看到的」是作為佐證資料，可以等被申訴人訪完，如有不一致的地方再一起處理。</li>
+          <li><b>地點：</b>一個安靜不受打擾的地點。</li>
+          <li><b>時間：</b>如果沒有想法，建議初步先以一小時為原則來增減。</li>
+        </ul>
+      </div>
+
+      <h3 class="sub" style="margin-top:26px;">調查進度預劃</h3>
+      <p style="font-size:13.5px; color:var(--ink-soft); margin:0 0 12px;">訪談日期（把人聚集起來）<b style="color:var(--brass);">是能不能在時間內完成調查的關鍵</b>。</p>
+      <div class="gantt table-wrap">
+        <table>
+          <thead>
+            <tr><th>工項</th><th>1週</th><th>2週</th><th>3週</th><th>4週</th><th>5週</th><th>6週</th><th>7週</th><th>8週</th><th>9週</th></tr>
+          </thead>
+          <tbody>
+            <tr><th>申訴受理與初步評估</th><td><div class="gbar" style="width:70%;"></div></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><th>成立調查小組</th><td></td><td><div class="gbar" style="width:60%;"></div></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><th>資料蒐集與訪談</th><td></td><td></td><td><div class="gbar" style="width:100%;"></div></td><td><div class="gbar" style="width:60%;"></div></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><th>調查分析與報告撰寫</th><td></td><td></td><td></td><td></td><td><div class="gbar" style="width:100%;"></div></td><td><div class="gbar" style="width:60%;"></div></td><td></td><td></td><td></td></tr>
+            <tr><th>審議與處理方案擬定</th><td></td><td></td><td></td><td></td><td></td><td></td><td><div class="gbar" style="width:100%;"></div></td><td></td><td></td></tr>
+            <tr><th>結果通知與後續追蹤</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td><div class="gbar" style="width:100%;"></div></td><td><div class="gbar" style="width:40%;"></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 04 -->
+    <section class="block" id="sec4">
+      <div class="block-head">
+        <div class="stamp">四</div>
+        <div>
+          <h2>訪談設置與流程</h2>
+          <span class="cite">從座位到問句，都是訪談的一部分</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3 class="sub">設置</h3>
+        <ul class="plain" style="font-size:13.5px;">
+          <li><b>座位安排：</b>環境、誰坐哪……</li>
+          <li><b>流程：</b>要不要自我介紹、同意書的流程、順序……</li>
+          <li><b>紀錄：</b>當下紀錄、事後紀錄……</li>
+        </ul>
+        <div class="callout">設置決定了<b>訪談的溫度</b>，跟<b>資訊揭露的範圍</b>。</div>
+      </div>
+
+      <h3 class="sub" style="margin-top:26px;">兩種設置的參照：法院 vs. 心理師</h3>
+      <div class="grid2">
+        <div class="card">
+          <h3 class="sub">法院的設置——在能搬上檯面的東西找線索</h3>
+          <ul class="plain" style="font-size:13.5px;">
+            <li>神聖性、公平正義、公正廉明。</li>
+            <li>探究事實真相。</li>
+            <li><b>權力是高位的。</b></li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3 class="sub">心理師的工作設置——讓想法浮現的信任空間</h3>
+          <ul class="plain" style="font-size:13.5px;">
+            <li>讓個案在結構下，主導自己想改變的方向，承擔責任及促成改變。</li>
+            <li><b>權力是水平的。</b></li>
+          </ul>
+        </div>
+      </div>
+      <p class="note">職場霸凌調查訪談，正好落在這兩種設置之間——既需要事實查證的嚴謹，也需要讓受訪者安心陳述的信任感，調查小組須有意識地拿捏。</p>
+
+      <h3 class="sub" style="margin-top:26px;">參考的訪談架構順序</h3>
+      <div class="grid4">
+        <div class="card"><h3 class="sub">開場</h3><p style="font-size:12.5px; color:var(--ink-soft); margin:0;">委員自我介紹、保密、錄音程序</p></div>
+        <div class="card"><h3 class="sub">身份確認</h3><p style="font-size:12.5px; color:var(--ink-soft); margin:0;">姓名、人事代號、職務、到職時間、任務內容</p></div>
+        <div class="card"><h3 class="sub">擬問</h3><p style="font-size:12.5px; color:var(--ink-soft); margin:0;">申訴對象、申訴事件確認；當天有沒有發生事件、行為確認</p></div>
+        <div class="card"><h3 class="sub">其他關場</h3><p style="font-size:12.5px; color:var(--ink-soft); margin:0;">有沒有其他恩怨、其他要補充的要在多久之內給</p></div>
+      </div>
+
+      <h3 class="sub" style="margin-top:26px;">委員要不要自我介紹？</h3>
+      <p style="font-size:13.5px;">兩種開場路線可視情境選擇：<b>正式的自我介紹</b>與<b>友善的自我介紹</b>。</p>
+
+      <div class="script">
+        <b style="color:var(--brass);">正式的開場路線範例</b><br>
+        我們開始<span class="blank">____年____月____日</span>就<span class="blank">______</span>申訴關於<span class="blank">________________</span>事項，召開本次調查會議。首先介紹本次調查的委員：<span class="blank">________</span>專員、<span class="blank">________</span>律師、以及<span class="blank">________</span>心理師。為了讓調查小組了解整件事情的發生情形，請您誠實回答接下來的問題。
+      </div>
+
+      <div class="script">
+        <b style="color:var(--brass);">友善的開場路線範例</b><br>
+        <span class="blank">____</span>您好，我是<span class="blank">________</span>心理師，是協助調查這一次您的申訴案件的外部委員。在我旁邊的是外部委員<span class="blank">________</span>律師，以及事業單位的內部委員<span class="blank">________</span>專員。這一次將由我們三位和您，一起完成這一次的訪談。<br><br>
+        公司於<span class="blank">________</span>有收到您的申訴案，按照程序，在接到疑似職場霸凌申訴的案件後，我們會先邀請申訴人前來訪談，就您提到的事件內容和經驗，做一些釐清和確認。如果您在訪談中有任何需要協助的地方，也歡迎和我們說，我們都可以做適當的調整。
+      </div>
+
+      <div class="grid2" style="margin-top:16px;">
+        <div class="card">
+          <h3 class="sub">迴避事項</h3>
+          <p style="font-size:13.5px; margin:0;">這一次的調查委員中，有沒有哪位委員是您的配偶、前配偶、四親等內之血親、三親等內之姻親或家長、家屬關係的人，應予迴避的狀況？</p>
+        </div>
+        <div class="card">
+          <h3 class="sub">保密</h3>
+          <p style="font-size:13.5px; margin:0;">公司將以保密及不公開方式處理本次申訴事件，使受訪者免於遭受任何報復或不利之待遇；又為保護受訪者的隱私權及其他人格法益，請您遵守保密及不公開之規定。請問以上規則是否瞭解？</p>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:14px;">
+        <h3 class="sub">錄音</h3>
+        <p style="font-size:13.5px; margin:0;">本次訪談將會全程錄音，但受訪者不得錄音。是否了解？</p>
+      </div>
+
+      <div class="script" style="margin-top:20px;">
+        <b style="color:var(--brass);">身份確認擬問</b><br>
+        請問您的姓名？人事代號？<br>
+        您的職稱？所屬的部門？是什麼時候到職的？<br>
+        您的業務範圍是什麼？<span class="blank">XXX</span>和您的關係是什麼？
+      </div>
+
+      <div class="script">
+        <b style="color:var(--brass);">申訴範圍確認擬問</b><br>
+        想先和您確認，在申訴書上您有寫到這一次的申訴對象是<span class="blank">________</span>，對嗎？<br>
+        在您的申訴書中有提到<span class="blank">________</span>、<span class="blank">________</span>、和<span class="blank">________</span>事件，這些是否已經包含了這一次您想申訴及討論的範圍？
+      </div>
+
+      <div class="script">
+        <b style="color:var(--brass);">對爭議事件較為開放的擬問</b><br>
+        您的申訴書上有寫到<span class="blank">____年____月____日</span>的<span class="blank">________</span>事件，能不能大概再幫我們描述一下，那天發生了什麼事？<br><br>
+        （對焦在爭議行為）剛剛您提到他<span class="blank">_________________</span>（一個被標定的爭議行為，例如咆哮、拍桌、甩門、髒話），能不能再幫我回憶他是（怎麼表達的／怎麼動手的）？<br><br>
+        （對焦在合理且必要）您希望達成的目的是什麼？<br>
+        （對焦在持續性）之前有過類似的狀況嗎？
+      </div>
+
+      <div class="grid2" style="margin-top:16px;">
+        <div class="card">
+          <h3 class="sub">了解申訴人期待</h3>
+          <p style="font-size:13.5px; margin:0;">可以和您詢問，對這個案件，您有怎麼樣的期待嗎？</p>
+        </div>
+        <div class="card">
+          <h3 class="sub">法律或心理的資源評估及轉介</h3>
+          <p style="font-size:13.5px; margin:0 0 6px;">有些人在經驗到類似的事情時，會需要額外的心理（或法律）的相關資源，不曉得您有沒有這樣的需求？</p>
+          <p style="font-size:13.5px; margin:0;">如果公司有提供EAP的資源，您會有意願使用嗎？</p>
+        </div>
+      </div>
+
+      <div class="script" style="margin-top:16px;">
+        <b style="color:var(--brass);">其他結束前的問題</b><br>
+        您與申訴人有無其他糾紛、情感、借貸關係？<br>
+        您有其他想向委員表達的嗎？<br>
+        若有其他補充資料，請於<span class="blank">____月____日</span>前提出，逾時即無法受理。
+      </div>
+    </section>
+
+    <!-- 05 -->
+    <section class="block" id="sec5">
+      <div class="block-head">
+        <div class="stamp">五</div>
+        <div>
+          <h2>小結</h2>
+          <span class="cite">內部委員的角色，決定了調查的成效</span>
+        </div>
+      </div>
+      <div class="card">
+        <p style="font-size:15px; font-weight:600; color:var(--navy); margin:0 0 12px;">內部委員在職場霸凌調查，扮演了影響成效的角色</p>
+        <ul class="plain" style="font-size:13.5px;">
+          <li>對問題的確認、找那些內外部調查人員、時程上的控制、資訊提供，都直接影響調查成效。</li>
+          <li>最終目的，是<b>看見問題、做好調查</b>，並與<b>預防和改善工作相連結</b>。</li>
+        </ul>
+      </div>
+    </section>
+
+    <footer>
+      <div class="seal-big">畢</div>
+      <p>謝謝您這個小時的參與</p>
+      <span>資料整理自：勞動部職業安全衛生署「職場霸凌防治教育訓練（2）—調查策略及訪談技巧」</span>
+    </footer>
+  </main>
+</div>
+
+</body>
+</html>
