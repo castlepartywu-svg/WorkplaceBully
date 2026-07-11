@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>職場霸凌防治教育訓練｜職安法相關規定說明</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;600;700;900&family=Noto+Sans+TC:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#EFEAE0;
+  --paper-card:#F8F5EC;
+  --paper-alt:#E4DCC5;
+  --ink:#211E1A;
+  --ink-soft:#57534A;
+  --navy:#1B3A54;
+  --navy-soft:#345170;
+  --seal:#9C2B2B;
+  --seal-soft:#B85555;
+  --brass:#A07A32;
+  --line:#CFC3A3;
+  --line-soft:#DED4B9;
+  --radius:2px;
+  --serif:'Noto Serif TC', serif;
+  --sans:'Noto Sans TC', sans-serif;
+  --mono:'IBM Plex Mono', monospace;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto;}
+  *{animation-duration:0.01ms !important; transition-duration:0.01ms !important;}
+}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--sans);
+  line-height:1.75;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:inherit;}
+
+/* subtle paper texture */
+body::before{
+  content:"";
+  position:fixed; inset:0;
+  background-image:
+    repeating-linear-gradient(0deg, rgba(0,0,0,0.015) 0px, rgba(0,0,0,0.015) 1px, transparent 1px, transparent 3px);
+  pointer-events:none;
+  z-index:0;
+}
+
+/* ===== Layout shell ===== */
+.shell{
+  display:grid;
+  grid-template-columns: 264px 1fr;
+  max-width:1240px;
+  margin:0 auto;
+  position:relative;
+  z-index:1;
+}
+@media (max-width: 900px){
+  .shell{grid-template-columns: 1fr;}
+}
+
+/* ===== Sidebar ===== */
+.toc{
+  position:sticky;
+  top:0;
+  align-self:start;
+  height:100vh;
+  overflow-y:auto;
+  padding:38px 20px 40px 28px;
+  border-right:1px solid var(--line);
+}
+@media (max-width: 900px){
+  .toc{position:relative; height:auto; border-right:none; border-bottom:1px solid var(--line); padding:24px 20px;}
+}
+.toc-seal{
+  width:52px; height:52px;
+  border-radius:50%;
+  border:1.5px solid var(--seal);
+  color:var(--seal);
+  display:flex; align-items:center; justify-content:center;
+  font-family:var(--serif); font-weight:700; font-size:19px;
+  margin-bottom:14px;
+  transform:rotate(-6deg);
+}
+.toc-title{
+  font-family:var(--serif);
+  font-weight:700;
+  font-size:15px;
+  color:var(--navy);
+  margin:0 0 2px;
+  letter-spacing:0.02em;
+}
+.toc-sub{
+  font-size:11.5px;
+  color:var(--ink-soft);
+  margin:0 0 24px;
+  font-family:var(--mono);
+  letter-spacing:0.03em;
+}
+.toc-list{
+  list-style:none; margin:0; padding:0;
+  border-top:1px solid var(--line-soft);
+}
+.toc-list li{border-bottom:1px solid var(--line-soft);}
+.toc-list a{
+  display:flex; gap:10px; align-items:baseline;
+  padding:11px 4px;
+  text-decoration:none;
+  font-size:13.5px;
+  color:var(--ink-soft);
+  transition:color .15s ease, padding-left .15s ease;
+}
+.toc-list a:hover{color:var(--seal); padding-left:6px;}
+.toc-num{
+  font-family:var(--mono);
+  font-size:11px;
+  color:var(--brass);
+  flex-shrink:0;
+  padding-top:1px;
+}
+
+/* ===== Main ===== */
+main{padding:0 0 80px;}
+.hero{
+  padding:64px 56px 40px;
+  border-bottom:1px solid var(--line);
+  position:relative;
+}
+@media (max-width:640px){.hero{padding:44px 24px 32px;}}
+.hero-eyebrow{
+  font-family:var(--mono);
+  font-size:12px;
+  letter-spacing:0.14em;
+  color:var(--seal);
+  text-transform:uppercase;
+  margin:0 0 18px;
+  display:flex; align-items:center; gap:10px;
+}
+.hero-eyebrow::before{
+  content:"";
+  width:26px; height:1px; background:var(--seal);
+  display:inline-block;
+}
+.hero h1{
+  font-family:var(--serif);
+  font-weight:900;
+  font-size:clamp(30px, 4.4vw, 46px);
+  line-height:1.28;
+  color:var(--navy);
+  margin:0 0 18px;
+}
+.hero h1 em{
+  font-style:normal;
+  color:var(--seal);
+}
+.hero p.lead{
+  max-width:640px;
+  font-size:16px;
+  color:var(--ink-soft);
+  margin:0 0 26px;
+}
+.hero-meta{
+  display:flex; flex-wrap:wrap; gap:28px;
+  font-size:13px;
+  color:var(--ink-soft);
+  font-family:var(--mono);
+}
+.hero-meta strong{color:var(--navy); font-family:var(--sans); font-weight:600;}
+
+section.block{
+  padding:52px 56px;
+  border-bottom:1px solid var(--line);
+}
+@media (max-width:640px){section.block{padding:40px 24px;}}
+section.block:target{animation:flash 1.4s ease;}
+@keyframes flash{ from{background:var(--paper-alt);} to{background:transparent;} }
+
+.block-head{
+  display:flex; align-items:flex-start; gap:18px;
+  margin-bottom:28px;
+}
+.stamp{
+  flex-shrink:0;
+  width:46px; height:46px;
+  border-radius:50%;
+  border:1.5px solid var(--seal);
+  color:var(--seal);
+  font-family:var(--mono);
+  font-weight:600;
+  font-size:13px;
+  display:flex; align-items:center; justify-content:center;
+  text-align:center;
+  line-height:1.1;
+}
+.block-head h2{
+  font-family:var(--serif);
+  font-weight:700;
+  font-size:clamp(21px,2.6vw,27px);
+  color:var(--navy);
+  margin:2px 0 0;
+}
+.block-head .cite{
+  font-family:var(--mono);
+  font-size:12px;
+  color:var(--brass);
+  display:block;
+  margin-top:5px;
+}
+
+.card{
+  background:var(--paper-card);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  padding:22px 24px;
+}
+.card + .card{margin-top:14px;}
+.grid2{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+.grid3{display:grid; grid-template-columns:repeat(3,1fr); gap:16px;}
+@media (max-width:760px){.grid2,.grid3{grid-template-columns:1fr;}}
+
+.tag{
+  display:inline-block;
+  font-family:var(--mono);
+  font-size:11px;
+  color:var(--navy);
+  background:var(--paper-alt);
+  border:1px solid var(--line);
+  padding:2px 8px;
+  border-radius:20px;
+  margin-bottom:10px;
+}
+
+ul.plain{margin:0; padding-left:20px;}
+ul.plain li{margin-bottom:9px;}
+ul.plain li::marker{color:var(--seal);}
+
+.definition{
+  border-left:3px solid var(--seal);
+  padding:6px 0 6px 22px;
+  font-size:16px;
+  color:var(--ink);
+  margin:0 0 20px;
+}
+.definition b{color:var(--seal); font-weight:700;}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  font-size:13.5px;
+  background:var(--paper-card);
+}
+thead th{
+  background:var(--navy);
+  color:var(--paper);
+  font-family:var(--sans);
+  font-weight:600;
+  text-align:left;
+  padding:11px 14px;
+  font-size:12.5px;
+}
+tbody td, tbody th{
+  padding:10px 14px;
+  border-bottom:1px solid var(--line-soft);
+  vertical-align:top;
+}
+tbody th{text-align:left; font-weight:600; color:var(--navy); white-space:nowrap;}
+tbody tr:last-child td, tbody tr:last-child th{border-bottom:none;}
+.table-wrap{overflow-x:auto; border:1px solid var(--line); border-radius:var(--radius);}
+
+.check{color:var(--seal); font-weight:700;}
+.dot{color:var(--brass); font-weight:700;}
+
+/* flow diagram */
+.flow{
+  display:grid; grid-template-columns:1fr 1fr; gap:22px;
+}
+@media (max-width:760px){.flow{grid-template-columns:1fr;}}
+.flow-col{display:flex; flex-direction:column; gap:0;}
+.flow-node{
+  background:var(--paper-card);
+  border:1px solid var(--line);
+  padding:13px 16px;
+  font-size:13.5px;
+  position:relative;
+}
+.flow-node.start{background:var(--navy); color:var(--paper); border-color:var(--navy); font-weight:600; text-align:center;}
+.flow-node.action{background:#EDE4CE;}
+.flow-node.decision{
+  background:transparent; border:1px dashed var(--brass); color:var(--ink-soft); font-size:12.5px; text-align:center;
+}
+.flow-arrow{
+  height:24px; display:flex; align-items:center; justify-content:center;
+  color:var(--brass); font-size:15px;
+}
+
+/* timeline steps */
+.timeline{
+  display:flex; overflow-x:auto; gap:0; padding-bottom:8px;
+  scrollbar-width:thin;
+}
+.tstep{
+  flex:1 1 140px; min-width:140px;
+  position:relative;
+  padding:22px 14px 0 0;
+}
+.tstep::before{
+  content:"";
+  position:absolute; top:8px; left:0; right:0;
+  height:2px; background:var(--line);
+}
+.tstep:first-child::before{left:8px;}
+.tstep::after{
+  content:"";
+  position:absolute; top:2px; left:0;
+  width:14px; height:14px; border-radius:50%;
+  background:var(--seal); border:2px solid var(--paper);
+  box-shadow:0 0 0 1px var(--seal);
+}
+.tstep .tt{font-family:var(--sans); font-weight:600; font-size:12.5px; color:var(--navy); margin:0 0 6px;}
+.tstep .td{font-family:var(--mono); font-size:11.5px; color:var(--ink-soft); line-height:1.5;}
+
+/* penalty rows */
+.penalty{
+  display:flex; justify-content:space-between; align-items:center; gap:16px;
+  padding:14px 0; border-bottom:1px solid var(--line-soft);
+  flex-wrap:wrap;
+}
+.penalty:last-child{border-bottom:none;}
+.penalty .pdesc{font-size:14px; flex:1 1 320px;}
+.penalty .pfine{
+  font-family:var(--mono); font-weight:600; font-size:14px;
+  color:var(--seal); background:var(--paper-alt);
+  padding:6px 12px; border-radius:20px; white-space:nowrap;
+}
+
+.note{
+  font-size:12.5px; color:var(--ink-soft);
+  border-top:1px dashed var(--line);
+  margin-top:16px; padding-top:12px;
+}
+.note b{color:var(--brass);}
+
+.callout{
+  background:var(--navy); color:var(--paper);
+  padding:16px 20px; border-radius:var(--radius);
+  font-size:13.5px; margin-top:16px;
+  line-height:1.65;
+}
+.callout b{color:#E8C97A;}
+
+footer{
+  padding:50px 56px 70px;
+  text-align:center;
+}
+footer .seal-big{
+  width:64px; height:64px; margin:0 auto 16px;
+  border-radius:50%; border:1.5px solid var(--seal); color:var(--seal);
+  display:flex; align-items:center; justify-content:center;
+  font-family:var(--serif); font-weight:700; font-size:20px;
+  transform:rotate(-6deg);
+}
+footer p{font-family:var(--serif); color:var(--navy); font-size:18px; margin:0;}
+footer span{display:block; font-family:var(--mono); font-size:11.5px; color:var(--ink-soft); margin-top:10px;}
+
+h3.sub{
+  font-family:var(--sans); font-weight:700; font-size:14.5px;
+  color:var(--navy); margin:0 0 10px;
+  display:flex; align-items:center; gap:8px;
+}
+h3.sub::before{content:""; width:5px; height:5px; background:var(--seal); border-radius:50%; display:inline-block;}
+</style>
+</head>
+<body>
+
+<div class="shell">
+  <nav class="toc">
+    <div class="toc-seal">職安</div>
+    <p class="toc-title">職場霸凌防治<br>教育訓練</p>
+    <p class="toc-sub">職安法規定說明・目錄</p>
+    <ul class="toc-list">
+      <li><a href="#sec1"><span class="toc-num">01</span>訂定緣由</a></li>
+      <li><a href="#sec2"><span class="toc-num">02</span>定義及認定</a></li>
+      <li><a href="#sec3"><span class="toc-num">03</span>霸凌與不法侵害</a></li>
+      <li><a href="#sec4"><span class="toc-num">04</span>雇主防治責任</a></li>
+      <li><a href="#sec5"><span class="toc-num">05</span>知悉時應採措施</a></li>
+      <li><a href="#sec6"><span class="toc-num">06</span>申訴方式與期限</a></li>
+      <li><a href="#sec7"><span class="toc-num">07</span>申訴處理流程</a></li>
+      <li><a href="#sec8"><span class="toc-num">08</span>調查機制</a></li>
+      <li><a href="#sec9"><span class="toc-num">09</span>調查與決定期限</a></li>
+      <li><a href="#sec10"><span class="toc-num">10</span>懲處、保護與申復</a></li>
+      <li><a href="#sec11"><span class="toc-num">11</span>後續處理與銜接</a></li>
+      <li><a href="#sec12"><span class="toc-num">12</span>罰則</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <div class="hero">
+      <p class="hero-eyebrow">職場霸凌防治教育訓練（1）</p>
+      <h1>職安法相關規定說明<br><em>——建立友善、免於霸凌的工作環境</em></h1>
+      <p class="lead">本篇整理職業安全衛生法第22條之1及「職場霸凌防治措施準則」核心規定，涵蓋定義認定、雇主防治責任、申訴調查程序，以及違反罰則，供事業單位建立內部制度時參考。</p>
+      <div class="hero-meta">
+        <div><strong>主辦機關</strong><br>勞動部職業安全衛生署</div>
+        <div><strong>主講</strong><br>彭鳳美／副組長</div>
+        <div><strong>平台</strong><br>職業安全衛生數位學習平台</div>
+      </div>
+    </div>
+
+    <!-- 01 -->
+    <section class="block" id="sec1">
+      <div class="block-head">
+        <div class="stamp">緣由</div>
+        <div>
+          <h2>訂定緣由</h2>
+          <span class="cite">為何需要專法規範職場霸凌</span>
+        </div>
+      </div>
+      <div class="card">
+        <ul class="plain">
+          <li>明確職場霸凌定義</li>
+          <li>強化雇主防治職場霸凌責任</li>
+          <li>建立明確之申訴調查處理程序</li>
+          <li>建立公權力介入之外部申訴管道</li>
+          <li>完善申訴人保護機制</li>
+          <li>改善組織文化，營造友善職場</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 02 -->
+    <section class="block" id="sec2">
+      <div class="block-head">
+        <div class="stamp">§22-1</div>
+        <div>
+          <h2>職場霸凌定義及認定</h2>
+          <span class="cite">職安法第22條之1第1項・防治準則第2條</span>
+        </div>
+      </div>
+
+      <p class="definition">
+        職安法所稱職場霸凌，指勞工於勞動場所執行職務，因<b>①</b>事業單位人員利用職務或權勢等關係，
+        <b>②</b>逾越業務上必要且合理範圍，<b>③</b>持續以冒犯、威脅、冷落、孤立、侮辱或其他不當之言詞或行為，
+        致其<b>④</b>身心健康遭受危害。但情節重大者，<b>不以持續發生為必要</b>。
+      </p>
+
+      <div class="card">
+        <h3 class="sub">如何認定？（準則第2條）</h3>
+        <p style="margin:0 0 12px; font-size:14px; color:var(--ink-soft);">應符合職安法第22條之1第1項之定義，並綜合審酌事件發生之背景、頻率、場所、行為人動機、目的及下列各款情形：</p>
+        <ul class="plain">
+          <li>對特定人刻意排擠、忽視、冷落、不讓參與必要之重要會議、事務或活動。</li>
+          <li>對特定人破壞或刻意阻礙其工作、利用職務刁難、刻意隱瞞資訊或提供不實資訊。</li>
+          <li>對特定人以權力欺壓，刻意分配不合理工作目標或與能力明顯不符之工作。</li>
+          <li>對特定人刻意散布其謠言或揭露隱私。</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 03 -->
+    <section class="block" id="sec3">
+      <div class="block-head">
+        <div class="stamp">分類</div>
+        <div>
+          <h2>職場霸凌與職場不法侵害</h2>
+          <span class="cite">依職業安全衛生設施規則區分類型</span>
+        </div>
+      </div>
+
+      <div class="grid3">
+        <div class="card">
+          <span class="tag">內部・持續性／地位濫用</span>
+          <h3 class="sub" style="margin-top:6px;">職場霸凌</h3>
+          <p style="font-size:13.5px; color:var(--ink-soft); margin:0;">符合職安法第22條之1定義。</p>
+        </div>
+        <div class="card">
+          <span class="tag">內部・單次／偶發</span>
+          <h3 class="sub" style="margin-top:6px;">職場暴力（內部）</h3>
+          <p style="font-size:13.5px; color:var(--ink-soft); margin:0;">未符合霸凌定義。</p>
+        </div>
+        <div class="card">
+          <span class="tag">外部人員（第三方）</span>
+          <h3 class="sub" style="margin-top:6px;">職場暴力（外部）</h3>
+          <p style="font-size:13.5px; color:var(--ink-soft); margin:0;">職安法第6條第2項第3款。</p>
+        </div>
+      </div>
+      <p style="font-size:13px; color:var(--ink-soft); margin:14px 0 0;">另涉及性別／就業歧視者（性騷擾、就業歧視），分別依《性別平等工作法》、《就業服務法》、《中高齡者及高齡者就業促進法》處理。</p>
+
+      <div class="callout">
+        雇主應依職安法辦理內部調查及處置；其涉及<b>民事、刑事或行政責任</b>者，由各該主管機關或司法機關依規定調查或認定。
+      </div>
+    </section>
+
+    <!-- 04 -->
+    <section class="block" id="sec4">
+      <div class="block-head">
+        <div class="stamp">§4,6</div>
+        <div>
+          <h2>雇主防治責任</h2>
+          <span class="cite">防治措施第4條・準則第2、5-6條</span>
+        </div>
+      </div>
+
+      <p class="definition" style="font-size:14.5px;">雇主應提供勞工<b>免於職場霸凌之工作環境</b>，採取適當之預防及處理措施，並確實維護相關人員之隱私。</p>
+
+      <h3 class="sub">依僱用勞工人數不同所應採行之措施</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>法定應辦事項</th><th>未達10人</th><th>10～29人</th><th>30～99人</th><th>100人以上</th></tr>
+          </thead>
+          <tbody>
+            <tr><th>採取預防措施並對被霸凌勞工採取有效適當措施</th><td class="check">✔ 應辦</td><td class="check">✔ 應辦</td><td class="check">✔ 應辦</td><td class="check">✔ 應辦</td></tr>
+            <tr><th>申訴管道</th><td class="dot">● 得參照</td><td class="check">✔ 應辦</td><td class="check">✔ 應辦</td><td class="check">✔ 應辦</td></tr>
+            <tr><th>訂定防治措施、申訴及懲戒規範</th><td class="dot">● 得參照</td><td class="dot">● 得參照</td><td class="check">✔ 應辦</td><td class="check">✔ 應辦</td></tr>
+            <tr><th>申訴處理單位</th><td class="dot">● 得參照</td><td class="dot">● 得參照</td><td class="check">✔ 應辦</td><td class="check">✔ 應辦</td></tr>
+            <tr><th>調查小組</th><td class="dot">● 得參照</td><td class="dot">● 得參照</td><td class="dot">● 得參照</td><td class="check">✔ 應辦</td></tr>
+            <tr><th>申復調查小組</th><td class="dot">● 得參照</td><td class="dot">● 得參照</td><td class="check">✔ 應辦</td><td class="check">✔ 應辦</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note"><b>✔</b> 法定應辦事項　　<b>●</b> 得參照辦理</p>
+
+      <div class="grid2" style="margin-top:20px;">
+        <div class="card">
+          <h3 class="sub">設置申訴管道（10人以上）</h3>
+          <ul class="plain" style="font-size:13.5px;">
+            <li>應設置處理職場霸凌之電子信箱、專用信箱、專線電話、傳真或其他指定通訊軟體等申訴管道。</li>
+            <li>應於工作場所顯著之處<b>公開揭示</b>；得以書面、電子資料傳輸或其他可隨時取得查知之方式為之。</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3 class="sub">訂定規範（30人以上）</h3>
+          <p style="font-size:13.5px; margin:0;">訂定職場霸凌防治措施、申訴與懲處規範，並<b>指定專責單位統籌辦理</b>，公開揭示。僱用未滿30人之雇主，得參照辦理。</p>
+        </div>
+      </div>
+      <p class="note">僱用勞工人數之計算，為事業單位受僱從事工作獲致工資者；事業分散於不同地區者，以各地區該單位僱用勞工之人數分別計算。</p>
+
+      <h3 class="sub" style="margin-top:26px;">防治措施、申訴與懲處規範內容（第6條第2項）</h3>
+      <div class="grid2">
+        <div class="card">
+          <ul class="plain" style="font-size:13.5px;">
+            <li>職場霸凌之行為樣態及預防措施。</li>
+            <li>防治職場霸凌之教育訓練。</li>
+            <li>應設申訴處理單位，並指定人員負責申訴、調查、處理及申復程序。</li>
+            <li>調查人員資格及其利益迴避事項。</li>
+            <li>以不公開方式處理申訴，使申訴人、協助申訴之人、參與及負責調查之人<b>免於遭受任何報復或不利待遇</b>。</li>
+            <li>對調查屬實行為人之懲戒或處理方式。</li>
+            <li>經調查證實申訴人有惡意虛構事實之懲戒或處理方式。</li>
+            <li>被申訴人為最高負責人時，勞工得依第22條之3第1項，逕向直轄市或縣（市）主管機關提起申訴。</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3 class="sub">教育訓練（第6條第3、4項）</h3>
+          <ul class="plain" style="font-size:13.5px;">
+            <li>應對事業單位人員實施防治職場霸凌之教育訓練。</li>
+            <li>各級主管、負責及參與申訴事件調查、處理、協調及申復者，另應實施<b>溝通技巧、管理及申訴事件處理</b>等相關教育訓練。</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 05 -->
+    <section class="block" id="sec5">
+      <div class="block-head">
+        <div class="stamp">§7</div>
+        <div>
+          <h2>知悉時應採取立即有效之適當措施</h2>
+          <span class="cite">防治準則第7條</span>
+        </div>
+      </div>
+      <div class="grid2">
+        <div class="card">
+          <h3 class="sub">接獲被霸凌勞工申訴知悉</h3>
+          <ul class="plain" style="font-size:13.5px;">
+            <li>考量申訴人意願，採取適當之隔離等措施，避免再度發生，並不得對其有不利對待。</li>
+            <li>依申訴人需求，提供或轉介法律諮詢、醫療或心理諮商、社福資源及其他必要協助或保護措施。</li>
+            <li>啟動調查程序，對相關人員進行訪談及調查；申訴人有意願者，得進行協調，不成立時應續行調查。</li>
+            <li>依調查結果，視情節輕重對行為人適當懲戒或處理。</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3 class="sub">非接獲被霸凌勞工申訴知悉</h3>
+          <ul class="plain" style="font-size:13.5px;">
+            <li>訪談相關人員，就相關事實進行必要之釐清及查證。</li>
+            <li>告知被霸凌勞工得主張之權益及救濟途徑，並依其意願協助協調或提起申訴。</li>
+            <li>對相關人員適度調整工作內容或工作場所。</li>
+            <li>依意願提供或轉介法律諮詢、醫療或心理諮商、社福資源及其他必要協助或保護措施。</li>
+          </ul>
+        </div>
+      </div>
+      <div class="callout">雇主接獲被霸凌勞工陳述知悉職場霸凌事件，而其無協調或提起申訴之意願者，<b>雇主仍應採取適當之措施</b>。</div>
+    </section>
+
+    <!-- 06 -->
+    <section class="block" id="sec6">
+      <div class="block-head">
+        <div class="stamp">§8,10,11</div>
+        <div>
+          <h2>申訴方式、內容與受理期限</h2>
+          <span class="cite">防治準則第8、10、11條</span>
+        </div>
+      </div>
+
+      <div class="grid2">
+        <div class="card">
+          <h3 class="sub">申訴方式及內容</h3>
+          <p style="font-size:13.5px;">以<b>言詞、電子郵件或書面</b>提出申訴。以言詞或電子郵件為之者，受理人員或單位應作成紀錄，並向申訴人朗讀或使閱覽，確認內容無誤。</p>
+          <p style="font-size:13px; color:var(--ink-soft); margin-bottom:4px;">申訴書載明事項：</p>
+          <ul class="plain" style="font-size:13.5px;">
+            <li>申訴人姓名、服務單位及職稱、住居所、聯絡電話及申訴日期。</li>
+            <li>有法定代理人或委任代理人者，其姓名、住居所、聯絡電話；委任者應檢附委任書。</li>
+            <li>申訴之事實內容及相關證據。</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3 class="sub">申訴期限（二種期限，取較長者）</h3>
+          <p style="font-size:13.5px; margin:0 0 10px;"><b>被申訴人非屬利用權勢者：</b>自霸凌行為終了時起 <b>3年內</b></p>
+          <p style="font-size:13.5px; margin:0;"><b>被申訴人屬利用權勢者：</b>自離職之日起 <b>1年內</b></p>
+        </div>
+      </div>
+
+      <div class="grid2" style="margin-top:16px;">
+        <div class="card">
+          <h3 class="sub">受理與否之處理期限</h3>
+          <p style="font-size:13.5px; margin:0;">雇主應於接獲申訴之日起<b>10個工作日內</b>決定是否受理，並以書面通知申訴人；不予受理者，應於書面通知內敘明理由。</p>
+        </div>
+        <div class="card">
+          <h3 class="sub">通報義務及期限</h3>
+          <p style="font-size:13.5px; margin:0;">於接獲申訴時，應於受理翌日起<b>7個工作日內</b>，依中央主管機關公告之內容及方式登錄系統，並通知申訴人。</p>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:14px;">
+        <h3 class="sub">得不予受理之情形</h3>
+        <ul class="plain" style="font-size:13.5px; columns:2; column-gap:24px;">
+          <li>非屬職安法第22條之1第1項所稱職場霸凌事項。</li>
+          <li>無具體之內容。</li>
+          <li>申訴人未具真實姓名或足以辨別其身分之資訊。</li>
+          <li>同一事件已不受理或已作成終局實體處理。</li>
+          <li>申訴事件已撤回申訴。</li>
+          <li>已逾申訴期限。</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 07 -->
+    <section class="block" id="sec7">
+      <div class="block-head">
+        <div class="stamp">流程</div>
+        <div>
+          <h2>職場霸凌申訴及處理流程</h2>
+          <span class="cite">依被申訴人身分分流處理</span>
+        </div>
+      </div>
+
+      <div class="flow">
+        <div class="flow-col">
+          <div class="flow-node start">被申訴人為事業單位內部人員</div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-node action">向事業單位申訴</div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-node action">適時調整工作內容或場所・提供協助及保護措施・啟動調查或協調・向中央主管機關通報</div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-node action">調查決定通知當事人・處理結果登錄系統</div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-node decision">不服結果？是 → 向事業單位提出申復或循司法途徑；否 → 結案</div>
+        </div>
+        <div class="flow-col">
+          <div class="flow-node start">被申訴人為最高負責人</div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-node action">向地方主管機關申訴</div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-node action">啟動調查程序・通知雇主採取協助及保護措施・向中央主管機關通報</div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-node action">調查決定通知當事人・處理結果登錄系統</div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-node decision">不服結果？是 → 訴願或循求司法途徑救濟；否 → 結案</div>
+        </div>
+      </div>
+      <div class="callout">雇主未處理或未依規定程序辦理，<b>勞工可向勞動檢查機構申訴</b>。</div>
+
+      <h3 class="sub" style="margin-top:26px;">最高負責人之範圍</h3>
+      <div class="grid2">
+        <div class="card">
+          <ul class="plain" style="font-size:13.5px;">
+            <li>機關（構）首長、學校校長、行政法人董（理）事長、公營事業機構董事長、理事主席或與該等職務相當之人。</li>
+            <li>法人、合夥、設有代表人或管理人之非法人團體及其他組織之對外代表人或與該等職務相當之人。</li>
+          </ul>
+          <p style="font-size:12.5px; color:var(--ink-soft); margin-top:10px;"><b style="color:var(--brass);">認定標準：</b>以公司登記、商業登記、有限合夥登記、財團法人登記或其他依法設立相關證明文件所記載為準；依法應辦理設立登記而未辦者，亦屬之。</p>
+        </div>
+        <div class="card">
+          <h3 class="sub">職務相當之人（符合任一情形）</h3>
+          <ul class="plain" style="font-size:13.5px;">
+            <li>現任或曾任董事（理事）或監察人（監事）者。</li>
+            <li>持有20%以上股份者。</li>
+            <li>經工會、股東、協力廠商或申訴人指認為與代表人職務相當之人，並有具體事證者。</li>
+            <li>代表人之配偶、前配偶、四親等內之血親、三親等內血親之配偶、配偶之三親等內血親或其配偶者。</li>
+            <li>代表人經改選尚未辦理登記者、位居特殊重要職位者。</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 08 -->
+    <section class="block" id="sec8">
+      <div class="block-head">
+        <div class="stamp">§9,12-16</div>
+        <div>
+          <h2>調查機制：單位、小組、協調與迴避</h2>
+          <span class="cite">防治準則第9、12～16條</span>
+        </div>
+      </div>
+
+      <div class="grid2">
+        <div class="card">
+          <h3 class="sub">申訴處理單位（30人以上）</h3>
+          <p style="font-size:13.5px;">成員至少三位，且任一性別比例不得少於三分之一。處理事項包括：受理申訴事件、通知結果、登錄系統、辦理協調程序、審議調查小組報告、提供懲戒建議、召開申復審議會議、通知決定等。</p>
+        </div>
+        <div class="card">
+          <h3 class="sub">調查小組（100人以上）</h3>
+          <p style="font-size:13.5px;">應於受理申訴之日起<b>15個工作日內</b>選任調查成員組成調查小組。成員至少三人，<b>外部專業人士不得少於二分之一</b>；任一性別比例不得少於三分之一。內部成員應接受職場霸凌防治教育訓練至少<b>3小時</b>。</p>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:14px;">
+        <h3 class="sub">處理原則</h3>
+        <p style="font-size:13.5px; margin:0;">雇主處理職場霸凌申訴，應以<b>不公開方式</b>為之；受理申訴後應秉持客觀、公正、公平之原則進行調查，調查過程應保護當事人、協助申訴之人及受邀協助調查者之個人隱私。</p>
+      </div>
+
+      <div class="grid2" style="margin-top:14px;">
+        <div class="card">
+          <h3 class="sub">協調之原則及程序</h3>
+          <ul class="plain" style="font-size:13.5px;">
+            <li>應本於客觀、公正與公平之立場，安排適當協調人員，促進當事人溝通及理解。</li>
+            <li>協調人員應經當事人同意。</li>
+            <li>有任一方無意願，或自協調之日起逾<b>1個月</b>仍未有共識，應停止協調。</li>
+            <li>達成共識應作成紀錄，載明事實內容及協調合意事項。</li>
+            <li>協調不成立者，雇主應續行調查，並採取其他立即有效之適當措施。</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3 class="sub">調查時之利益迴避</h3>
+          <ul class="plain" style="font-size:13.5px;">
+            <li>本人為當事人，或與當事人有配偶、前配偶、四親等內血親、三親等內姻親或家長家屬關係者，應自行迴避。</li>
+            <li>應迴避而不迴避者，雇主仍應命其迴避；未經申請亦同。</li>
+            <li>有其他具體事實足認執行有偏頗之虞者，當事人得書面申請令其迴避。</li>
+            <li>被申請迴避者在准駁決定前應停止參與，但有急迫情形仍得為必要處置。</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:14px;">
+        <h3 class="sub">調查注意事項</h3>
+        <ul class="plain" style="font-size:13.5px; columns:2; column-gap:24px;">
+          <li>應給予當事人陳述意見及答辯機會，以書面通知調查目的、時間、地點及不到場所生之影響。</li>
+          <li>訪談以錄音或錄影輔助並作成紀錄；受訪談者不得自行錄音或錄影。</li>
+          <li>調查過程或會議不得令當事人間或協助調查之相關人對質。</li>
+          <li>當事人及相關人員應配合調查，提供文件、資料或陳述意見。</li>
+          <li>涉及特殊專業、鑑定事項，得諮詢其他機關、法人、團體或專業人員。</li>
+          <li>對當事人或協助調查人員之姓名及可辨識身分資料應予保密。</li>
+        </ul>
+        <p class="note">當事人無正當理由拒絕配合調查，經通知限期配合仍未配合者，<b>得不待其陳述，逕行作成調查報告</b>。</p>
+      </div>
+    </section>
+
+    <!-- 09 -->
+    <section class="block" id="sec9">
+      <div class="block-head">
+        <div class="stamp">§17,18,21</div>
+        <div>
+          <h2>調查、報告與決定期限</h2>
+          <span class="cite">防治準則第17、18、21條</span>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>事業單位規模</th><th>調查報告或決定處理期限</th><th>處理方式</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th>未達30人</th>
+              <td>自接獲申訴翌日起 <b>3個月內</b>作成決定，必要時得延長1個月，並通知當事人。</td>
+              <td>參照準則規定，設申訴處理單位及組成調查小組辦理；受理、通報、調查或協調處理之原則與程序及利益迴避等事項依準則第三章辦理。</td>
+            </tr>
+            <tr>
+              <th>30人以上未達100人</th>
+              <td>自接獲申訴翌日起 <b>4個月內</b>作成決定，必要時得延長1個月，並通知當事人。</td>
+              <td>參照準則規定，組成調查小組辦理；程序、利益迴避等事項依準則第三章辦理。</td>
+            </tr>
+            <tr>
+              <th>100人以上</th>
+              <td>自調查小組成立後翌日起 <b>2個月內</b>完成調查報告；必要時延長1個月，並應通知當事人。調查過程之協調期間不予計入。</td>
+              <td>申訴處理單位至遲於調查報告完成之日起1個月內作成成立與否之決定，應有成員<b>二分之一以上出席、出席者過半數同意</b>方得作成；雇主應於決定日起10個工作日內以書面通知當事人並登錄系統。</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 class="sub" style="margin-top:28px;">僱用勞工100人以上之申訴處理期限</h3>
+      <div class="timeline">
+        <div class="tstep"><p class="tt">決定是否受理</p><p class="td">10個工作日內</p></div>
+        <div class="tstep"><p class="tt">登錄系統</p><p class="td">受理翌日起<br>7個工作日內</p></div>
+        <div class="tstep"><p class="tt">組成調查小組</p><p class="td">受理申訴日起<br>15個工作日內</p></div>
+        <div class="tstep"><p class="tt">完成調查報告</p><p class="td">小組成立翌日起<br>2個月內（得延1月）</p></div>
+        <div class="tstep"><p class="tt">作成成立與否決定</p><p class="td">報告完成日起<br>1個月內</p></div>
+        <div class="tstep"><p class="tt">決定書通知並登錄</p><p class="td">決定日起<br>10個工作日內</p></div>
+      </div>
+    </section>
+
+    <!-- 10 -->
+    <section class="block" id="sec10">
+      <div class="block-head">
+        <div class="stamp">§17,19-24</div>
+        <div>
+          <h2>調查報告、懲處保護與申復</h2>
+          <span class="cite">防治準則第17、19～24條</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3 class="sub">調查報告內容（第17條）</h3>
+        <p style="font-size:13.5px; margin:0;">應送申訴處理單位審議，內容包括：申訴事件案由（含申訴要旨）、調查訪談過程（日期及對象）、當事人及相關人員陳述重點、事實認定與理由（含證人陳述、物證查驗）、處理建議（懲處建議及預防措施）。</p>
+      </div>
+
+      <div class="grid2" style="margin-top:14px;">
+        <div class="card">
+          <h3 class="sub">情節輕重之判斷（第19條）</h3>
+          <p style="font-size:13.5px;">職場霸凌行為經調查屬實者，雇主應視情節輕重對行為人為適當之懲戒或處理（行為人已離職者不在此限），審酌：</p>
+          <ul class="plain" style="font-size:13.5px;">
+            <li>對申訴人造成身心侵害之程度。</li>
+            <li>侵害行為之次數、頻率、手段、重複違反等相關因素。</li>
+            <li>與申訴人之關係、違反後態度及過往有無類似行為。</li>
+            <li>對事業單位所生危害之影響程度及範圍。</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3 class="sub">申訴者保護（第20條）</h3>
+          <p style="font-size:13.5px; margin:0;">雇主不得對依法提起申訴或協助他人申訴之工作者，予以解僱、降調、減薪、損害其依法令、契約或習慣上所應享有之權益，或其他不利之處分。<b>但經證實有惡意虛構事實者，不在此限。</b></p>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:14px;">
+        <h3 class="sub">申復程序（第22條）</h3>
+        <p style="font-size:13.5px;">當事人不服調查決定，得於收到書面通知翌日起<b>30日內</b>以書面具明理由向雇主提出申復（同一事件以一次為限）。雇主接獲申復後應於<b>10個工作日內</b>由申訴處理單位成員推舉召集人，召開申復審議會議，給予申復人陳述意見機會。會議發現程序有重大瑕疵或新事證時，應組成申復調查小組再行調查。</p>
+        <div class="grid2" style="margin-top:12px;">
+          <div>
+            <p style="font-size:12.5px; color:var(--brass); margin:0 0 4px; font-weight:600;">30人以上未達100人</p>
+            <p style="font-size:13px; margin:0;">申復調查小組成員至少3人，外部專業人士至少1人，任一性別比例不得少於三分之一。</p>
+          </div>
+          <div>
+            <p style="font-size:12.5px; color:var(--brass); margin:0 0 4px; font-weight:600;">100人以上</p>
+            <p style="font-size:13px; margin:0;">成員至少3人，外部專業人士不得少於三分之二，任一性別比例不得少於三分之一。</p>
+          </div>
+        </div>
+        <p class="note">僱用勞工未滿30人者，得參照辦理。</p>
+      </div>
+
+      <h3 class="sub" style="margin-top:24px;">申復處理程序及期限</h3>
+      <div class="timeline">
+        <div class="tstep"><p class="tt">當事人提出申復</p><p class="td">收到決定通知<br>翌日起30日內</p></div>
+        <div class="tstep"><p class="tt">召開申復審議會議</p><p class="td">收到申復後<br>10個工作日內</p></div>
+        <div class="tstep"><p class="tt">作成附理由之決定</p><p class="td">會議召開日起<br>30日內</p></div>
+        <div class="tstep"><p class="tt">決定書通知雙方</p><p class="td">申復決定日起<br>10個工作日內</p></div>
+        <div class="tstep"><p class="tt">屬再行調查者</p><p class="td">決定期限<br>得展延30日</p></div>
+        <div class="tstep"><p class="tt">登錄系統</p><p class="td">作成決定之日起<br>10個工作日內</p></div>
+      </div>
+
+      <div class="card" style="margin-top:20px;">
+        <h3 class="sub">重新調查機制（第24條）</h3>
+        <p style="font-size:13.5px;">當事人對雇主所為調查結果不服，向主管機關或勞動檢查機構申訴，經認定違反本準則且調查程序有<b>重大瑕疵</b>之一者，得要求雇主重新調查，<b>雇主不得拒絕</b>。其調查成員組成與程序，準用申復程序之規定。</p>
+        <p style="font-size:13px; color:var(--ink-soft); margin-bottom:4px;">重大瑕疵情形（第22條第4項）：</p>
+        <ul class="plain" style="font-size:13.5px;">
+          <li>申訴處理單位之設置或調查小組之組成，未符合成員組成及資格規定。</li>
+          <li>未給予當事人任一方陳述意見之機會。</li>
+          <li>有應迴避而未迴避之情形。</li>
+          <li>有足以影響調查結果而未採納之重要事證或其他重大瑕疵。</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 11 -->
+    <section class="block" id="sec11">
+      <div class="block-head">
+        <div class="stamp">§25-28</div>
+        <div>
+          <h2>後續處理與制度銜接</h2>
+          <span class="cite">防治準則第25～28條</span>
+        </div>
+      </div>
+
+      <div class="grid2">
+        <div class="card">
+          <h3 class="sub">追蹤及管理（第25、26條）</h3>
+          <p style="font-size:13.5px;">雇主對於申訴與申復事件應採取追蹤、考核及監督，確保懲處措施有效執行，避免相同事件或報復情事發生，並整體評估及檢討第6條所定規範，採取必要之改善措施。</p>
+          <p style="font-size:13.5px; margin:0;">所採行之預防措施、受理申訴、協調、調查與申復等處理過程及結果，應作成執行紀錄並<b>留存三年</b>。</p>
+        </div>
+        <div class="card">
+          <h3 class="sub">複合式行為之處理（第27條）</h3>
+          <p style="font-size:13.5px; margin:0;">申訴事件涉及工作場所性騷擾行為者，雇主應各依職場霸凌防治措施準則及工作場所性騷擾防治措施準則所定之程序辦理；並應按申訴人之申訴意願及內容，就所涉事項<b>併予調查訪談或釐清事實，避免重複詢問</b>。</p>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:14px;">
+        <h3 class="sub">施行前已受理案件法規之適用（第28條）</h3>
+        <p style="font-size:13.5px; margin:0 0 8px;">防治準則施行前之下列案件，依施行後之規定終結之。但已進行之程序，其效力不受影響：</p>
+        <ul class="plain" style="font-size:13.5px;">
+          <li>已受理之職場不法侵害事件屬職場霸凌申訴案件尚未終結者。</li>
+          <li>施行前已發生職場霸凌事件而於施行後受理申訴者。</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 12 -->
+    <section class="block" id="sec12">
+      <div class="block-head">
+        <div class="stamp">罰則</div>
+        <div>
+          <h2>罰則</h2>
+          <span class="cite">違反職安法及防治準則之處罰</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="penalty">
+          <div class="pdesc">雇主未採取防治或適當措施致職業病或工作相關疾病</div>
+          <div class="pfine">罰 5–300 萬元</div>
+        </div>
+        <div class="penalty">
+          <div class="pdesc">被申訴人規避、妨礙或拒絕配合調查</div>
+          <div class="pfine">罰 3–75 萬元</div>
+        </div>
+        <div class="penalty">
+          <div class="pdesc">雇主於接獲申訴後未處理</div>
+          <div class="pfine">罰 3–75 萬元</div>
+        </div>
+        <div class="penalty">
+          <div class="pdesc">雇主於調查時未依規定程序辦理或拒絕重新調查</div>
+          <div class="pfine">罰 3–75 萬元</div>
+        </div>
+        <div class="penalty">
+          <div class="pdesc">雇主對申訴人處以不利對待或處分</div>
+          <div class="pfine">罰 3–75 萬元</div>
+        </div>
+        <div class="penalty">
+          <div class="pdesc">雇主未依規定於系統登錄申訴案件（經通知限期改善，屆期未改善）</div>
+          <div class="pfine">罰 3–75 萬元</div>
+        </div>
+        <div class="penalty">
+          <div class="pdesc">雇主未依規定採取防治或適當措施（經通知限期改善，屆期未改善）</div>
+          <div class="pfine">罰 3–75 萬元</div>
+        </div>
+        <div class="penalty">
+          <div class="pdesc">最高負責人經認定為霸凌行為人</div>
+          <div class="pfine">罰 1–100 萬元</div>
+        </div>
+      </div>
+
+      <div class="callout" style="margin-top:16px;">主管機關得<b>依事業規模、性質或違反情節</b>，加重其罰鍰至法定罰鍰最高額<b>二分之一</b>。</div>
+    </section>
+
+    <footer>
+      <div class="seal-big">畢</div>
+      <p>謝謝您這個小時的參與</p>
+      <span>資料整理自：勞動部職業安全衛生署「職場霸凌防治教育訓練（1）—職安法相關規定說明」</span>
+    </footer>
+  </main>
+</div>
+
+</body>
+</html>
