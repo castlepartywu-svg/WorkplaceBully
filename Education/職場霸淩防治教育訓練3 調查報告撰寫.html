@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>職場霸凌防治教育訓練（3）調查報告撰寫</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700;900&family=Noto+Sans+TC:wght@400;500;700;900&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FBF6EC;
+    --card:#FFFDF8;
+    --ink:#2A2019;
+    --ink-soft:#5F5142;
+    --ink-faint:#8C7C68;
+    --gold:#B8823D;
+    --gold-deep:#8F6329;
+    --clay:#A8462F;
+    --sage:#6E7B5A;
+    --line:#E1D2B4;
+    --line-strong:#C9B48A;
+    --shadow: 0 1px 0 rgba(42,32,25,0.06);
+    --serif:'Noto Serif TC', serif;
+    --sans:'Noto Sans TC', sans-serif;
+    --mono:'IBM Plex Mono', monospace;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--sans);
+    line-height:1.75;
+    -webkit-font-smoothing:antialiased;
+  }
+  body::before{
+    content:"";
+    position:fixed;inset:0;
+    background-image:
+      radial-gradient(ellipse at top left, rgba(184,130,61,0.07), transparent 55%),
+      radial-gradient(ellipse at bottom right, rgba(168,70,47,0.05), transparent 55%);
+    pointer-events:none;
+    z-index:0;
+  }
+  a{color:inherit;}
+
+  /* ===== Layout shell ===== */
+  .shell{
+    position:relative;
+    z-index:1;
+    display:grid;
+    grid-template-columns: 240px minmax(0,1fr);
+    max-width:1180px;
+    margin:0 auto;
+  }
+  @media (max-width:900px){
+    .shell{grid-template-columns: 1fr;}
+  }
+
+  /* ===== Sidebar / ruler nav ===== */
+  .rail{
+    position:sticky;
+    top:0;
+    align-self:start;
+    height:100vh;
+    padding:38px 0 38px 28px;
+    display:flex;
+    flex-direction:column;
+    gap:26px;
+    border-right:1px solid var(--line);
+  }
+  @media (max-width:900px){
+    .rail{position:static;height:auto;padding:24px 20px;border-right:none;border-bottom:1px solid var(--line);flex-direction:row;flex-wrap:wrap;align-items:center;gap:14px;}
+  }
+  .rail-brand{
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:.14em;
+    color:var(--ink-faint);
+    text-transform:uppercase;
+  }
+  .rail-title{
+    font-family:var(--serif);
+    font-weight:900;
+    font-size:17px;
+    line-height:1.5;
+    color:var(--ink);
+    max-width:190px;
+  }
+  .rail nav{display:flex;flex-direction:column;gap:2px;}
+  @media (max-width:900px){ .rail nav{flex-direction:row;flex-wrap:wrap;gap:8px 16px;} }
+  .rail nav a{
+    display:flex;
+    align-items:baseline;
+    gap:10px;
+    padding:9px 10px 9px 0;
+    text-decoration:none;
+    font-size:14px;
+    color:var(--ink-soft);
+    border-left:2px solid transparent;
+    transition:color .15s, border-color .15s;
+  }
+  .rail nav a:hover{color:var(--gold-deep); border-left-color:var(--gold);}
+  .rail nav a .n{
+    font-family:var(--mono);
+    font-size:11px;
+    color:var(--gold-deep);
+    min-width:20px;
+  }
+  .rail-foot{
+    margin-top:auto;
+    font-family:var(--mono);
+    font-size:10.5px;
+    color:var(--ink-faint);
+    line-height:1.9;
+  }
+  @media (max-width:900px){ .rail-foot{display:none;} }
+
+  /* ===== Main column ===== */
+  main{padding:0 40px 80px;}
+  @media (max-width:900px){ main{padding:0 20px 60px;} }
+  @media (max-width:520px){ main{padding:0 16px 48px;} }
+
+  /* ===== Hero ===== */
+  .hero{
+    padding:76px 0 54px;
+    border-bottom:1px solid var(--line);
+  }
+  .hero-eyebrow{
+    font-family:var(--mono);
+    font-size:12px;
+    letter-spacing:.16em;
+    color:var(--clay);
+    text-transform:uppercase;
+    margin-bottom:18px;
+  }
+  .hero h1{
+    font-family:var(--serif);
+    font-weight:900;
+    font-size:clamp(32px, 5vw, 54px);
+    line-height:1.28;
+    margin:0 0 22px;
+    letter-spacing:.01em;
+  }
+  .hero h1 em{
+    font-style:normal;
+    color:var(--gold-deep);
+    border-bottom:3px solid var(--gold);
+  }
+  .hero p.lede{
+    font-size:16.5px;
+    color:var(--ink-soft);
+    max-width:560px;
+    margin:0 0 30px;
+  }
+  .hero-meta{
+    display:flex;
+    gap:28px;
+    flex-wrap:wrap;
+    font-size:13px;
+    color:var(--ink-faint);
+  }
+  .hero-meta strong{display:block;color:var(--ink);font-family:var(--serif);font-weight:700;font-size:14.5px;margin-bottom:2px;}
+
+  /* ===== gauge signature (ruler measuring the "overreach distance") ===== */
+  .gauge{
+    margin-top:44px;
+    border:1px solid var(--line-strong);
+    background:var(--card);
+    border-radius:2px;
+    padding:22px 24px 18px;
+    box-shadow:var(--shadow);
+  }
+  .gauge-label{
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:.1em;
+    color:var(--ink-faint);
+    margin-bottom:14px;
+    text-transform:uppercase;
+  }
+  .gauge-track{
+    position:relative;
+    height:56px;
+    background:linear-gradient(180deg, rgba(168,70,47,0.06), rgba(168,70,47,0.02));
+    border:1px dashed var(--line-strong);
+  }
+  .gauge-tick{
+    position:absolute; top:0; bottom:0;
+    border-left:1px solid var(--line-strong);
+  }
+  .gauge-tick span{
+    position:absolute; bottom:6px; left:6px;
+    font-family:var(--mono);
+    font-size:10px;
+    color:var(--ink-faint);
+    white-space:nowrap;
+  }
+  .gauge-tick.overreach{border-left:2px solid var(--clay);}
+  .gauge-tick.overreach span{color:var(--clay);}
+  .gauge-cap{
+    display:flex; justify-content:space-between;
+    font-size:11.5px; color:var(--ink-faint); margin-top:8px;
+    font-family:var(--mono);
+  }
+
+  /* ===== chapter blocks ===== */
+  .chapter{
+    padding:70px 0 10px;
+    border-bottom:1px solid var(--line);
+  }
+  .chapter:last-of-type{border-bottom:none;}
+  .chapter-head{
+    display:flex;
+    align-items:flex-end;
+    gap:18px;
+    margin-bottom:38px;
+  }
+  .chapter-num{
+    font-family:var(--mono);
+    font-weight:600;
+    font-size:15px;
+    color:var(--gold-deep);
+    border:1px solid var(--gold);
+    padding:5px 11px;
+    border-radius:2px;
+    letter-spacing:.05em;
+  }
+  .chapter-head h2{
+    font-family:var(--serif);
+    font-weight:900;
+    font-size:clamp(24px,3.4vw,32px);
+    margin:0;
+  }
+
+  .section{margin:0 0 46px;}
+  .section h3{
+    font-family:var(--serif);
+    font-weight:700;
+    font-size:19px;
+    margin:0 0 6px;
+    color:var(--ink);
+  }
+  .section .kicker{
+    display:inline-block;
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:.08em;
+    color:var(--sage);
+    background:rgba(110,123,90,0.1);
+    border:1px solid rgba(110,123,90,0.3);
+    padding:3px 9px;
+    border-radius:2px;
+    margin-bottom:12px;
+    text-transform:uppercase;
+  }
+  .section p{margin:10px 0; color:var(--ink-soft); font-size:15px;}
+
+  .lawbox{
+    background:var(--card);
+    border-left:3px solid var(--gold);
+    border-top:1px solid var(--line);
+    border-right:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+    padding:20px 24px;
+    margin:16px 0;
+    font-size:14.5px;
+    color:var(--ink);
+    line-height:1.9;
+    border-radius:0 3px 3px 0;
+  }
+  .lawbox .cite{
+    display:block; margin-top:12px;
+    font-family:var(--mono); font-size:11px; color:var(--ink-faint);
+  }
+  .lawbox mark{
+    background:rgba(184,130,61,0.22);
+    color:var(--gold-deep);
+    padding:0 2px;
+    font-weight:700;
+  }
+
+  .example{
+    background:repeating-linear-gradient(135deg, rgba(184,130,61,0.035) 0 12px, transparent 12px 24px), var(--card);
+    border:1px solid var(--line-strong);
+    padding:18px 22px;
+    margin:14px 0;
+    border-radius:3px;
+    font-size:14.5px;
+    color:var(--ink-soft);
+  }
+  .example .tag{
+    font-family:var(--mono);
+    font-size:10.5px;
+    letter-spacing:.1em;
+    color:var(--gold-deep);
+    text-transform:uppercase;
+    margin-bottom:8px;
+    display:block;
+  }
+  .example ul, .example ol{margin:6px 0; padding-left:20px;}
+  .example li{margin:5px 0;}
+  .example strong{color:var(--ink);}
+
+  .two-col{display:grid; grid-template-columns:1fr 1fr; gap:20px;}
+  @media (max-width:640px){.two-col{grid-template-columns:1fr;}}
+
+  .card-pair{
+    border:1px solid var(--line-strong);
+    border-radius:3px;
+    padding:18px 20px;
+    background:var(--card);
+  }
+  .card-pair h4{margin:0 0 10px; font-family:var(--serif); font-size:15.5px; color:var(--gold-deep);}
+  .card-pair ul{margin:0; padding-left:18px; font-size:14px; color:var(--ink-soft);}
+  .card-pair li{margin:6px 0;}
+
+  .checklist{list-style:none; margin:14px 0; padding:0; display:flex; flex-direction:column; gap:10px;}
+  .checklist li{
+    display:flex; gap:12px; align-items:flex-start;
+    font-size:14.5px; color:var(--ink-soft);
+    padding:12px 16px;
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:3px;
+  }
+  .checklist li .idx{
+    font-family:var(--mono); font-size:12px; color:var(--gold-deep);
+    border:1px solid var(--gold); border-radius:50%;
+    width:22px; height:22px; flex:none;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .checklist li strong{color:var(--ink); font-weight:700;}
+
+  table.simple{
+    width:100%; border-collapse:collapse; margin:14px 0; font-size:14px;
+  }
+  table.simple th, table.simple td{
+    border:1px solid var(--line-strong);
+    padding:10px 12px;
+    text-align:left;
+    color:var(--ink-soft);
+  }
+  table.simple th{
+    background:rgba(184,130,61,0.09);
+    color:var(--ink);
+    font-family:var(--serif);
+    font-weight:700;
+    font-size:13.5px;
+  }
+
+  .flow{
+    display:flex; align-items:center; gap:0; flex-wrap:wrap;
+    margin:22px 0;
+  }
+  .flow .node{
+    background:var(--card);
+    border:1px solid var(--line-strong);
+    border-radius:3px;
+    padding:14px 18px;
+    font-size:13.5px;
+    color:var(--ink);
+    text-align:center;
+    min-width:120px;
+  }
+  .flow .arrow{
+    color:var(--gold-deep);
+    font-size:18px;
+    padding:0 12px;
+  }
+  @media (max-width:640px){
+    .flow{flex-direction:column; align-items:stretch;}
+    .flow .arrow{transform:rotate(90deg); align-self:center; padding:6px;}
+  }
+
+  .quote-callout{
+    font-family:var(--serif);
+    font-weight:700;
+    font-size:20px;
+    line-height:1.7;
+    color:var(--ink);
+    padding:26px 0;
+    border-top:1px solid var(--line-strong);
+    border-bottom:1px solid var(--line-strong);
+    margin:26px 0;
+  }
+  .quote-callout .who{
+    display:block; margin-top:10px;
+    font-family:var(--sans); font-weight:400; font-size:13px; color:var(--ink-faint);
+  }
+
+  .problem-card{
+    border:1px solid var(--clay);
+    background:rgba(168,70,47,0.045);
+    border-radius:3px;
+    padding:18px 22px;
+    margin:16px 0;
+  }
+  .problem-card .ptag{
+    font-family:var(--mono);
+    font-size:11px;
+    color:var(--clay);
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    margin-bottom:8px;
+    display:block;
+  }
+  .problem-card h4{margin:0 0 8px; font-family:var(--serif); font-size:16px; color:var(--clay);}
+  .problem-card p{margin:6px 0; font-size:14px; color:var(--ink-soft);}
+
+  .funnel-wrap{display:flex; gap:36px; align-items:center; flex-wrap:wrap; margin:24px 0;}
+  .funnel-copy{flex:1; min-width:240px; font-size:14.5px; color:var(--ink-soft);}
+  .funnel-copy strong{color:var(--ink);}
+
+  .divider-tick{
+    display:flex; align-items:center; gap:10px;
+    margin:34px 0 20px;
+    color:var(--ink-faint);
+    font-family:var(--mono); font-size:11px; letter-spacing:.1em; text-transform:uppercase;
+  }
+  .divider-tick::before, .divider-tick::after{
+    content:""; flex:1; height:1px; background:var(--line-strong);
+  }
+
+  .closing{
+    padding:70px 0 90px;
+    text-align:center;
+  }
+  .closing h2{
+    font-family:var(--serif);
+    font-weight:900;
+    font-size:clamp(26px,4vw,36px);
+    margin:0 0 34px;
+  }
+  .values{
+    display:flex; justify-content:center; flex-wrap:wrap; gap:14px;
+    margin-bottom:36px;
+  }
+  .values span{
+    font-family:var(--sans);
+    font-size:13.5px;
+    padding:10px 18px;
+    border:1px solid var(--line-strong);
+    border-radius:30px;
+    color:var(--ink-soft);
+    background:var(--card);
+  }
+  .values span b{color:var(--gold-deep);}
+  .banner{
+    display:inline-block;
+    font-family:var(--serif);
+    font-weight:900;
+    font-size:22px;
+    color:var(--paper);
+    background:var(--ink);
+    padding:16px 34px;
+    letter-spacing:.05em;
+    border-radius:2px;
+  }
+  .closing .sub{margin-top:20px; font-size:13px; color:var(--ink-faint);}
+
+  ::selection{background:rgba(184,130,61,0.3);}
+
+  @media print{
+    .rail{display:none;}
+    .shell{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <aside class="rail">
+    <div>
+      <div class="rail-brand">職業安全衛生數位學習平台</div>
+      <div class="rail-title">職場霸凌防治<br>教育訓練（3）</div>
+    </div>
+    <nav>
+      <a href="#ch1"><span class="n">01</span>事實認定及理由</a>
+      <a href="#ch2"><span class="n">02</span>調查報告撰寫</a>
+      <a href="#ch3"><span class="n">03</span>改善措施</a>
+      <a href="#ch4"><span class="n">04</span>結論</a>
+    </nav>
+    <div class="rail-foot">
+      講師｜林楷庭 臨床心理師<br>
+      勞動部職業安全衛生署<br>
+      職業安全衛生數位學習平台
+    </div>
+  </aside>
+
+  <main>
+
+    <section class="hero">
+      <div class="hero-eyebrow">workplace bullying prevention training · 03</div>
+      <h1>調查報告撰寫：<br>從<em>逾越的距離</em>到可執行的改善</h1>
+      <p class="lede">職場霸凌成立與否，關鍵不在於直覺的好惡，而在於能否用一致的標準，量出行為與界線之間「逾越」了多少距離——並據此寫出禁得起檢視的調查報告。</p>
+      <div class="hero-meta">
+        <div><strong>講師</strong>林楷庭／臨床心理師</div>
+        <div><strong>主辦</strong>勞動部職業安全衛生署</div>
+        <div><strong>依據</strong>職業安全衛生法 第22-1條</div>
+      </div>
+
+      <div class="gauge">
+        <div class="gauge-label">逾越業務上必要且合理範圍・三道標準線</div>
+        <div class="gauge-track">
+          <div class="gauge-tick" style="left:8%"><span>爭議行為</span></div>
+          <div class="gauge-tick" style="left:34%"><span>常見社會通念</span></div>
+          <div class="gauge-tick" style="left:60%"><span>領域知識原則性做法</span></div>
+          <div class="gauge-tick overreach" style="left:86%"><span>事業單位內部程序</span></div>
+        </div>
+        <div class="gauge-cap">
+          <span>零逾越</span>
+          <span>確認標準，才有辦法估計逾越的距離與改善措施</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CHAPTER 1 ============ -->
+    <section class="chapter" id="ch1">
+      <div class="chapter-head">
+        <span class="chapter-num">01</span>
+        <h2>事實認定及理由</h2>
+      </div>
+
+      <div class="section">
+        <span class="kicker">爭議事件的核心</span>
+        <h3>問題到底是什麼？</h3>
+        <p>事件的核心，往往圍繞著疑似違法行為、管理風格或管理困難的議題，以及社會心理危害議題；但調查小組真正要回答的，只有一個聚焦的問題：職場霸凌會不會成立？（以及其他可能適用法規是否成立）</p>
+        <div class="two-col">
+          <div class="card-pair">
+            <h4>事件的核心</h4>
+            <ul>
+              <li>疑似違法行為</li>
+              <li>管理風格或管理困難議題</li>
+              <li>社會心理危害議題</li>
+              <li>……</li>
+            </ul>
+          </div>
+          <div class="card-pair">
+            <h4>調查小組核心</h4>
+            <ul>
+              <li>職場霸凌會不會成立？</li>
+              <li>（其他法規的部分，會不會成立？）</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <span class="kicker">法定要件</span>
+        <h3>職場霸凌定義</h3>
+        <div class="lawbox">
+          ……本法所稱職場霸凌，指勞工於勞動場所執行職務，因事業單位人員利用職務或權勢等關係，<mark>逾越業務上必要且合理範圍</mark>，持續以冒犯、威脅、冷落、孤立、侮辱或其他不當言詞或行為，<mark>致其身心健康遭受危害</mark>。但情節重大者，不以持續發生為必要。
+          <span class="cite">參考資料：勞動部（2025）職安法22-1</span>
+        </div>
+        <p>內部委員最能提供訊息的地方，正是判斷「逾越業務上必要且合理範圍」時所需要的組織脈絡與情境細節。</p>
+      </div>
+
+      <div class="section">
+        <span class="kicker">要件一</span>
+        <h3>逾越業務上必要且合理之範圍</h3>
+        <div class="lawbox">
+          ……至行為是否逾越業務上必要且合理範圍，得依社會通念，視該行為與工作是否具關連與合理性認定，例如主管要求勞工執行對業務明顯不必要或不可能執行之任務，或不提供勞工工作等，其可透過勞動契約、事業單位之工作規則、內部規定以及適用之相關法規予以檢視。實務上，依法院判決之案例，該等行為之判斷，係綜合評估該行為樣態、次數、頻率、受侵害之權利、行為人動機目的等，是否已逾越社會通念所容許之範疇。……
+          <span class="cite">參考資料：22-1 立法理由</span>
+        </div>
+        <p>要估計「逾越了多少」，必須先確認判斷所依據的標準。標準層層遞進，也代表著不同的改善措施：</p>
+
+        <table class="simple">
+          <tr><th>標準</th><th>範例</th><th>對應的改善措施範例</th></tr>
+          <tr><td>常見社會通念</td><td>不能動手碰觸</td><td>提醒指導時避免肢體接觸</td></tr>
+          <tr><td>領域知識下的原則性做法</td><td>管理職面對職能弱項部屬，要做成面談紀錄</td><td>管理有面談都要做紀錄</td></tr>
+          <tr><td>事業單位的內部程序</td><td>異常事件發生狀況的正確程序</td><td>（服裝儀容不正確）應該要按照正常程序處理異常流程</td></tr>
+        </table>
+        <p>確認標準，才有辦法估計逾越的距離；有了逾越的距離，才有辦法估計對應、可執行的改善措施。</p>
+      </div>
+
+      <div class="section">
+        <span class="kicker">要件二</span>
+        <h3>持續性</h3>
+        <div class="lawbox">
+          ……另查國際上多數將行為之「持續性」作為職場霸凌之認定要件，例如澳洲公平工作法所定之職場霸凌，指個人或一群人在職場中反覆對某位工作者或某一群工作者有不合理之行為，且該行為會對受害者之健康或安全造成風險。但考量行為情節重大者，例如因單次之重大之人格侮辱行為，導致勞工身心遭受嚴重傷害，未必以持續或反覆發生作為職場霸凌認定之要件，為保障勞工權益，且促使雇主落實預防作為，爰於第一項但書規定，情節重大之言行，不以持續發生為必要，亦屬本法所稱之職場霸凌。……
+          <span class="cite">參考資料：22-1 立法理由</span>
+        </div>
+        <div class="example">
+          <span class="tag">心理學視角</span>
+          ……穩定性，即（性格）是具有跨時間、跨情境之一致性。該特性之表現並非隨機、意外的發生，而是具有一定的持續性或持久性。……
+        </div>
+        <div class="card-pair" style="margin-top:14px;">
+          <h4>內部委員能夠提供的訊息</h4>
+          <ul>
+            <li>這幾次的案件，是特殊的情境（例如：緊急的情境），還是一般的情境？</li>
+            <li>特殊的情境有多特殊？</li>
+          </ul>
+        </div>
+        <p style="margin-top:12px;"><strong style="color:var(--ink)">內部委員通常能比外部委員，更能夠提供對事情發生情境的整體看法。</strong></p>
+      </div>
+
+      <div class="section">
+        <span class="kicker">要件三</span>
+        <h3>身心健康遭受危害</h3>
+        <div class="lawbox">
+          ……所稱致其身心健康遭受危害，不以需達到實質具體之傷害程度為必要，包括形成明顯敵意或惡劣之職場情境，造成勞工身心健康潛在危害(hazard)之工作環境，可能導致勞工罹病或傷害之情形已足，以促使雇主善盡事前之職場霸凌預防責任。……
+        </div>
+
+        <div class="problem-card" style="border-color:var(--gold); background:rgba(184,130,61,0.05);">
+          <span class="ptag" style="color:var(--gold-deep);">常見疑問</span>
+          <h4 style="color:var(--gold-deep);">去身心科門診拿診斷證明書？</h4>
+          <p><strong>對調查來說，診斷證明不是必要，有也沒問題。</strong></p>
+          <p>個人的身心健康狀況，都應該放在很前面的位置；申訴人依個人意願尋求心理資源協助，這是一件好事。診斷證明書只是讓調查小組知道醫師評估在當時呈現的狀況，受過適當訓練的外部專業委員會對其內涵做出判斷。</p>
+          <p>我們要做的是消除危害。在這個脈絡下，診斷證明應該評估成「暴露在某種危害下，綜合各種個人及環境因素，得到的一種對健康產生影響的可能性」。</p>
+        </div>
+
+        <p>為了對焦在「致其身心狀況遭受危害」，參考其他關係人經驗是重要的訪談策略：</p>
+        <div class="example">
+          <span class="tag">訪談引導範例</span>
+          <ul>
+            <li>申訴人表示被申訴人有（…爭議行為內涵…）的經驗，不曉得您有沒有類似的經驗？</li>
+            <li>您當時直接看到申訴人被……，當時有怎麼樣心理的感受？</li>
+            <li>如果您是申訴人，經驗到類似的事情，您會有怎麼樣的感受？</li>
+          </ul>
+        </div>
+        <p>為了理解行為對環境造成的影響，有時候較大規模的訪談是有必要的：</p>
+        <div class="example">
+          <span class="tag">實務範例</span>
+          申訴的訪談委員分別於113年12月2日至4日間，連續辦理4場訪談會議，基於調查時程，本次受訪談者均事前透過電話或 LINE 訊息等方式詢問關係人之受訪意願，針對原調查報告之受訪關係人15人中，有11人接受再次受訪，另新增○○○基層員工與主管等10人受訪，共計訪談關係人21人。
+        </div>
+        <table class="simple">
+          <tr><th>受訪者</th><th>與被申訴人相處情形</th><th>觀察被申訴人與其他同事相處情形</th></tr>
+          <tr><td>01</td><td></td><td></td></tr>
+          <tr><td>02</td><td></td><td></td></tr>
+          <tr><td>03</td><td></td><td></td></tr>
+          <tr><td>04</td><td></td><td></td></tr>
+        </table>
+      </div>
+    </section>
+
+    <!-- ============ CHAPTER 2 ============ -->
+    <section class="chapter" id="ch2">
+      <div class="chapter-head">
+        <span class="chapter-num">02</span>
+        <h2>調查報告撰寫</h2>
+      </div>
+
+      <div class="section">
+        <h3>調查報告流程</h3>
+        <div class="flow">
+          <div class="node">調查小組<br><small style="color:var(--ink-faint)">產出調查報告</small></div>
+          <div class="arrow">→</div>
+          <div class="node">處理單位審議</div>
+          <div class="arrow">→</div>
+          <div class="node">書面結果通知<br><small style="color:var(--ink-faint)">申訴人 / 被申訴人</small></div>
+        </div>
+      </div>
+
+      <div class="section">
+        <h3>調查報告必要項目</h3>
+        <div class="lawbox">
+          ……前項調查報告，應送申訴處理單位審議，其內容應包括下列事項：
+          一、申訴事件之案由，包括申訴人之申訴要旨。
+          二、調查訪談過程，包括日期及對象。
+          三、當事人及相關人員陳述之重點。
+          四、事實認定與理由，包括證人及相關人員陳述之重點、相關物證之查驗。
+          五、處理建議。
+        </div>
+        <div class="two-col">
+          <div class="card-pair">
+            <h4>基礎事實資料</h4>
+            <ul>
+              <li>一、申訴事件之案由</li>
+              <li>二、調查訪談過程</li>
+              <li>三、當事人及相關人員陳述之重點</li>
+            </ul>
+          </div>
+          <div class="card-pair" style="border-color:var(--clay);">
+            <h4 style="color:var(--clay);">調查判斷核心</h4>
+            <ul>
+              <li>四、事實認定與理由（含證人陳述重點、物證查驗）</li>
+              <li>五、處理建議</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <h3>逐項範例</h3>
+
+        <div class="example">
+          <span class="tag">一、事件案由</span>
+          <ul>
+            <li>（一）本案申訴人：</li>
+            <li>（二）本案被申訴人：</li>
+            <li>（三）申訴人於Ｏ年Ｏ月Ｏ日依ＸＸ股份有限公司（下稱公司）規範，填具通報表，對兩位被申訴人就以下四項內容提出疑似職場霸凌申訴：</li>
+            <li>（四）申訴內容一：……</li>
+            <li>（五）申訴內容二：……</li>
+          </ul>
+        </div>
+
+        <div class="example">
+          <span class="tag">二、調查過程 ＋ 證據清冊</span>
+          <div class="two-col">
+            <div>
+              <strong>調查過程</strong>
+              <ol>
+                <li>2026年Ｏ月Ｏ日，公司受理事件申訴通報表。</li>
+                <li>2026年Ｏ月Ｏ日，調查小組會前會。</li>
+                <li>2026年Ｏ月Ｏ日，訪談申訴人ＯＯＯ。</li>
+                <li>2026年Ｏ月Ｏ日，訪談相關人ＯＯＯ。</li>
+                <li>2026年Ｏ月Ｏ日，訪談被申訴人ＯＯＯ。</li>
+                <li>2026年Ｏ月Ｏ日，訪談被申訴人ＯＯＯ。</li>
+                <li>2026年Ｏ月Ｏ日，訪談相關人ＯＯＯ。</li>
+                <li>2026年Ｏ月Ｏ日，訪談相關人ＯＯＯ。</li>
+                <li>2026年Ｏ月Ｏ日，調查小組調查認定及處置建議會議。</li>
+              </ol>
+            </div>
+            <div>
+              <strong>證據清冊</strong>
+              <ol>
+                <li>2026年Ｏ月Ｏ日申訴書。</li>
+                <li>2026年Ｏ月Ｏ日申訴人ＯＯＯ訪談稿。</li>
+                <li>2026年Ｏ月Ｏ日相關人ＯＯＯ訪談稿。</li>
+                <li>2026年Ｏ月Ｏ日被申訴人ＯＯＯ訪談稿。</li>
+                <li>2026年Ｏ月Ｏ日被申訴人ＯＯＯ訪談稿。</li>
+                <li>2026年Ｏ月Ｏ日相關人ＯＯＯ訪談稿。</li>
+                <li>2026年Ｏ月Ｏ日相關人ＯＯＯ訪談稿。</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+
+        <div class="example">
+          <span class="tag">三、當事人及相關人陳述之重點</span>
+          <p style="margin:4px 0;"><strong>（一）申訴事件一</strong></p>
+          <ul>
+            <li>申訴人ＯＯＯ表示……</li>
+            <li>被申訴人ＯＯＯ表示……</li>
+            <li>因前述二人說法不一致，調查小組訪談關係人ＯＯＯ，表示……</li>
+          </ul>
+          <p style="margin:10px 0 4px;"><strong>（二）申訴事件二</strong></p>
+          <ul>
+            <li>申訴人ＯＯＯ表示……</li>
+            <li>被申訴人ＯＯＯ表示……</li>
+            <li>前述二人說法一致</li>
+          </ul>
+        </div>
+
+        <div class="example">
+          <span class="tag">四、事實認定及理由（虛擬範例）</span>
+          <p style="margin:4px 0;"><strong>（一）申訴事件一</strong></p>
+          <p style="margin:4px 0;"><em>申訴要旨：</em>申訴人表示Ｏ年Ｏ月Ｏ日部室會議上，被申訴人公然指著申訴人大聲「不帶腦子上班」。</p>
+          <p style="margin:4px 0;"><em>事實認定結果：</em>日期可能誤植，但事情發生應屬真實。</p>
+          <p style="margin:4px 0;"><em>認定原因：</em>參照申訴人、被申訴人及關係人說法，均表示有被申訴人指著申訴人說「不帶腦子上班」一事。關係人舉出LINE對話，表示事發當時大家都在群組討論，故申訴人所提Ｏ年Ｏ月Ｏ日應有誤，實際上應該是Ｘ年Ｘ月Ｘ日。</p>
+          <p style="margin:14px 0 4px;"><strong>（二）申訴事件二</strong></p>
+          <p style="margin:4px 0;"><em>申訴要旨：</em>申訴人表示Ｏ年Ｏ月Ｏ日，被申訴人在申訴人座位旁經過時隨口說「是誰做那爛成品，笑死」。</p>
+          <p style="margin:4px 0;"><em>事實認定結果：</em>無法確認事實有發生。</p>
+          <p style="margin:4px 0;"><em>認定原因：</em>被申訴人表示未有此事，與申訴人說法不一致。經查詢辦公室座位圖，可能聽聞之關係人包括ＯＯＯ及ＸＸＸ，由調查小組邀約訪談，均表示當日未曾聽聞此事。</p>
+        </div>
+
+        <div class="example">
+          <span class="tag">四、職場霸凌評估（虛擬範例）— 六要件逐項檢核</span>
+          <ul class="checklist" style="margin:8px 0;">
+            <li><span class="idx">1</span><span><strong>勞動場所執行職務：</strong>本次事件均涉及執行職務議題。</span></li>
+            <li><span class="idx">2</span><span><strong>事業單位人員利用職務或權勢等關係：</strong>被申訴人為申訴人主管，可被認定有相對的優勢地位關係。</span></li>
+            <li><span class="idx">3</span><span><strong>逾越業務上必要且合理範圍：</strong>就事件一「不帶腦子上班」部分，認定內容有逾越業務之必要。</span></li>
+            <li><span class="idx">4</span><span><strong>持續性（或情節重大）：</strong>事件一為使會議繼續之特定情境，為單次之偶發情境。</span></li>
+            <li><span class="idx">5</span><span><strong>不當言詞或行為：</strong>事件一難認定屬職場上之妥適行為，認定其行為有所不當。</span></li>
+            <li><span class="idx">6</span><span><strong>身心健康遭受危害：</strong>申訴人可能會感到主觀不適，但就目前所搜集資料，是否有達社會通念認定之危害仍有疑義。</span></li>
+          </ul>
+          <p style="margin-top:10px;"><strong style="color:var(--ink)">綜整調查事實及前述認定結果，調查小組建議被申訴人ＯＯＯ職場霸凌不成立。</strong></p>
+        </div>
+
+        <div class="example">
+          <span class="tag">五、處理建議</span>
+          <ul>
+            <li>（一）申訴人部分：</li>
+            <li>（二）被申訴人部分：</li>
+            <li>（三）事業單位部分：</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="divider-tick">常見的調查報告問題</div>
+
+      <div class="section">
+        <div class="problem-card">
+          <span class="ptag">常見問題 1</span>
+          <h4>有寫，但不多</h4>
+          <p>就申訴人所提出之事項，只寫了原則性項目和認定結果，但沒有實質討論。</p>
+          <div class="example" style="margin-top:10px;">
+            <span class="tag">範例（過於單薄的寫法）</span>
+            一、是否構成職場霸凌：依職安法及相關指引，職場霸凌通常需具備持續性不當對待、貶抑羞辱或威嚇行為、造成身心傷害。<br><br>
+            二、經評議委員會綜合判斷：本案情形主要屬於「管理方式差異與溝通衝突」，未發現明確羞辱、持續性攻擊、威嚇或排擠行為。<br><br>
+            三、因此未達職場霸凌之構成要件。
+          </div>
+        </div>
+
+        <div class="problem-card">
+          <span class="ptag">常見問題 2</span>
+          <h4>沒有逐項交代細節</h4>
+          <p>對申訴人所提的每一個爭議事項，要逐項說明事實認定的結果。例如：申訴人主張…，被申訴人主張…，一致（或不一致），認定結果等。</p>
+          <div class="example" style="margin-top:10px;">
+            <span class="tag">範例（過於籠統的寫法）</span>
+            （事實認定：全文）就申訴人所提出之其他事項，包括主管言語不當、刻意排擠、過度要求或其他不當管理行為等情形，經調查小組綜合相關人員之訪談內容後，現有資料尚無法建立一致且明確之事實基礎，亦缺乏直接觀察或可相互印證之證據，因此尚難認定相關情形確有發生。（以下空白）
+          </div>
+        </div>
+
+        <div class="problem-card">
+          <span class="ptag">常見問題 3</span>
+          <h4>職場霸凌要件要全部討論</h4>
+          <p>所有爭議事件整理後，最後在以下向度都要有論述內容（回到職安法§22-1的規定）：</p>
+          <ol style="margin:8px 0; padding-left:20px; font-size:14px; color:var(--ink-soft);">
+            <li>勞動場所執行職務</li>
+            <li>事業單位人員利用職務或權勢等關係</li>
+            <li>逾越業務上必要且合理範圍</li>
+            <li>持續性（或情節重大）</li>
+            <li>不當言詞或行為</li>
+            <li>身心健康遭受危害</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CHAPTER 3 ============ -->
+    <section class="chapter" id="ch3">
+      <div class="chapter-head">
+        <span class="chapter-num">03</span>
+        <h2>改善措施</h2>
+      </div>
+
+      <div class="quote-callout">
+        預防跟改善，才是我們最重要的目的。
+        <span class="who">最終的目標 · 調查不是終點，而是消除危害的起點</span>
+      </div>
+
+      <div class="section">
+        <h3>人為因素的不安全行為根本原因</h3>
+        <p>不同層次的根本原因，對應著不同性質的風險緩解措施——多數情形指向訓練，少數蓄意偏離規範者，才對應紀律性懲處。</p>
+        <div class="two-col">
+          <div class="card-pair">
+            <h4>訓練</h4>
+            <ul>
+              <li>失誤、疏忽、知覺偏差 → 注意力 / 工作記憶 / 知覺 → 技能、知覺層面的訓練（含程序性訓練）</li>
+              <li>錯誤（心智模型偏差）→ 決策層面 → 訓練（案例研討）</li>
+            </ul>
+          </div>
+          <div class="card-pair" style="border-color:var(--clay);">
+            <h4 style="color:var(--clay);">紀律性懲處</h4>
+            <ul>
+              <li>意圖性偏離規範，且主觀知覺與群體文化規範不符者，才進入紀律性懲處的範疇。</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <h3>處理建議：聚焦在做得到且有幫助的事情</h3>
+
+        <div class="example">
+          <span class="tag">申訴人部分</span>
+          <ul>
+            <li>若因此次事件而有身心不佳狀態產生，建議可依個人意願，尋求合適之心理健康資源（如衛生福利部青壯世代心理健康支持方案、財團法人職業災害預防及重建中心勞工心理諮商服務等，或由公司視實際需求提供相對應資源等等）協助調適。</li>
+            <li>本件調查過程中，被申訴人在訪談中表現出可能有身心健康的議題，建議ＯＯ公司依當事人意願安排職護定期關懷被申訴人。</li>
+            <li>申訴人在執行ＯＯＯ業務時，相關程序未能符合ＯＯ手冊 X.X.X 規範，建議轉由作業單位予以提醒。</li>
+          </ul>
+        </div>
+
+        <div class="example">
+          <span class="tag">被申訴人部分</span>
+          <ul>
+            <li>本次爭議事件之不當行為部分應予改善，公司可另依獎懲規定（……）。</li>
+            <li>建議公司協助被申訴人與部屬之溝通技巧，如參加外部訓練，或高階主管指導等……</li>
+            <li>建議避免雙方在業務上有接觸機會，安排適當隔離至Ｏ年Ｏ月Ｏ日……</li>
+          </ul>
+        </div>
+
+        <div class="example">
+          <span class="tag">事業單位部分</span>
+          <ul>
+            <li>建議持續就不法侵害、職場霸凌議題，提供管理職適當教育訓練，區分合理管理與職場霸凌界線……</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CHAPTER 4 ============ -->
+    <section class="chapter" id="ch4">
+      <div class="chapter-head">
+        <span class="chapter-num">04</span>
+        <h2>結論</h2>
+      </div>
+
+      <div class="section">
+        <h3>職場行為 vs. 違法行為：光譜而非二分</h3>
+        <div class="funnel-wrap">
+          <svg width="220" height="220" viewBox="0 0 220 220" role="img" aria-label="職場行為到違法行為的倒三角光譜圖">
+            <polygon points="10,20 210,20 110,210" fill="none" stroke="#C9B48A" stroke-width="1.5"/>
+            <line x1="10" y1="20" x2="210" y2="20" stroke="#B8823D" stroke-width="3"/>
+            <line x1="60" y1="120" x2="160" y2="120" stroke="#A8462F" stroke-width="3"/>
+            <line x1="35" y1="70"  x2="185" y2="70"  stroke="#DCCBAE" stroke-width="1"/>
+            <line x1="85" y1="170" x2="135" y2="170" stroke="#DCCBAE" stroke-width="1"/>
+          </svg>
+          <div class="funnel-copy">
+            <p><strong style="color:var(--gold-deep)">職場行為</strong>——事業單位實際上每天面對的區域：沒有到民、刑事的違法或職場霸凌，但是不讓人這麼喜歡、引起敵意知覺的那些行為。</p>
+            <p><strong style="color:var(--clay)">違法行為</strong>——刑法、性別平等工作法、性騷擾防治法、醫療法、跟蹤騷擾防制法、就業服務法或中高齡者及高齡者就業促進法等。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <h3>內部委員在職場霸凌調查中，扮演了影響成效的角色</h3>
+        <p>職場霸凌調查需要資源及安排許多行政工作，最終是事業單位管理作為的一部分——透過法令的要求，促使我們將預防與改善相連。</p>
+        <p>放越多的資源在前期的預防措施、營造好的組織氛圍，就越能適度減少後續職場霸凌調查需要耗費的資源，持續邁向友善職場作業環境。</p>
+      </div>
+    </section>
+
+    <section class="closing">
+      <h2>謝謝您這個小時的參與</h2>
+      <div class="values">
+        <span><b>勇敢制止</b>不旁觀</span>
+        <span><b>關心支持</b>不冷漠</span>
+        <span><b>申訴檢舉</b>不姑息</span>
+        <span>保護自己・尊重他人・打造友善職場</span>
+      </div>
+      <div class="banner">職場零霸凌</div>
+      <div class="sub">職場霸凌防治教育訓練（3）調查報告撰寫 — 林楷庭／臨床心理師｜勞動部職業安全衛生署 職業安全衛生數位學習平台</div>
+    </section>
+
+  </main>
+</div>
+</body>
+</html>
