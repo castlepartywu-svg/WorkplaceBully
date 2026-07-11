@@ -163,6 +163,29 @@ section{padding:72px 0;}
 .info-card h3{font-size:16.5px;margin-bottom:10px;}
 .info-card p{font-size:14px;color:#4d555a;margin-bottom:0;}
 
+.video-card{
+  text-decoration:none;
+  position:relative;
+  transition:transform .15s, box-shadow .2s, border-color .2s;
+}
+.video-card:hover{
+  transform:translateY(-2px);
+  box-shadow:0 6px 16px rgba(18,39,51,.10);
+  border-top-color:var(--gold);
+}
+.video-play{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:34px;
+  height:34px;
+  border-radius:50%;
+  background:var(--navy-deep);
+  color:#fff;
+  font-size:13px;
+  margin-bottom:12px;
+}
+
 /* ---------- timeline ---------- */
 .timeline{
   display:grid;
