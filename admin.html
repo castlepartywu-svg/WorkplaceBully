@@ -38,7 +38,7 @@
     <div class="admin-note" style="max-width:640px;">
       注意：這是純前端示意登入機制（非真正安全的後端驗證）。正式上線時建議使用後端系統搭配資料庫。<br>
       帳號分兩種角色：「管理員」可管理帳號並查閱案件；「主管」僅能查閱申訴案件，無法查看或新增管理員帳號密碼。<br>
-      主管可另外設定「校別」：設為同安或莊敬後，該主管登入時只會看到該校的申訴案件；留空則可查看全部校區案件。
+      主管可另外設定「校別」：設為同安、莊敬、國中部或林口校後，該主管登入時只會看到該校的申訴案件；留空則可查看全部校區案件。
     </div>
 
     <!-- 登入表單 -->
@@ -107,6 +107,8 @@
                 <option value="">不分校（可查看全部）</option>
                 <option value="同安">同安</option>
                 <option value="莊敬">莊敬</option>
+                <option value="國中部">國中部</option>
+                <option value="林口校">林口校</option>
               </select>
             </div>
             <button class="btn btn-primary" onclick="addAdminAccount()">新增帳號</button>
@@ -116,18 +118,10 @@
           <!-- 新案件通知設定 -->
           <div class="info-card" style="border-top-color:var(--danger);">
             <h3>新案件通知設定</h3>
-            <p style="font-size:13px;color:#4d555a;margin-bottom:14px;">有新的申請案件送出時，系統會依案件的校別自動寄信通知對應信箱（可填多組，以逗號分隔）。「申訴書」會依填寫的同安／莊敬身分別分流；委任書、撤回書等沒有校別標記的案件，一律寄到「未分校／其他」信箱。個別欄位留空則該類別不寄送通知信。</p>
+            <p style="font-size:13px;color:#4d555a;margin-bottom:14px;">有新的申請案件送出時，系統會自動寄信通知以下信箱（可填多組，以逗號分隔）。留空則不寄送通知信。</p>
             <div class="field">
-              <label for="notify-email-tongan">同安校通知信箱</label>
-              <input type="text" id="notify-email-tongan" placeholder="例如：selena@example.com, joffin@example.com">
-            </div>
-            <div class="field">
-              <label for="notify-email-zhuangjing">莊敬校通知信箱</label>
-              <input type="text" id="notify-email-zhuangjing" placeholder="例如：jessica@example.com">
-            </div>
-            <div class="field">
-              <label for="notify-email-other">未分校／其他通知信箱</label>
-              <input type="text" id="notify-email-other" placeholder="例如：wufatw@gmail.com">
+              <label for="notify-email">通知信箱</label>
+              <input type="text" id="notify-email" placeholder="例如：a@example.com, b@example.com">
             </div>
             <button class="btn btn-primary" onclick="saveNotifySettings()">儲存設定</button>
             <div id="notify-settings-msg" style="min-height:18px;font-size:13px;margin-top:10px;"></div>
