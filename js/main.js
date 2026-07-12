@@ -42,8 +42,30 @@ function resetForm(panelId, formTitle) {
     }
   });
 
+  updateEmptyFieldHighlights(panel);
   panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
+
+// ====================== 空白欄位反白提示 ======================
+// 申請表單中尚未填寫的文字欄位會加上反白樣式，方便一眼看出漏填處；
+// 開始輸入後會自動取消，不影響核取方塊／選項按鈕。
+function updateEmptyFieldHighlights(root) {
+  const scope = root || document;
+  scope.querySelectorAll('.form-doc input[type="text"], .form-doc textarea').forEach(el => {
+    el.classList.toggle('field-empty', !el.value.trim());
+  });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  if (document.querySelector('.form-doc')) updateEmptyFieldHighlights(document);
+});
+
+document.addEventListener('input', (e) => {
+  const el = e.target;
+  if (el.matches && el.matches('.form-doc input[type="text"], .form-doc textarea')) {
+    el.classList.toggle('field-empty', !el.value.trim());
+  }
+});
 
 // ====================== Google 表單後端（Apps Script） ======================
 // 部署 apps-script/Code.gs 後，把產生的網址貼在這裡（結尾是 /exec）。
@@ -620,11 +642,13 @@ function extractDataFieldPairs(container) {
   }));
 }
 
-// 依「申訴人身分別」推算所屬校別（同安／莊敬／其他），寫入案件記錄的「校別」欄位
+// 依「申訴人身分別」推算所屬校別（同安／莊敬／國中部／林口校／其他），寫入案件記錄的「校別」欄位
 function deriveBranchFromIdentity(identity) {
   if (!identity) return '';
   if (identity.indexOf('同安') !== -1) return '同安';
   if (identity.indexOf('莊敬') !== -1) return '莊敬';
+  if (identity.indexOf('國中部') !== -1) return '國中部';
+  if (identity.indexOf('林口校') !== -1) return '林口校';
   return '其他';
 }
 
